@@ -1,0 +1,57 @@
+<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ clientData ? 'Editar Cliente' : 'Añadir Cliente' }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+                    <!-- Nombre -->
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" formControlName="firstName" />
+                        <div *ngIf="clientForm.get('firstName')?.invalid && clientForm.get('firstName')?.touched"
+                            class="text-danger">
+                            Nombre es obligatorio.
+                        </div>
+                    </div>
+
+                    <!-- Apellidos -->
+                    <div class="mb-3">
+                        <label class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" formControlName="lastName" />
+                        <div *ngIf="clientForm.get('lastName')?.invalid && clientForm.get('lastName')?.touched"
+                            class="text-danger">
+                            Apellidos son obligatorios.
+                        </div>
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="mb-3">
+                        <label class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" formControlName="phone" />
+                        <div *ngIf="clientForm.get('phone')?.invalid && clientForm.get('phone')?.touched"
+                            class="text-danger">
+                            Introduce un teléfono válido.
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" formControlName="email" />
+                        <div *ngIf="clientForm.get('email')?.invalid && clientForm.get('email')?.touched"
+                            class="text-danger">
+                            Introduce un email válido.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" [disabled]="clientForm.invalid">
+                        {{ clientData ? 'Guardar cambios' : 'Añadir Cliente' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

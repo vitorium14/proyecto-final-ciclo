@@ -1,0 +1,59 @@
+<div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ roomData ? 'Editar Habitación' : 'Añadir Habitación' }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="roomForm" (ngSubmit)="onSubmit()">
+                    <!-- Numero de Habitación -->
+                    <div class="mb-3">
+                        <label class="form-label">Numero de Habitación</label>
+                        <input type="number" class="form-control" formControlName="roomNumber" />
+                        <div *ngIf="roomForm.get('roomNumber')?.invalid && roomForm.get('roomNumber')?.touched"
+                            class="text-danger">
+                            El numero es obligatorio.
+                        </div>
+                    </div>
+
+                    <!-- Tipo -->
+                    <div class="mb-3">
+                        <label class="form-label">Tipo</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="type">
+                            <option selected disabled>Selecciona el tipo de habitación</option>
+                            <option value="Individual">Individual</option>
+                            <option value="Doble">Doble</option>
+                            <option value="Deluxe">Deluxe</option>
+                        </select>
+                        <div *ngIf="roomForm.get('type')?.invalid && roomForm.get('type')?.touched" class="text-danger">
+                            El tipo es obligatorio.
+                        </div>
+                    </div>
+
+                    <!-- Precio por Noche -->
+                    <div class="mb-3">
+                        <label class="form-label">Precio por Noche</label>
+                        <input type="number" class="form-control" formControlName="pricePerNight" />
+                        <div *ngIf="roomForm.get('pricePerNight')?.invalid && roomForm.get('pricePerNight')?.touched"
+                            class="text-danger">
+                            El precio por noche es obligatorio.
+                        </div>
+                    </div>
+
+                    <!-- Disponible -->
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" formControlName="isAvailable">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Disponible</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" [disabled]="roomForm.invalid">
+                        {{ roomData ? 'Guardar cambios' : 'Añadir Habitación' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

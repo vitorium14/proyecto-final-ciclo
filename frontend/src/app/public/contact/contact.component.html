@@ -1,0 +1,65 @@
+<div class="contact container mt-5">
+    <div class="row">
+        <!-- Información de contacto -->
+        <div class="col-md-6 contact-info">
+            <h2>Contáctanos</h2>
+            <p>¿Tienes alguna duda o necesitas más información? ¡Estamos aquí para ayudarte!</p>
+
+            <div class="info-item">
+                <i class="bi bi-geo-alt-fill"></i>
+                <p>Calle Falsa, 123, Valencia</p>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-telephone-fill"></i>
+                <p>+34 123 456 789</p>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-envelope-fill"></i>
+                <p>info&#64;hotelparadise.com</p>
+            </div>
+        </div>
+
+        <!-- Formulario de contacto -->
+        <div class="col-md-6">
+            <h2>Envíanos un mensaje</h2>
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" formControlName="name" />
+                    <div *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched"
+                        class="text-danger">
+                        El nombre es obligatorio.
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" formControlName="email" />
+                    <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
+                        class="text-danger">
+                        Introduce un email válido.
+                    </div>
+                </div>
+
+                <!-- Mensaje -->
+                <div class="mb-3">
+                    <label class="form-label">Mensaje</label>
+                    <textarea class="form-control" formControlName="message" rows="4"></textarea>
+                    <div *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
+                        class="text-danger">
+                        El mensaje es obligatorio.
+                    </div>
+                </div>
+
+                <!-- Botón de envío -->
+                <button type="submit" class="btn btn-primary w-100" [disabled]="contactForm.invalid">
+                    <i class="bi bi-send me-2"></i> Enviar Mensaje
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

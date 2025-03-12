@@ -1,0 +1,69 @@
+.header {
+    background-color: var(--primary-color);
+    /* Fondo anaranjado */
+    padding: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--light-color);
+    transition: color 0.2s;
+}
+
+.navbar-brand:hover {
+    color: var(--accent-color);
+    /* Efecto hover con color secundario */
+}
+
+.nav-link {
+    font-size: 18px;
+    color: var(--light-color);
+    margin-right: 15px;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent-color);
+}
+
+/* Botón de inicio de sesión */
+.btn-outline-light {
+    border-color: var(--light-color);
+    color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 5px 20px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-outline-light:hover {
+    background-color: var(--secondary-color);
+    color: var(--light-color);
+}
+
+/* Botón de menú en dispositivos móviles */
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 20px;
+    }
+
+    .nav-link {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    .btn-outline-light {
+        padding: 5px 15px;
+    }
+}

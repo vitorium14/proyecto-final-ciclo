@@ -1,0 +1,12 @@
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.btn i {
+    font-size: 18px;
+}
+
+h2 i {
+    color: #007bff;
+}
