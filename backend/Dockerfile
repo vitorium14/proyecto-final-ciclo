@@ -1,16 +1,17 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 WORKDIR /var/www/html
 # Instalamos extensiones necesarias (ajusta según tus requerimientos)
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     zip \
     unzip \
- && docker-php-ext-install pdo pdo_mysql
+    && docker-php-ext-install pdo pdo_mysql
 
-# Copiamos los archivos de Composer y los instalamos
-COPY composer.json composer.lock ./
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --no-dev --prefer-dist --optimize-autoloader
+# install composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php && \
+    php -r "unlink('composer-setup.php');" && \
+    mv composer.phar /usr/local/bin/composer
 
 # Copiamos el resto de la aplicación Symfony
 COPY . .
