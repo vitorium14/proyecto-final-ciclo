@@ -32,8 +32,8 @@ Esta es una **webapp** desarrollada con **Angular** y **Symfony** para la gesti�
 ## 🏗️ Instalación y configuración
 ### 1. **Clonar el repositorio**
 ```bash
-git clone https://github.com/tu-usuario/nombre-del-repo.git
-cd nombre-del-repo
+git clone https://github.com/vitorium14/proyecto-final-ciclo.git
+cd proyecto-final-ciclo
 ```
 
 ### 2. **Instalar dependencias**
