@@ -1,5 +1,5 @@
 # Etapa 1: Construir la aplicación Angular
-FROM node:14 AS builder
+FROM node:18 AS builder
 WORKDIR /app
 # Copiamos los archivos de dependencias
 COPY package.json package-lock.json angular.json ./
@@ -11,8 +11,8 @@ RUN npm run build --prod
 # Etapa 2: Servir los archivos estáticos con Nginx
 FROM nginx:alpine
 # Copiamos el resultado del build (ajusta "mi-app" por el nombre real del directorio de salida)
-COPY --from=builder /app/dist/mi-app /usr/share/nginx/html
+COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
 # Copiamos la configuración personalizada de Nginx (para manejar, por ejemplo, el proxy hacia el backend)
-COPY ../nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
