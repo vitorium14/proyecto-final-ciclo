@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Room, RoomService } from '../../services/room.service';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent implements OnInit {
   featuredRooms: Room[] = [];
 
-  constructor(private roomService: RoomService, private router: Router) { }
+  constructor(private roomService: RoomService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
     this.roomService.getRooms().subscribe(rooms => {
@@ -22,5 +23,11 @@ export class HomeComponent implements OnInit {
 
   viewRoom(id: number) {
     this.router.navigate(['/room', id]);
+  }
+
+  testApi(){
+    this.http.get('http://localhost:8000/users').subscribe(response =>{
+      console.log(response)
+    })
   }
 }
