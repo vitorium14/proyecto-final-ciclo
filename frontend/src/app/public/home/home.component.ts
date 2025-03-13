@@ -24,10 +24,5 @@ export class HomeComponent implements OnInit {
   viewRoom(id: number) {
     this.router.navigate(['/room', id]);
   }
-
-  testApi(){
-    this.http.get('http://localhost:8000/users').subscribe(response =>{
-      console.log(response)
-    })
-  }
+  
 }
