@@ -14,7 +14,9 @@ services:
       # La URL de conexión a la base de datos se compone con los datos del servicio "db"
       DATABASE_URL: "mysql://admin:admin@1234@db:3306/app"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
 
   db:
     image: mariadb:latest
@@ -24,8 +26,16 @@ services:
       MYSQL_DATABASE: app
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin@1234
+    ports:
+      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin --user=$${MYSQL_USER} --password=$${MYSQL_PASSWORD} --host=localhost ping"]
+      start_interval: 15s
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 volumes:
   db_data:

@@ -17,4 +17,5 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 COPY . .
 
 EXPOSE 80
-CMD ["apache2-foreground"]
+
+ENTRYPOINT ["./init.sh"]
