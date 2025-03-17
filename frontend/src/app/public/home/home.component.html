@@ -1,92 +1,99 @@
 <div class="home">
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container text-center">
+      <h1>Bienvenido a Hotel Paradise</h1>
+      <p>Relájate y disfruta de unas vacaciones inolvidables</p>
+      <a class="btn btn-primary btn-lg" routerLink="/rooms">
+        <i class="bi bi-door-open me-2"></i> Ver Habitaciones
+      </a>
+    </div>
+  </section>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="container text-center">
-            <h1>Bienvenido a Hotel Paradise</h1>
-            <p>Relájate y disfruta de unas vacaciones inolvidables</p>
-            <a class="btn btn-primary btn-lg" routerLink="/rooms">
-                <i class="bi bi-door-open me-2"></i> Ver Habitaciones
-            </a>
-        </div>
-    </section>
+  <!-- SERVICIOS -->
+  <section class="services container mt-5">
+    <h2 class="text-center">Nuestros Servicios</h2>
+    <div class="row mt-4">
+      <div class="col-md-4 text-center">
+        <i class="bi bi-wifi service-icon"></i>
+        <h5>WiFi Gratis</h5>
+        <p>Conéctate desde cualquier parte del hotel sin cargos adicionales.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <i class="bi bi-cup-hot service-icon"></i>
+        <h5>Desayuno Incluido</h5>
+        <p>Comienza tu día con un desayuno completo y delicioso.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <i class="bi bi-water service-icon"></i>
+        <h5>Piscina</h5>
+        <p>Relájate en nuestra piscina con vistas impresionantes.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- SERVICIOS -->
-    <section class="services container mt-5">
-        <h2 class="text-center">Nuestros Servicios</h2>
-        <div class="row mt-4">
-            <div class="col-md-4 text-center">
-                <i class="bi bi-wifi service-icon"></i>
-                <h5>WiFi Gratis</h5>
-                <p>Conéctate desde cualquier parte del hotel sin cargos adicionales.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <i class="bi bi-cup-hot service-icon"></i>
-                <h5>Desayuno Incluido</h5>
-                <p>Comienza tu día con un desayuno completo y delicioso.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <i class="bi bi-water service-icon"></i>
-                <h5>Piscina</h5>
-                <p>Relájate en nuestra piscina con vistas impresionantes.</p>
-            </div>
+  <!-- HABITACIONES DESTACADAS -->
+  <section class="featured-rooms container mt-5">
+    <h2 class="text-center">Habitaciones Destacadas</h2>
+    <div class="row mt-4">
+      <div *ngFor="let room of featuredRooms" class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Habitación Nº {{ room.number }}</h5>
+            <p class="card-text">{{ room.type }}</p>
+            <p class="card-text">{{ room.price | currency }} / noche</p>
+            <button class="btn btn-primary" (click)="viewRoom(room.id)">
+              <i class="bi bi-eye me-2"></i> Ver Detalles
+            </button>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- HABITACIONES DESTACADAS -->
-    <section class="featured-rooms container mt-5">
-        <h2 class="text-center">Habitaciones Destacadas</h2>
-        <div class="row mt-4">
-            <div *ngFor="let room of featuredRooms" class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Habitación Nº {{ room.number }}</h5>
-                        <p class="card-text">{{ room.type }}</p>
-                        <p class="card-text">{{ room.price | currency }} / noche</p>
-                        <button class="btn btn-primary" (click)="viewRoom(room.id)">
-                            <i class="bi bi-eye me-2"></i> Ver Detalles
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <!-- TESTIMONIOS -->
+  <section class="testimonials mt-5">
+    <div class="container">
+      <h2 class="text-center">Lo que dicen nuestros clientes</h2>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <p>
+              "Una experiencia increíble. El personal es muy amable y las
+              habitaciones están impecables."
+            </p>
+            <strong>– Ana Martínez</strong>
+          </div>
         </div>
-    </section>
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <p>
+              "Definitivamente regresaré. La comida y el servicio son
+              excepcionales."
+            </p>
+            <strong>– Carlos López</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <p>
+              "La ubicación es perfecta y las instalaciones son de primera
+              clase."
+            </p>
+            <strong>– Marta Sánchez</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- TESTIMONIOS -->
-    <section class="testimonials mt-5">
-        <div class="container">
-            <h2 class="text-center">Lo que dicen nuestros clientes</h2>
-            <div class="row mt-4">
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <p>"Una experiencia increíble. El personal es muy amable y las habitaciones están impecables."
-                        </p>
-                        <strong>– Ana Martínez</strong>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <p>"Definitivamente regresaré. La comida y el servicio son excepcionales."</p>
-                        <strong>– Carlos López</strong>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="testimonial-card">
-                        <p>"La ubicación es perfecta y las instalaciones son de primera clase."</p>
-                        <strong>– Marta Sánchez</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CALL TO ACTION -->
-    <section class="cta mt-5">
-        <div class="container text-center">
-            <h2>¡Reserva ahora y vive la experiencia!</h2>
-            <a class="btn btn-primary btn-lg" routerLink="/rooms">
-                <i class="bi bi-calendar-check me-2"></i> Hacer Reserva
-            </a>
-        </div>
-    </section>
+  <!-- CALL TO ACTION -->
+  <section class="cta mt-5">
+    <div class="container text-center">
+      <h2>¡Reserva ahora y vive la experiencia!</h2>
+      <a class="btn btn-primary btn-lg" routerLink="/rooms">
+        <i class="bi bi-calendar-check me-2"></i> Hacer Reserva
+      </a>
+    </div>
+  </section>
 </div>

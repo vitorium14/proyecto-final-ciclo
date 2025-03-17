@@ -11,8 +11,6 @@ export interface Client {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ClientService {
-
-}
+export class ClientService {}

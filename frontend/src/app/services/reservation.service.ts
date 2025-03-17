@@ -10,8 +10,6 @@ export interface Reservation {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ReservationService {
-
-}
+export class ReservationService {}

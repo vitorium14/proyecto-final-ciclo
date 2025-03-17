@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService, Client } from '../../services/client.service';
-import {Modal} from 'bootstrap'
+import { Modal } from 'bootstrap';
 import { ClientFormComponent } from '../../shared/client-form/client-form.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-clients',
-  imports:[ClientFormComponent,CommonModule],
+  imports: [ClientFormComponent, CommonModule],
   templateUrl: './clients.component.html',
-  styleUrls: ['./clients.component.css']
+  styleUrls: ['./clients.component.css'],
 })
 export class ClientsComponent implements OnInit {
   clients: Client[] = [];
@@ -17,16 +17,11 @@ export class ClientsComponent implements OnInit {
 
   constructor(private clientService: ClientService) {}
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
-  openModal(client: Client | null) {
-  }
+  openModal(client: Client | null) {}
 
-  onSaveClient(client: Client) {
-  }
+  onSaveClient(client: Client) {}
 
-  deleteClient(id: number) {
-  }
+  deleteClient(id: number) {}
 }

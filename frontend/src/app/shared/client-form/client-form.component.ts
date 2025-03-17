@@ -1,13 +1,26 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Client } from '../../services/client.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-client-form',
-  imports:[ReactiveFormsModule,CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './client-form.component.html',
-  styleUrls: ['./client-form.component.css']
+  styleUrls: ['./client-form.component.css'],
 })
 export class ClientFormComponent implements OnInit, OnChanges {
   @Input() clientData: Client | null = null;
@@ -33,9 +46,18 @@ export class ClientFormComponent implements OnInit, OnChanges {
       id: [this.clientData?.id || 0],
       firstName: [this.clientData?.firstName || '', Validators.required],
       lastName: [this.clientData?.lastName || '', Validators.required],
-      phone: [this.clientData?.phone || '', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
-      email: [this.clientData?.email || '', [Validators.required, Validators.email]],
-      registrationDate: [this.clientData?.registrationDate || new Date().toISOString().split('T')[0]]
+      phone: [
+        this.clientData?.phone || '',
+        [Validators.required, Validators.pattern(/^[0-9]{9}$/)],
+      ],
+      email: [
+        this.clientData?.email || '',
+        [Validators.required, Validators.email],
+      ],
+      registrationDate: [
+        this.clientData?.registrationDate ||
+          new Date().toISOString().split('T')[0],
+      ],
     });
   }
 

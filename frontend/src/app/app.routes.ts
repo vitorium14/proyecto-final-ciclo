@@ -13,34 +13,34 @@ import { RoomsComponent } from './admin/rooms/rooms.component';
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 
 export const routes: Routes = [
-    // Rutas públicas
-    {
-        path: '',
-        component: PublicLayoutComponent,
-        children: [
-            { path: '', component: HomeComponent },
-            { path: 'rooms', component: RoomsPublicComponent },
-            { path: 'room/:id', component: RoomDetailComponent },
-            { path: 'contact', component: ContactComponent },
-            // Login
-            { path: 'login', component: LoginComponent }
-        ]
-    },
+  // Rutas públicas
+  {
+    path: '',
+    component: PublicLayoutComponent,
+    children: [
+      { path: '', component: HomeComponent },
+      { path: 'rooms', component: RoomsPublicComponent },
+      { path: 'room/:id', component: RoomDetailComponent },
+      { path: 'contact', component: ContactComponent },
+      // Login
+      { path: 'login', component: LoginComponent },
+    ],
+  },
 
-    // Rutas privadas (protegidas con AuthGuard)
-    {
-        path: 'admin',
-        component: DashboardComponent,
-        canActivate: [authGuard],
-        children: [
-            { path: 'check-in-out', component: CheckInOutComponent },
-            { path: 'reservations', component: ReservationsComponent },
-            { path: 'clients', component: ClientsComponent },
-            { path: 'rooms', component: RoomsComponent },
-            { path: '', redirectTo: 'clients', pathMatch: 'full' }
-        ]
-    },
+  // Rutas privadas (protegidas con AuthGuard)
+  {
+    path: 'admin',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+    children: [
+      { path: 'check-in-out', component: CheckInOutComponent },
+      { path: 'reservations', component: ReservationsComponent },
+      { path: 'clients', component: ClientsComponent },
+      { path: 'rooms', component: RoomsComponent },
+      { path: '', redirectTo: 'clients', pathMatch: 'full' },
+    ],
+  },
 
-    // Redirigir rutas desconocidas a Home
-    { path: '**', redirectTo: '', pathMatch: 'full' }
+  // Redirigir rutas desconocidas a Home
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

@@ -1,11 +1,11 @@
 .card {
-    transition: transform 0.2s;
+  transition: transform 0.2s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 .btn-primary {
-    width: 100%;
+  width: 100%;
 }

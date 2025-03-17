@@ -1,16 +1,20 @@
 <div class="container mt-4">
-    <div class="row">
-        <div *ngFor="let room of rooms" class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Habitación Nº {{ room.number }}</h5>
-                    <p class="card-text">Tipo: {{ room.type }}</p>
-                    <p class="card-text">Precio por noche: {{ room.price | currency }}</p>
-                    <button class="btn btn-primary" [disabled]="!room.status" (click)="viewRoom(room.id)">
-                        <i class="bi bi-eye me-2"></i> Ver Detalles
-                    </button>
-                </div>
-            </div>
+  <div class="row">
+    <div *ngFor="let room of rooms" class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Habitación Nº {{ room.number }}</h5>
+          <p class="card-text">Tipo: {{ room.type }}</p>
+          <p class="card-text">Precio por noche: {{ room.price | currency }}</p>
+          <button
+            class="btn btn-primary"
+            [disabled]="!room.status"
+            (click)="viewRoom(room.id)"
+          >
+            <i class="bi bi-eye me-2"></i> Ver Detalles
+          </button>
         </div>
+      </div>
     </div>
+  </div>
 </div>

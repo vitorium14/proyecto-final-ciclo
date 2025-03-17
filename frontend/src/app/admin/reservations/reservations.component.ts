@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { Reservation, ReservationService } from '../../services/reservation.service';
+import {
+  Reservation,
+  ReservationService,
+} from '../../services/reservation.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-reservations',
   imports: [CommonModule],
   templateUrl: './reservations.component.html',
-  styleUrl: './reservations.component.css'
+  styleUrl: './reservations.component.css',
 })
 export class ReservationsComponent implements OnInit {
   reservations: Reservation[] = [];
 
-  constructor(private reservationService: ReservationService) { }
+  constructor(private reservationService: ReservationService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  newReservation() {
-  }
+  newReservation() {}
 
-  editReservation(reservation: Reservation) {
-  }
+  editReservation(reservation: Reservation) {}
 
-  deleteReservation(id: number) {
-  }
+  deleteReservation(id: number) {}
 }

@@ -1,79 +1,160 @@
-<div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ roomData ? 'Editar Habitación' : 'Añadir Habitación' }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+<div
+  class="modal fade"
+  id="roomModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ roomData ? "Editar Habitación" : "Añadir Habitación" }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="roomForm" (ngSubmit)="onSubmit()">
+          <!-- Número de Habitación -->
+          <div class="mb-3">
+            <label class="form-label" for="roomNumber"
+              >Número de Habitación</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              formControlName="number"
+              id="roomNumber"
+            />
+            <div
+              *ngIf="
+                roomForm.get('number')?.invalid &&
+                roomForm.get('number')?.touched
+              "
+              class="text-danger"
+            >
+              El número es obligatorio.
             </div>
-            <div class="modal-body">
-                <form [formGroup]="roomForm" (ngSubmit)="onSubmit()">
-                    <!-- Número de Habitación -->
-                    <div class="mb-3">
-                        <label class="form-label">Número de Habitación</label>
-                        <input type="number" class="form-control" formControlName="number" />
-                        <div *ngIf="roomForm.get('number')?.invalid && roomForm.get('number')?.touched" class="text-danger">
-                            El número es obligatorio.
-                        </div>
-                    </div>
+          </div>
 
-                    <!-- Tipo -->
-                    <div class="mb-3">
-                        <label class="form-label">Tipo</label>
-                        <select class="form-select" formControlName="type">
-                            <option selected disabled>Selecciona el tipo de habitación</option>
-                            <option value="Individual">Individual</option>
-                            <option value="Doble">Doble</option>
-                            <option value="Deluxe">Deluxe</option>
-                        </select>
-                        <div *ngIf="roomForm.get('type')?.invalid && roomForm.get('type')?.touched" class="text-danger">
-                            El tipo es obligatorio.
-                        </div>
-                    </div>
-
-                    <!-- Precio por Noche -->
-                    <div class="mb-3">
-                        <label class="form-label">Precio por Noche</label>
-                        <input type="number" class="form-control" formControlName="price" />
-                        <div *ngIf="roomForm.get('price')?.invalid && roomForm.get('price')?.touched" class="text-danger">
-                            El precio por noche debe ser mayor que 0.
-                        </div>
-                    </div>
-
-                    <!-- Estado -->
-                    <div class="mb-3">
-                        <label class="form-label">Estado</label>
-                        <select class="form-select" formControlName="status">
-                            <option value="available" selected>Disponible</option>
-                            <option value="unavailable">No disponible</option>
-                        </select>
-                        <div *ngIf="roomForm.get('status')?.invalid && roomForm.get('status')?.touched" class="text-danger">
-                            El estado es obligatorio.
-                        </div>
-                    </div>
-
-                    <!-- Capacidad -->
-                    <div class="mb-3">
-                        <label class="form-label">Capacidad</label>
-                        <input type="number" class="form-control" formControlName="capacity" />
-                        <div *ngIf="roomForm.get('capacity')?.invalid && roomForm.get('capacity')?.touched" class="text-danger">
-                            La capacidad es obligatoria.
-                        </div>
-                    </div>
-
-                    <!-- Descripción -->
-                    <div class="mb-3">
-                        <label class="form-label">Descripción</label>
-                        <textarea class="form-control" formControlName="description" rows="3"></textarea>
-                        <div *ngIf="roomForm.get('description')?.invalid && roomForm.get('description')?.touched" class="text-danger">
-                            La descripción es obligatoria.
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary" [disabled]="roomForm.invalid">
-                        {{ roomData ? 'Guardar cambios' : 'Añadir Habitación' }}
-                    </button>
-                </form>
+          <!-- Tipo -->
+          <div class="mb-3">
+            <label class="form-label" for="selectType">Tipo</label>
+            <select class="form-select" formControlName="type" id="selectType">
+              <option selected disabled>
+                Selecciona el tipo de habitación
+              </option>
+              <option value="Individual">Individual</option>
+              <option value="Doble">Doble</option>
+              <option value="Deluxe">Deluxe</option>
+            </select>
+            <div
+              *ngIf="
+                roomForm.get('type')?.invalid && roomForm.get('type')?.touched
+              "
+              class="text-danger"
+            >
+              El tipo es obligatorio.
             </div>
-        </div>
+          </div>
+
+          <!-- Precio por Noche -->
+          <div class="mb-3">
+            <label class="form-label" for="inputPrice">Precio por Noche</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="price"
+              id="inputPrice"
+            />
+            <div
+              *ngIf="
+                roomForm.get('price')?.invalid && roomForm.get('price')?.touched
+              "
+              class="text-danger"
+            >
+              El precio por noche debe ser mayor que 0.
+            </div>
+          </div>
+
+          <!-- Estado -->
+          <div class="mb-3">
+            <label class="form-label" for="selectStatus">Estado</label>
+            <select
+              class="form-select"
+              formControlName="status"
+              id="selectStatus"
+            >
+              <option value="available" selected>Disponible</option>
+              <option value="unavailable">No disponible</option>
+            </select>
+            <div
+              *ngIf="
+                roomForm.get('status')?.invalid &&
+                roomForm.get('status')?.touched
+              "
+              class="text-danger"
+            >
+              El estado es obligatorio.
+            </div>
+          </div>
+
+          <!-- Capacidad -->
+          <div class="mb-3">
+            <label class="form-label" for="inputCapacity">Capacidad</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="capacity"
+              id="inputCapacity"
+            />
+            <div
+              *ngIf="
+                roomForm.get('capacity')?.invalid &&
+                roomForm.get('capacity')?.touched
+              "
+              class="text-danger"
+            >
+              La capacidad es obligatoria.
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div class="mb-3">
+            <label class="form-label" for="textareaDescription"
+              >Descripción</label
+            >
+            <textarea
+              class="form-control"
+              formControlName="description"
+              rows="3"
+              id="textareaDescription"
+            ></textarea>
+            <div
+              *ngIf="
+                roomForm.get('description')?.invalid &&
+                roomForm.get('description')?.touched
+              "
+              class="text-danger"
+            >
+              La descripción es obligatoria.
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="roomForm.invalid"
+          >
+            {{ roomData ? "Guardar cambios" : "Añadir Habitación" }}
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 </div>

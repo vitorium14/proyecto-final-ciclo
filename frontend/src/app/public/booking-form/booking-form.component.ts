@@ -1,14 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { RoomService, Room } from '../../services/room.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-booking-form',
-  imports:[ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './booking-form.component.html',
-  styleUrls: ['./booking-form.component.css']
+  styleUrls: ['./booking-form.component.css'],
 })
 export class BookingFormComponent implements OnInit {
   @Input() room!: Room;
@@ -18,21 +23,24 @@ export class BookingFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private roomService: RoomService,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.bookingForm = this.fb.group({
       clientName: ['', Validators.required],
       clientEmail: ['', [Validators.required, Validators.email]],
       checkInDate: ['', Validators.required],
-      checkOutDate: ['', Validators.required]
+      checkOutDate: ['', Validators.required],
     });
   }
 
   onSubmit() {
     if (this.bookingForm.valid) {
-      if (new Date(this.bookingForm.value.checkInDate) >= new Date(this.bookingForm.value.checkOutDate)) {
+      if (
+        new Date(this.bookingForm.value.checkInDate) >=
+        new Date(this.bookingForm.value.checkOutDate)
+      ) {
         alert('La fecha de check-out debe ser posterior a la de check-in');
         return;
       }

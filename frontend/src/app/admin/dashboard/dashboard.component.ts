@@ -5,10 +5,10 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
   selector: 'app-dashboard',
   imports: [RouterOutlet, RouterModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   logout() {
     localStorage.removeItem('token');

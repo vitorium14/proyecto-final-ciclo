@@ -1,49 +1,73 @@
 <div class="container mt-4">
-    <h2>Reservar Habitación Nº {{ room.number }}</h2>
-    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
-        <!-- Nombre del cliente -->
-        <div class="mb-3">
-            <label class="form-label">Nombre</label>
-            <input type="text" class="form-control" formControlName="clientName" />
-            <div *ngIf="bookingForm.get('clientName')?.invalid && bookingForm.get('clientName')?.touched"
-                class="text-danger">
-                El nombre es obligatorio.
-            </div>
-        </div>
+  <h2>Reservar Habitación Nº {{ room.number }}</h2>
+  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+    <!-- Nombre del cliente -->
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-control" formControlName="clientName" />
+      <div
+        *ngIf="
+          bookingForm.get('clientName')?.invalid &&
+          bookingForm.get('clientName')?.touched
+        "
+        class="text-danger"
+      >
+        El nombre es obligatorio.
+      </div>
+    </div>
 
-        <!-- Email del cliente -->
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" formControlName="clientEmail" />
-            <div *ngIf="bookingForm.get('clientEmail')?.invalid && bookingForm.get('clientEmail')?.touched"
-                class="text-danger">
-                Email inválido.
-            </div>
-        </div>
+    <!-- Email del cliente -->
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" formControlName="clientEmail" />
+      <div
+        *ngIf="
+          bookingForm.get('clientEmail')?.invalid &&
+          bookingForm.get('clientEmail')?.touched
+        "
+        class="text-danger"
+      >
+        Email inválido.
+      </div>
+    </div>
 
-        <!-- Fecha de check-in -->
-        <div class="mb-3">
-            <label class="form-label">Check-in</label>
-            <input type="date" class="form-control" formControlName="checkInDate" />
-            <div *ngIf="bookingForm.get('checkInDate')?.invalid && bookingForm.get('checkInDate')?.touched"
-                class="text-danger">
-                La fecha de check-in es obligatoria.
-            </div>
-        </div>
+    <!-- Fecha de check-in -->
+    <div class="mb-3">
+      <label class="form-label">Check-in</label>
+      <input type="date" class="form-control" formControlName="checkInDate" />
+      <div
+        *ngIf="
+          bookingForm.get('checkInDate')?.invalid &&
+          bookingForm.get('checkInDate')?.touched
+        "
+        class="text-danger"
+      >
+        La fecha de check-in es obligatoria.
+      </div>
+    </div>
 
-        <!-- Fecha de check-out -->
-        <div class="mb-3">
-            <label class="form-label">Check-out</label>
-            <input type="date" class="form-control" formControlName="checkOutDate" />
-            <div *ngIf="bookingForm.get('checkOutDate')?.invalid && bookingForm.get('checkOutDate')?.touched"
-                class="text-danger">
-                La fecha de check-out es obligatoria.
-            </div>
-        </div>
+    <!-- Fecha de check-out -->
+    <div class="mb-3">
+      <label class="form-label">Check-out</label>
+      <input type="date" class="form-control" formControlName="checkOutDate" />
+      <div
+        *ngIf="
+          bookingForm.get('checkOutDate')?.invalid &&
+          bookingForm.get('checkOutDate')?.touched
+        "
+        class="text-danger"
+      >
+        La fecha de check-out es obligatoria.
+      </div>
+    </div>
 
-        <!-- Botón de reserva -->
-        <button type="submit" class="btn btn-primary w-100" [disabled]="room.status === 'avaiable' ? true:false">
-            Confirmar Reserva
-        </button>
-    </form>
+    <!-- Botón de reserva -->
+    <button
+      type="submit"
+      class="btn btn-primary w-100"
+      [disabled]="room.status === 'avaiable' ? true : false"
+    >
+      Confirmar Reserva
+    </button>
+  </form>
 </div>

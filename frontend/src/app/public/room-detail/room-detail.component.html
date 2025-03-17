@@ -1,9 +1,9 @@
 <div class="container mt-5">
-    <div *ngIf="room">
-        <h2>Habitación Nº {{ room.number }}</h2>
-        <p>Tipo: {{ room.type }}</p>
-        <p>Precio por noche: {{ room.price | currency }}</p>
+  <div *ngIf="room">
+    <h2>Habitación Nº {{ room.number }}</h2>
+    <p>Tipo: {{ room.type }}</p>
+    <p>Precio por noche: {{ room.price | currency }}</p>
 
-        <app-booking-form [room]="room"></app-booking-form>
-    </div>
+    <app-booking-form [room]="room"></app-booking-form>
+  </div>
 </div>

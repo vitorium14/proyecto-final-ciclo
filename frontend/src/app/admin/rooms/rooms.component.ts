@@ -9,18 +9,21 @@ import { ToastService } from '../../services/toast.service';
   selector: 'app-rooms',
   imports: [CommonModule, RoomFormComponent],
   templateUrl: './rooms.component.html',
-  styleUrls: ['./rooms.component.css']
+  styleUrls: ['./rooms.component.css'],
 })
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
   selectedRoom: Room | null = null;
-  modal: Modal | null = null
+  modal: Modal | null = null;
 
-  constructor(private roomService: RoomService, private toastService:ToastService) { }
+  constructor(
+    private roomService: RoomService,
+    private toastService: ToastService,
+  ) {}
 
   ngOnInit() {
-    this.getRoomsData()
-    this.modal = new Modal(document.getElementById('roomModal')!)
+    this.getRoomsData();
+    this.modal = new Modal(document.getElementById('roomModal')!);
   }
 
   openModal(room: Room | null) {
@@ -29,26 +32,30 @@ export class RoomsComponent implements OnInit {
   }
 
   onSaveRoom(room: Room) {
-    this.modal!.hide()
+    this.modal!.hide();
     this.roomService.createRoom(room).subscribe({
-      error: error => console.error(error),
+      error: (error) => console.error(error),
       complete: () => {
-        this.getRoomsData()
-        this.toastService.show({ content:'Room Saved!', classname: 'bg-success text-light', delay: 5000 });
-      }
-    })
+        this.getRoomsData();
+        this.toastService.show({
+          content: 'Room Saved!',
+          classname: 'bg-success text-light',
+          delay: 5000,
+        });
+      },
+    });
   }
 
   getRoomsData() {
     this.roomService.getRooms().subscribe((response) => {
-      this.rooms = response
-    })
+      this.rooms = response;
+    });
   }
 
   deleteRoom(room: Room) {
     this.roomService.deleteRoom(room).subscribe({
-      error: error => console.error(error),
-      complete: () => this.getRoomsData()
-    })
+      error: (error) => console.error(error),
+      complete: () => this.getRoomsData(),
+    });
   }
 }
