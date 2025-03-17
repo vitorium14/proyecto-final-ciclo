@@ -3,6 +3,7 @@ import { RoomService, Room } from '../../services/room.service';
 import { Modal } from 'bootstrap';
 import { CommonModule } from '@angular/common';
 import { RoomFormComponent } from '../../shared/room-form/room-form.component';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-rooms',
@@ -15,7 +16,7 @@ export class RoomsComponent implements OnInit {
   selectedRoom: Room | null = null;
   modal: Modal | null = null
 
-  constructor(private roomService: RoomService) { }
+  constructor(private roomService: RoomService, private toastService:ToastService) { }
 
   ngOnInit() {
     this.getRoomsData()
@@ -31,7 +32,10 @@ export class RoomsComponent implements OnInit {
     this.modal!.hide()
     this.roomService.createRoom(room).subscribe({
       error: error => console.error(error),
-      complete: () => this.getRoomsData()
+      complete: () => {
+        this.getRoomsData()
+        this.toastService.show({ content:'Room Saved!', classname: 'bg-success text-light', delay: 5000 });
+      }
     })
   }
 
