@@ -27,7 +27,7 @@ export class RoomDetailComponent implements OnInit {
   }
 
   reserveRoom() {
-    alert(`Habitación Nº ${this.room.roomNumber} reservada correctamente.`);
+    alert(`Habitación Nº ${this.room.number} reservada correctamente.`);
     this.router.navigate(['/rooms']);
   }
 }

@@ -18,29 +18,15 @@ export class ClientsComponent implements OnInit {
   constructor(private clientService: ClientService) {}
 
   ngOnInit() {
-    this.clientService.getClients().subscribe(data => {
-      this.clients = data;
-    });
+    
   }
 
   openModal(client: Client | null) {
-    this.selectedClient = client;
-    this.modal = new Modal(document.getElementById('clientModal')!);
-    this.modal.show();
   }
 
   onSaveClient(client: Client) {
-    if (client.id) {
-      this.clientService.updateClient(client);
-    } else {
-      this.clientService.addClient(client);
-    }
-    this.modal.hide();
   }
 
   deleteClient(id: number) {
-    if (confirm('¿Estás seguro de que deseas eliminar este cliente?')) {
-      this.clientService.deleteClient(id);
-    }
   }
 }

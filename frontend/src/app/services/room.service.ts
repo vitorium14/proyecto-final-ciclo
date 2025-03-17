@@ -1,45 +1,39 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ApiResponse } from '../interfaces/api_response.interface'
 
 export interface Room {
   id: number;
-  roomNumber: number;
+  number: number;
   type: string;
-  pricePerNight: number;
-  isAvailable: boolean;
+  price: number;
+  status: string;
+  capacity: number;
+  description: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
-  private rooms: Room[] = [
-    { id: 1, roomNumber: 101, type: 'Individual', pricePerNight: 50, isAvailable: true },
-    { id: 2, roomNumber: 102, type: 'Doble', pricePerNight: 75, isAvailable: false }
-  ];
+  private url = 'http://localhost:8000/room'
 
-  private roomSubject = new BehaviorSubject<Room[]>(this.rooms);
+  constructor(private http: HttpClient) { }
 
   getRooms(): Observable<Room[]> {
-    return this.roomSubject.asObservable();
+    return this.http.get<Room[]>(this.url)
+  }
+  createRoom(room: Room): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(this.url, room)
   }
 
-  addRoom(room: Room) {
-    room.id = this.rooms.length + 1;
-    this.rooms.push(room);
-    this.roomSubject.next(this.rooms);
+  updateRoom(room: Room) {
+
   }
 
-  updateRoom(updatedRoom: Room) {
-    const index = this.rooms.findIndex(r => r.id === updatedRoom.id);
-    if (index > -1) {
-      this.rooms[index] = updatedRoom;
-      this.roomSubject.next(this.rooms);
-    }
-  }
-
-  deleteRoom(id: number) {
-    this.rooms = this.rooms.filter(r => r.id !== id);
-    this.roomSubject.next(this.rooms);
+  deleteRoom(room: Room): Observable<ApiResponse> {
+    let modifiedUrl = this.url + '/' + room.id
+    return this.http.delete<ApiResponse>(modifiedUrl)
   }
 }

@@ -18,23 +18,20 @@
         </thead>
         <tbody>
             <tr *ngFor="let room of rooms">
-                <td>{{ room.roomNumber }}</td>
+                <td>{{ room.number }}</td>
                 <td>{{ room.type }}</td>
-                <td>{{ room.pricePerNight | currency }}</td>
-                <td>
-                    <span class="badge bg-success" *ngIf="room.isAvailable">Disponible</span>
-                    <span class="badge bg-danger" *ngIf="!room.isAvailable">Ocupada</span>
-                </td>
+                <td>{{ room.price | currency }}</td>
+                <td>{{room.status}}</td>
                 <td>
                     <button class="btn btn-warning me-2" (click)="openModal(room)">
                         <i class="bi bi-pencil"></i>
                     </button>
-                    <button class="btn btn-danger" (click)="deleteRoom(room.id)">
+                    <button class="btn btn-danger" (click)="deleteRoom(room)">
                         <i class="bi bi-trash"></i>
                     </button>
                 </td>
             </tr>
-        </tbody> 
+        </tbody>
     </table>
 </div>
 

@@ -40,9 +40,9 @@
             <div *ngFor="let room of featuredRooms" class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Habitación Nº {{ room.roomNumber }}</h5>
+                        <h5 class="card-title">Habitación Nº {{ room.number }}</h5>
                         <p class="card-text">{{ room.type }}</p>
-                        <p class="card-text">{{ room.pricePerNight | currency }} / noche</p>
+                        <p class="card-text">{{ room.price | currency }} / noche</p>
                         <button class="btn btn-primary" (click)="viewRoom(room.id)">
                             <i class="bi bi-eye me-2"></i> Ver Detalles
                         </button>

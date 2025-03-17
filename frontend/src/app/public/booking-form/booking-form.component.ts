@@ -37,7 +37,7 @@ export class BookingFormComponent implements OnInit {
         return;
       }
 
-      if (!this.room.isAvailable) {
+      if (!this.room.status) {
         alert('La habitación no está disponible');
         return;
       }
@@ -45,7 +45,7 @@ export class BookingFormComponent implements OnInit {
       alert(`Reserva confirmada para ${this.bookingForm.value.clientName}.`);
 
       // Actualizar disponibilidad de la habitación
-      this.room.isAvailable = false;
+      this.room.status = 'reserved';
       this.roomService.updateRoom(this.room);
 
       // Redirigir a la lista de habitaciones

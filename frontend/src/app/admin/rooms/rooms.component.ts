@@ -6,41 +6,45 @@ import { RoomFormComponent } from '../../shared/room-form/room-form.component';
 
 @Component({
   selector: 'app-rooms',
-  imports:[CommonModule, RoomFormComponent],
+  imports: [CommonModule, RoomFormComponent],
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.css']
 })
 export class RoomsComponent implements OnInit {
   rooms: Room[] = [];
   selectedRoom: Room | null = null;
-  modal: any;
+  modal: Modal | null = null
 
-  constructor(private roomService: RoomService) {}
+  constructor(private roomService: RoomService) { }
 
   ngOnInit() {
-    this.roomService.getRooms().subscribe(data => {
-      this.rooms = data;
-    });
+    this.getRoomsData()
+    this.modal = new Modal(document.getElementById('roomModal')!)
   }
 
   openModal(room: Room | null) {
     this.selectedRoom = room;
-    this.modal = new Modal(document.getElementById('roomModal')!);
-    this.modal.show();
+    this.modal!.show();
   }
 
   onSaveRoom(room: Room) {
-    if (room.id) {
-      this.roomService.updateRoom(room);
-    } else {
-      this.roomService.addRoom(room);
-    }
-    this.modal.hide();
+    this.modal!.hide()
+    this.roomService.createRoom(room).subscribe({
+      error: error => console.error(error),
+      complete: () => this.getRoomsData()
+    })
   }
 
-  deleteRoom(id: number) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta habitación?')) {
-      this.roomService.deleteRoom(id);
-    }
+  getRoomsData() {
+    this.roomService.getRooms().subscribe((response) => {
+      this.rooms = response
+    })
+  }
+
+  deleteRoom(room: Room) {
+    this.roomService.deleteRoom(room).subscribe({
+      error: error => console.error(error),
+      complete: () => this.getRoomsData()
+    })
   }
 }

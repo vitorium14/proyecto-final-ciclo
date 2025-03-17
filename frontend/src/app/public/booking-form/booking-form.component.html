@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h2>Reservar Habitación Nº {{ room.roomNumber }}</h2>
+    <h2>Reservar Habitación Nº {{ room.number }}</h2>
     <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
         <!-- Nombre del cliente -->
         <div class="mb-3">
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Botón de reserva -->
-        <button type="submit" class="btn btn-primary w-100" [disabled]="!room.isAvailable">
+        <button type="submit" class="btn btn-primary w-100" [disabled]="room.status === 'avaiable' ? true:false">
             Confirmar Reserva
         </button>
     </form>

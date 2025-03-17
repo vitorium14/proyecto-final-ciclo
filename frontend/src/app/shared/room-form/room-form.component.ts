@@ -29,11 +29,13 @@ export class RoomFormComponent implements OnInit, OnChanges {
 
   initForm() {
     this.roomForm = this.fb.group({
-      id: [this.roomData?.id || 0],
-      roomNumber: [this.roomData?.roomNumber || '', Validators.required],
-      type: [this.roomData?.type || '', Validators.required],
-      pricePerNight: [this.roomData?.pricePerNight || 0, [Validators.required, Validators.min(1)]],
-      isAvailable: [this.roomData?.isAvailable || false]
+      id: [this.roomData?.id||''],
+      number: [this.roomData?.number || 0, Validators.required],
+      type: [this.roomData?.type || 'X', Validators.required],
+      price: [this.roomData?.price || 100, [Validators.required, Validators.min(1)]],
+      status: [this.roomData?.status || 'avaiable', Validators.required],
+      capacity: [this.roomData?.capacity, Validators.required],
+      description: [this.roomData?.description, Validators.required]
     });
   }
 

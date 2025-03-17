@@ -20,6 +20,9 @@ RUN npm run build --prod
 FROM nginx:1.23-alpine AS production-stage
 COPY --from=build-stage /app/dist/frontend/browser/ /usr/share/nginx/html
 
+# Asignar permisos
+RUN chmod -R 775 /usr/share/nginx/html
+
 # Exponer el puerto
 EXPOSE 80
 
