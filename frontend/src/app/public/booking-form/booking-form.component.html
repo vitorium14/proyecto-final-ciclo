@@ -3,8 +3,13 @@
   <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
     <!-- Nombre del cliente -->
     <div class="mb-3">
-      <label class="form-label">Nombre</label>
-      <input type="text" class="form-control" formControlName="clientName" />
+      <label class="form-label" for="inputName">Nombre</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="clientName"
+        id="inputName"
+      />
       <div
         *ngIf="
           bookingForm.get('clientName')?.invalid &&
@@ -18,8 +23,13 @@
 
     <!-- Email del cliente -->
     <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input type="email" class="form-control" formControlName="clientEmail" />
+      <label class="form-label" for="inputEmail">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        formControlName="clientEmail"
+        id="inputEmail"
+      />
       <div
         *ngIf="
           bookingForm.get('clientEmail')?.invalid &&
@@ -33,8 +43,13 @@
 
     <!-- Fecha de check-in -->
     <div class="mb-3">
-      <label class="form-label">Check-in</label>
-      <input type="date" class="form-control" formControlName="checkInDate" />
+      <label class="form-label" for="inputCheckIn">Check-in</label>
+      <input
+        type="date"
+        class="form-control"
+        formControlName="checkInDate"
+        id="inputCheckIn"
+      />
       <div
         *ngIf="
           bookingForm.get('checkInDate')?.invalid &&
@@ -48,8 +63,13 @@
 
     <!-- Fecha de check-out -->
     <div class="mb-3">
-      <label class="form-label">Check-out</label>
-      <input type="date" class="form-control" formControlName="checkOutDate" />
+      <label class="form-label" for="inputCheckOut">Check-out</label>
+      <input
+        type="date"
+        class="form-control"
+        formControlName="checkOutDate"
+        id="inputCheckOut"
+      />
       <div
         *ngIf="
           bookingForm.get('checkOutDate')?.invalid &&

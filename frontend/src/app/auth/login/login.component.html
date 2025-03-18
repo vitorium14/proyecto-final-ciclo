@@ -6,19 +6,17 @@
           <h3 class="text-center mb-4">Iniciar sesión</h3>
 
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <!-- Usuario -->
+            <!-- Email -->
             <div class="mb-3">
-              <label for="username" class="form-label">Usuario</label>
+              <label for="email" class="form-label">Email</label>
               <input
-                id="username"
-                type="text"
+                id="email"
+                type="email"
                 class="form-control"
-                formControlName="username"
-                ngClass="{'is-invalid': loginForm.get('username')?.invalid && loginForm.get('username')?.touched}"
+                formControlName="email"
+                ngClass="{'is-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}"
               />
-              <div class="invalid-feedback">
-                El nombre de usuario es obligatorio.
-              </div>
+              <div class="invalid-feedback">El email es obligatorio.</div>
             </div>
 
             <!-- Contraseña -->

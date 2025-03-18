@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   Reservation,
   ReservationService,
@@ -11,16 +11,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './reservations.component.html',
   styleUrl: './reservations.component.css',
 })
-export class ReservationsComponent implements OnInit {
+export class ReservationsComponent {
   reservations: Reservation[] = [];
 
   constructor(private reservationService: ReservationService) {}
-
-  ngOnInit() {}
-
-  newReservation() {}
-
-  editReservation(reservation: Reservation) {}
-
-  deleteReservation(id: number) {}
 }

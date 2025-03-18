@@ -22,8 +22,9 @@
         <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
           <!-- Nombre -->
           <div class="mb-3">
-            <label class="form-label">Nombre</label>
+            <label class="form-label" for="inoutName">Nombre</label>
             <input
+              id="inputName"
               type="text"
               class="form-control"
               formControlName="firstName"
@@ -41,8 +42,9 @@
 
           <!-- Apellidos -->
           <div class="mb-3">
-            <label class="form-label">Apellidos</label>
+            <label class="form-label" for="inputApellidos">Apellidos</label>
             <input
+              id="inputApellidos"
               type="text"
               class="form-control"
               formControlName="lastName"
@@ -60,8 +62,13 @@
 
           <!-- Teléfono -->
           <div class="mb-3">
-            <label class="form-label">Teléfono</label>
-            <input type="text" class="form-control" formControlName="phone" />
+            <label class="form-label" for="inputTelefono">Teléfono</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="phone"
+              id="inputTelefono"
+            />
             <div
               *ngIf="
                 clientForm.get('phone')?.invalid &&
@@ -75,8 +82,13 @@
 
           <!-- Email -->
           <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" formControlName="email" />
+            <label class="form-label" for="inputEmail">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              id="inputEmail"
+            />
             <div
               *ngIf="
                 clientForm.get('email')?.invalid &&

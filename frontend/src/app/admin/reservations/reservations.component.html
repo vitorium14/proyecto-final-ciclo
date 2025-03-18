@@ -1,7 +1,7 @@
 <div class="container-fluid mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2><i class="bi bi-calendar-check me-2"></i>Gestión de Reservas</h2>
-    <button class="btn btn-primary" (click)="newReservation()">
+    <button class="btn btn-primary">
       <i class="bi bi-plus-lg me-2"></i>Añadir Reserva
     </button>
   </div>
@@ -25,16 +25,10 @@
         <td>{{ reservation.checkInDate }}</td>
         <td>{{ reservation.checkOutDate }}</td>
         <td>
-          <button
-            class="btn btn-warning me-2"
-            (click)="editReservation(reservation)"
-          >
+          <button class="btn btn-warning me-2">
             <i class="bi bi-pencil"></i>
           </button>
-          <button
-            class="btn btn-danger"
-            (click)="deleteReservation(reservation.id)"
-          >
+          <button class="btn btn-danger">
             <i class="bi bi-trash"></i>
           </button>
         </td>

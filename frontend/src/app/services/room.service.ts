@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api_response.interface';
 
 export interface Room {
@@ -28,10 +28,8 @@ export class RoomService {
     return this.http.post<ApiResponse>(this.url, room);
   }
 
-  updateRoom(room: Room) {}
-
   deleteRoom(room: Room): Observable<ApiResponse> {
-    let modifiedUrl = this.url + '/' + room.id;
+    const modifiedUrl = this.url + '/' + room.id;
     return this.http.delete<ApiResponse>(modifiedUrl);
   }
 }

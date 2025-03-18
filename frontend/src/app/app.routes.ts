@@ -37,7 +37,7 @@ export const routes: Routes = [
       { path: 'reservations', component: ReservationsComponent },
       { path: 'clients', component: ClientsComponent },
       { path: 'rooms', component: RoomsComponent },
-      { path: '', redirectTo: 'clients', pathMatch: 'full' },
+      { path: '', redirectTo: 'check-in-out', pathMatch: 'full' },
     ],
   },
 

@@ -32,11 +32,26 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin --user=$${MYSQL_USER} --password=$${MYSQL_PASSWORD} --host=localhost ping"]
+      test:
+        [
+          "CMD-SHELL",
+          "mariadb-admin --user=$${MYSQL_USER} --password=$${MYSQL_PASSWORD} --host=localhost ping",
+        ]
       start_interval: 10s
       interval: 10s
       timeout: 5s
       retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: admin@1234
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   db_data:

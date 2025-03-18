@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -16,33 +17,38 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
   errorMessage = '';
+  login_url = 'http://localhost:8000/login';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private http: HttpClient,
   ) {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-
-      // Simulación de credenciales (esto luego lo conectamos al backend)
-      if (username === 'admin' && password === 'admin123') {
-        localStorage.setItem('token', 'mock-token'); // Simulación de token
-        this.router.navigate(['/admin']);
-      } else {
-        this.errorMessage = 'Usuario o contraseña incorrectos.';
-      }
+      this.http
+        .post(this.login_url, JSON.stringify(this.loginForm.value))
+        .subscribe({
+          error: (error) => {
+            console.error(error);
+            this.errorMessage = 'Usuario o contraseña incorrectos.';
+          },
+          complete: () => {
+            sessionStorage.setItem('token', crypto.randomUUID());
+            this.router.navigate(['/admin']);
+          },
+        });
     }
   }
 
   logout() {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 }
