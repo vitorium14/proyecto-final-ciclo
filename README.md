@@ -128,7 +128,7 @@ backend/
 
 ## 👨‍💻 **Autor**
 
-- **Víctor Giménez Gil** – [GitHub](https://github.com/tu-usuario)
+- **Víctor Giménez Gil** – [GitHub](https://github.com/vitorium14)
 
 ---
 
