@@ -26,14 +26,20 @@ WORKDIR /var/www/html
 COPY backend/. .
 
 # Instalar las dependencias de Symfony
-RUN composer install --no-interaction --no-progress --optimize-autoloader
+RUN composer install --no-scripts --no-interaction --no-progress --optimize-autoloader
+
+RUN composer run-script --no-interaction @auto-scripts || true
 
 # Asignar permisos
 RUN chown -R www-data:www-data /var
 RUN chmod -R 775 /var
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+
 # Exponer el puerto
 EXPOSE 80
 
-# Ejecutar el servidor de Symfony
-ENTRYPOINT ["./init.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
+

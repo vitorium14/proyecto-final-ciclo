@@ -14,7 +14,7 @@ final class AuthController extends AbstractController
 {
 
     #[Route('/login', name: 'app_login', methods: ['POST'])]
-    public function getAllRooms(EntityManagerInterface $entityManager, Request $request): JsonResponse
+    public function postLogin(EntityManagerInterface $entityManager, Request $request): JsonResponse
     {
         $requestContent = json_decode($request->getContent(), true);
 

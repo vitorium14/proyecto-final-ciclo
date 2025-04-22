@@ -54,7 +54,7 @@ export class BookingFormComponent implements OnInit {
 
       // Actualizar disponibilidad de la habitación
       this.room.status = 'reserved';
-      this.roomService.updateRoom(this.room);
+      //this.roomService.updateRoom(this.room);
 
       // Redirigir a la lista de habitaciones
       this.router.navigate(['/rooms']);
