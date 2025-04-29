@@ -31,6 +31,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $fullName = null;
+
+    #[ORM\Column(length: 9)]
+    private ?string $phone = null;
+
+    #[ORM\Column(length: 9)]
+    private ?string $documentId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,5 +111,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): static
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): static
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getDocumentId(): ?string
+    {
+        return $this->documentId;
+    }
+
+    public function setDocumentId(string $documentId): static
+    {
+        $this->documentId = $documentId;
+
+        return $this;
     }
 }
