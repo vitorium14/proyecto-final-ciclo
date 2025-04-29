@@ -2,33 +2,32 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use App\Entity\User;
 
 final class AuthController extends AbstractController
 {
-
-    #[Route('/login', name: 'app_login', methods: ['POST'])]
-    public function postLogin(EntityManagerInterface $entityManager, Request $request): JsonResponse
+    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): JsonResponse
     {
-        $requestContent = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
 
-        $email = $requestContent['email'];
-        $password = $requestContent['password'];
+        $user = new User();
+        $user->setEmail($data['email']);
+        $user->setRoles(['ROLE_CLIENT']);
 
-        $password = md5($password);
+        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+        $user->setPassword($hashedPassword);
 
-        $user = $entityManager->getRepository(User::class)->findOneBy(array('email' => $email, 'password' => $password));
+        $em->persist($user);
+        $em->flush();
 
-        if ($user) {
-            return $this->json(['Status' => '200', 'Message' => 'Login Succesful'], Response::HTTP_OK);
-        }
-
-        return $this->json(['Status' => '401', 'Message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        return $this->json(['message' => 'Usuario registrado']);
     }
 }
