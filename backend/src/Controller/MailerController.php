@@ -19,7 +19,7 @@ class MailerController extends AbstractController
         try {
             $email = (new Email())
                 ->from('t76621781@gmail.com')
-                ->to('t76621781@gmail.com')
+                ->to('vitorium14@gmail.com')
                 //->cc('cc@example.com')
                 //->bcc('bcc@example.com')
                 //->replyTo('fabien@example.com')

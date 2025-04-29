@@ -1,5 +1,5 @@
 # Usar una imagen base de PHP con Apache
-FROM php:8.2-apache
+FROM php:8.4-apache
 
 # Configurar el DocumentRoot a la carpeta `public`
 RUN sed -i -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
