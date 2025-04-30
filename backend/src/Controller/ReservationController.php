@@ -9,9 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Mime\Email;
 
 #[Route('/api/reservations')]
 final class ReservationController extends AbstractController
@@ -21,7 +22,8 @@ final class ReservationController extends AbstractController
         Request $request,
         RoomRepository $roomRepository,
         EntityManagerInterface $em,
-        #[CurrentUser] ?User $user
+        #[CurrentUser] ?User $user,
+        MailerInterface $mailer
     ): JsonResponse {
         if (
             !$this->isGranted('ROLE_CLIENT') &&
@@ -76,6 +78,17 @@ final class ReservationController extends AbstractController
         $em->persist($reservation);
         $em->flush();
 
+        // Send confirmation email
+        $email = (new Email())
+            ->from('noreply@test.com')
+            ->to($user->getEmail())
+            ->subject('Confirmación de Reserva')
+            ->text('Tu reserva ha sido creada con éxito. Detalles: ' .
+                'Habitación: ' . $room->getNumber() . ', ' .
+                'Check-in: ' . $checkIn->format('d-m-Y') . ', ' .
+                'Check-out: ' . $checkOut->format('d-m-Y') . '.');
+        $mailer->send($email);
+        
         return $this->json([
             'message' => 'Reserva creada',
             'id' => $reservation->getId(),
