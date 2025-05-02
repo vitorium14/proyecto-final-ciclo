@@ -1,0 +1,17 @@
+.contact-page {
+  background: var(--color-light, #fff8f1);
+  min-height: 60vh;
+  .form-label {
+    font-weight: 500;
+    color: var(--color-primary, #ff7c00);
+  }
+  .form-control:focus {
+    border-color: var(--color-primary, #ff7c00);
+    box-shadow: 0 0 0 0.2rem rgba(255,124,0,0.08);
+  }
+  button[type="submit"] {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255,124,0,0.10);
+  }
+}

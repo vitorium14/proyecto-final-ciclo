@@ -1,0 +1,16 @@
+.navbar-brand {
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+}
+
+.nav-link {
+  transition: color 0.2s;
+}
+
+.nav-link.active, .nav-link:hover {
+  color: var(--color-primary);
+}
+
+.btn-primary {
+  box-shadow: 0 2px 8px rgba(255, 136, 0, 0.15);
+}

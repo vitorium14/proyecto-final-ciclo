@@ -1,0 +1,45 @@
+// Paleta moderna y vibrante basada en naranja
+$orange-50:  #fff8f1;
+$orange-100: #ffe0c2;
+$orange-200: #ffc48f;
+$orange-300: #ffab5e;
+$orange-400: #ff9432;
+$orange-500: #ff7c00; // Principal
+$orange-600: #e86f00;
+$orange-700: #c75c00;
+$orange-800: #a14a00;
+$orange-900: #6d2e00;
+
+$primary:   $orange-500;
+$secondary: $orange-100;
+$success:   #43b97f;
+$info:      #4fc3f7;
+$warning:   #ffd600;
+$danger:    #ff5252;
+$light:     $orange-50;
+$dark:      $orange-900;
+
+html, body {
+  height: 100%;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+@import 'bootstrap/scss/bootstrap';
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");

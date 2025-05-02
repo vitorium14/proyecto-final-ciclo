@@ -26,6 +26,12 @@ final class AuthController extends AbstractController
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
 
+        // Fullname | phone | DNI
+        $user->setFullname($data['fullname']);
+        $user->setPhone($data['phone']);
+        $user->setDocumentId($data['dni']);
+
+
         $em->persist($user);
         $em->flush();
 
