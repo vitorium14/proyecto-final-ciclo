@@ -1,9 +1,100 @@
+@import '../../../styles.scss';
+
 footer {
-  font-size: 1rem;
-  a {
-    transition: color 0.2s;
+  background-color: #fafafa;
+  box-shadow: 0 -5px 20px rgba($orange-900, 0.05);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, $orange-300, $orange-600, $orange-300);
   }
-  a:hover {
-    color: var(--color-primary);
+  
+  // Forzar layout de columnas
+  .row {
+    display: flex;
+    flex-wrap: wrap;
   }
+  
+  .col-lg-2, .col-lg-3, .col-lg-4 {
+    @media (min-width: 992px) {
+      display: block;
+    }
+  }
+}
+
+// Logo y branding
+.footer-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+}
+
+// Iconos sociales
+.social-icon {
+  width: 38px;
+  height: 38px;
+  font-size: 1.1rem;
+  color: $primary;
+  box-shadow: 0 2px 8px rgba($orange-600, 0.15);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: $orange-500 !important;
+    color: white !important;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba($orange-600, 0.25);
+  }
+}
+
+// Enlaces del footer
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 8px; // Usar gap en lugar de margin para mejor alineación
+  color: #555;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 5px 0;
+  
+  i {
+    color: $orange-500;
+    font-size: 14px;
+    min-width: 16px; // Ancho mínimo para alineación
+    text-align: center;
+    flex-shrink: 0; // Evitar que el icono se encoja
+  }
+  
+  &:hover {
+    color: $orange-600;
+    transform: translateX(5px);
+  }
+  
+  span {
+    line-height: 1.4; // Ajustar altura de línea para mejor legibilidad
+  }
+}
+
+// Elementos de contacto
+.list-unstyled {
+  li .d-flex {
+    align-items: flex-start; // Alinea los iconos con la primera línea de texto
+    
+    i {
+      margin-top: 3px; // Pequeño ajuste para alinear el icono con el texto
+    }
+  }
+}
+
+// Separador
+hr {
+  background: linear-gradient(90deg, transparent, rgba($orange-300, 0.5), transparent);
+  height: 1px;
+  border: 0;
+  opacity: 0.5;
 }

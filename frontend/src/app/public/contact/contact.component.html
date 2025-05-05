@@ -1,70 +1,240 @@
-<div class="contact-page py-5">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-7">
-        <h2 class="fw-bold mb-4 text-center text-primary">Contáctanos</h2>
-        <form #contactForm="ngForm" (ngSubmit)="onSubmit()" novalidate autocomplete="off"> <!-- Added ngSubmit -->
-          <div class="mb-3">
-            <label for="name" class="form-label">Nombre</label>
-            <input type="text" id="name" name="name" class="form-control" required minlength="2" maxlength="50" [(ngModel)]="name" #nameCtrl="ngModel">
-            <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="text-danger small mt-1">
-              El nombre es obligatorio (mínimo 2 caracteres).
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-control" required email [(ngModel)]="email" #emailCtrl="ngModel">
-            <div *ngIf="emailCtrl.invalid && emailCtrl.touched" class="text-danger small mt-1">
-              Introduce un email válido.
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="message" class="form-label">Mensaje</label>
-            <textarea id="message" name="message" class="form-control" rows="5" required minlength="10" maxlength="500" [(ngModel)]="message" #messageCtrl="ngModel"></textarea>
-            <div *ngIf="messageCtrl.invalid && messageCtrl.touched" class="text-danger small mt-1">
-              El mensaje debe tener al menos 10 caracteres.
-            </div>
-          </div>
-          <!-- Submission Feedback -->
-          <div *ngIf="submitSuccess === true" class="alert alert-success py-2 small mb-3">
-            ¡Mensaje enviado con éxito! Gracias por contactarnos.
-          </div>
-          <div *ngIf="submitSuccess === false" class="alert alert-danger py-2 small mb-3">
-            Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.
-          </div>
-
-          <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary btn-lg rounded-pill" [disabled]="contactForm.invalid || isSubmitting">
-              {{ isSubmitting ? 'Enviando...' : 'Enviar mensaje' }} <!-- Updated button text/state -->
-            </button>
-          </div>
-        </form>
+<!-- Página de contacto con diseño moderno -->
+<section class="contact-page bg-light py-6">
+  <!-- Header con fondo degradado -->
+  <div class="contact-header bg-gradient-primary text-white py-5 mb-5 position-relative overflow-hidden">
+    <div class="contact-shapes">
+      <div class="contact-shape shape-1"></div>
+      <div class="contact-shape shape-2"></div>
+    </div>
+    <div class="container position-relative">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-7">
+          <span class="badge bg-white text-primary rounded-pill px-3 py-2 mb-3 animate-fade-in">
+            <i class="bi bi-chat-dots me-1"></i> Estamos para ayudarte
+          </span>
+          <h1 class="display-4 fw-bold mb-3 animate-fade-in" style="animation-delay: 0.1s;">Ponte en <span class="text-gradient-light">Contacto</span></h1>
+          <p class="lead opacity-90 animate-fade-in" style="animation-delay: 0.2s;">
+            Responderemos a todas tus preguntas y te ayudaremos a planificar tu estancia perfecta
+          </p>
+        </div>
       </div>
     </div>
-    <div class="row justify-content-center mt-5">
-      <div class="col-lg-7">
-        <div class="card border-0 shadow-sm mb-4">
-          <div class="card-body">
-            <h5 class="card-title fw-bold mb-3 text-primary">Datos de contacto</h5>
-            <ul class="list-unstyled mb-0">
-              <li class="mb-2"><i class="bi bi-geo-alt-fill text-primary me-2"></i> Calle Falsa 123, 28080 Madrid, España</li>
-              <li class="mb-2"><i class="bi bi-telephone-fill text-primary me-2"></i> +34 912 345 678</li>
-              <li class="mb-2"><i class="bi bi-envelope-fill text-primary me-2"></i> info&#64;orangehotel.com</li>
-              <li><i class="bi bi-clock-fill text-primary me-2"></i> Lunes a Domingo: 8:00 - 22:00</li>
-            </ul>
+  </div>
+
+  <div class="container">
+    <!-- Información de contacto y formulario -->
+    <div class="row g-4 mb-5">
+      <!-- Tarjetas de información de contacto -->
+      <div class="col-lg-4">
+        <div class="contact-info-wrapper">
+          <div class="contact-info-card bg-white rounded-4 shadow-sm p-4 mb-4 hover-float animate-fade-in">
+            <div class="d-flex">
+              <div class="contact-icon-wrapper bg-primary bg-opacity-10 text-primary rounded-circle me-3">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold">Dirección</h5>
+                <p class="text-muted mb-1">Calle Falsa 123, 28080</p>
+                <p class="text-muted mb-0">Madrid, España</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="contact-info-card bg-white rounded-4 shadow-sm p-4 mb-4 hover-float animate-fade-in" style="animation-delay: 0.15s;">
+            <div class="d-flex">
+              <div class="contact-icon-wrapper bg-primary bg-opacity-10 text-primary rounded-circle me-3">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold">Teléfono</h5>
+                <p class="text-muted mb-1">+34 912 345 678</p>
+                <p class="text-muted mb-0">Lun-Dom: 8:00 - 22:00</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="contact-info-card bg-white rounded-4 shadow-sm p-4 hover-float animate-fade-in" style="animation-delay: 0.3s;">
+            <div class="d-flex">
+              <div class="contact-icon-wrapper bg-primary bg-opacity-10 text-primary rounded-circle me-3">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold">Email</h5>
+                <p class="text-muted mb-1">info&#64;orangehotel.com</p>
+                <p class="text-muted mb-0">Respuesta en menos de 24h</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Formulario de contacto -->
+      <div class="col-lg-8">
+        <div class="bg-white p-4 p-lg-5 rounded-4 shadow-sm animate-fade-in" style="animation-delay: 0.2s;">
+          <h3 class="fw-bold mb-4">Envíanos un mensaje</h3>
+          
+          <form #contactForm="ngForm" (ngSubmit)="onSubmit()" novalidate autocomplete="off" class="contact-form">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    class="form-control rounded-pill" 
+                    placeholder="Nombre" 
+                    required 
+                    minlength="2" 
+                    maxlength="50" 
+                    [(ngModel)]="name" 
+                    #nameCtrl="ngModel"
+                  >
+                  <label for="name">Nombre</label>
+                  <div *ngIf="nameCtrl.invalid && nameCtrl.touched" class="text-danger small mt-1 ms-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    El nombre es obligatorio (mínimo 2 caracteres).
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-control rounded-pill" 
+                    placeholder="Email" 
+                    required 
+                    email 
+                    [(ngModel)]="email" 
+                    #emailCtrl="ngModel"
+                  >
+                  <label for="email">Email</label>
+                  <div *ngIf="emailCtrl.invalid && emailCtrl.touched" class="text-danger small mt-1 ms-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    Introduce un email válido.
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <div class="form-floating mb-3">
+                  <textarea 
+                    id="message" 
+                    name="message" 
+                    class="form-control" 
+                    style="min-height: 150px;" 
+                    placeholder="Mensaje" 
+                    required 
+                    minlength="10" 
+                    maxlength="500" 
+                    [(ngModel)]="message" 
+                    #messageCtrl="ngModel"
+                  ></textarea>
+                  <label for="message">Mensaje</label>
+                  <div *ngIf="messageCtrl.invalid && messageCtrl.touched" class="text-danger small mt-1 ms-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    El mensaje debe tener al menos 10 caracteres.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Submission Feedback -->
+            <div *ngIf="submitSuccess === true" class="alert alert-success py-2 mb-3 d-flex align-items-center rounded-pill">
+              <i class="bi bi-check-circle me-2"></i>
+              ¡Mensaje enviado con éxito! Gracias por contactarnos.
+            </div>
+            <div *ngIf="submitSuccess === false" class="alert alert-danger py-2 mb-3 d-flex align-items-center rounded-pill">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.
+            </div>
+
+            <div class="d-grid">
+              <button 
+                type="submit" 
+                class="btn btn-primary btn-lg rounded-pill py-3 mt-3" 
+                [disabled]="contactForm.invalid || isSubmitting"
+              >
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {{ isSubmitting ? 'Enviando...' : 'Enviar mensaje' }}
+                <i *ngIf="!isSubmitting" class="bi bi-send ms-2"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mapa y ubicación -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="map-container bg-white p-3 p-md-4 rounded-4 shadow-sm animate-fade-in" style="animation-delay: 0.3s;">
+          <h4 class="fw-bold mb-4"><i class="bi bi-pin-map me-2 text-primary"></i> Nuestra ubicación</h4>
+          <div class="map-wrapper rounded-4 overflow-hidden shadow-sm">
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-3.7055%2C40.4155%2C-3.7011%2C40.4180&amp;layer=mapnik&amp;marker=40.416775,-3.703790"
+              style="width: 100%; height: 400px; border: none;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Ubicación OrangeHotel - Cerca de Puerta del Sol, Madrid"
+            ></iframe>
           </div>
         </div>
       </div>
     </div>
-    <div class="mt-5 rounded-4 overflow-hidden shadow-sm" >
-      <iframe
-        src="https://www.openstreetmap.org/export/embed.html?bbox=-3.7055%2C40.4155%2C-3.7011%2C40.4180&amp;layer=mapnik&amp;marker=40.416775,-3.703790"
-        
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        title="Ubicación OrangeHotel - Cerca de Puerta del Sol, Madrid"
-      ></iframe>
+    
+    <!-- FAQs -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-lg-8 text-center">
+        <h3 class="fw-bold mb-4">Preguntas frecuentes</h3>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-10">
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item bg-white mb-3 rounded-4 shadow-sm">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button collapsed fw-semibold rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <i class="bi bi-clock-history text-primary me-3"></i> ¿Cuál es el horario de check-in y check-out?
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted">
+                El horario de check-in es a partir de las 14:00 y el check-out hasta las 12:00. Si necesitas un horario distinto, contáctanos con antelación y haremos lo posible por adaptarnos a tus necesidades.
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item bg-white mb-3 rounded-4 shadow-sm">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed fw-semibold rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <i class="bi bi-cash-coin text-primary me-3"></i> ¿Qué métodos de pago aceptáis?
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted">
+                Aceptamos todas las principales tarjetas de crédito (Visa, Mastercard, American Express), PayPal y transferencia bancaria. El pago se puede realizar por adelantado o durante tu estancia.
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item bg-white mb-3 rounded-4 shadow-sm">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed fw-semibold rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <i class="bi bi-shield-check text-primary me-3"></i> ¿Cuál es la política de cancelación?
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted">
+                Puedes cancelar sin cargo hasta 72 horas antes de la fecha de llegada. Las cancelaciones posteriores o la no presentación suponen un cargo del 100% de la primera noche. Consulta los términos específicos al realizar tu reserva.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>

@@ -1,50 +1,259 @@
+@import '../../../styles.scss';
+
+// Utilidades generales
+.py-6 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+// Hero section con efecto parallax y superposiciones
 .hero {
-  min-height: 60vh;
-  background: linear-gradient(120deg, var(--color-primary) 60%, var(--color-secondary) 100%);
-  color: #fff;
-  position: relative;
-  overflow: hidden;
+  height: 100vh;
+  min-height: 700px;
+  background-color: #000;
+  color: white;
+
+  .hero-overlay {
+    background: linear-gradient(to right, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.4));
+    z-index: 1;
+  }
+
+  .hero-bg-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    filter: brightness(0.65);
+    animation: subtle-zoom 25s infinite alternate ease-in-out;
+  }
+
+  .hero-content {
+    z-index: 2;
+    position: relative;
+    max-width: 650px;
+  }
+
+  .hero-text-bg {
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-left: 4px solid $orange-500;
+  }
+
+  .trust-indicators {
+    .trust-item {
+      .trust-icon {
+        width: 32px;
+        height: 32px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+    }
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+
+    .scroll-arrow {
+      font-size: 1.5rem;
+      animation: bounce 2s infinite;
+    }
+  }
 }
 
-.hero h1 span {
-  text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+// Features section
+.features {
+  .feature-card {
+    background-color: white;
+    transition: all 0.3s ease;
+
+    .feature-img-wrapper {
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .feature-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .feature-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.6));
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 15px rgba($orange-500, 0.25);
+    }
+
+    &:hover {
+      .feature-img {
+        transform: scale(1.05);
+      }
+    }
+  }
 }
 
-// Styles for the background image within the hero section
-.hero-bg-img {
-  z-index: 0;
-  opacity: 0.35;
+// Room cards
+.featured-rooms {
+  .room-card {
+    background-color: white;
+    border: 1px solid rgba($orange-100, 0.5);
+    transition: all 0.3s ease;
+
+    .room-img-wrapper {
+      height: 240px;
+      overflow: hidden;
+    }
+
+    .room-img {
+      height: 100%;
+      transition: transform 0.6s ease;
+    }
+
+    &:hover {
+      .room-img {
+        transform: scale(1.05);
+      }
+    }
+
+    .room-tag {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+  }
 }
 
-// Ensure the container is above the background image
-.hero > .container.position-relative {
-  z-index: 1;
+// Testimonials
+.testimonials {
+  .section-shape {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba($orange-100, 0.5) 0%, rgba($orange-100, 0) 70%);
+    top: -250px;
+    right: -250px;
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  .testimonial-card {
+    z-index: 1;
+    border-left: 3px solid $orange-500;
+
+    .testimonial-text {
+      font-style: italic;
+      color: #555;
+    }
+
+    .testimonial-rating {
+      i {
+        font-size: 1.1rem;
+        margin-right: 2px;
+      }
+    }
+  }
 }
 
-.hero-text-bg {
-  background: rgba(30, 20, 10, 0.82); /* Más oscuro y menos opacidad */
-  backdrop-filter: blur(2px);
-  max-width: 650px; // Moved from inline style
-}
-
-.features .feature-card {
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.features .feature-card:hover {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 8px 32px rgba(255,136,0,0.10);
-}
-
-// Style for images within feature cards
-.features .feature-card img {
-  height: 140px; // Moved from inline style
-}
-
+// Call to action
 .cta {
-  background: linear-gradient(90deg, var(--color-primary) 70%, var(--color-secondary) 100%);
+  .cta-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+  }
+
+  .cta-shape {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+
+    &.shape-1 {
+      width: 300px;
+      height: 300px;
+      top: -150px;
+      right: 10%;
+      animation: float 6s ease-in-out infinite alternate;
+    }
+
+    &.shape-2 {
+      width: 200px;
+      height: 200px;
+      bottom: -100px;
+      left: 10%;
+      animation: float 8s ease-in-out infinite alternate;
+    }
+
+    &.shape-3 {
+      width: 100px;
+      height: 100px;
+      top: 20%;
+      left: 20%;
+      animation: float 7s ease-in-out infinite alternate;
+    }
+  }
 }
 
-.btn-primary, .btn-light {
-  font-weight: 600;
-  letter-spacing: 0.5px;
+// Animaciones
+@keyframes subtle-zoom {
+  0% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-20px) rotate(10deg);
+  }
+}
+
+// Responsive
+@media (max-width: 991.98px) {
+  .hero {
+    height: auto;
+    min-height: 600px;
+  }
 }
