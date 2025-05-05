@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/services')]
 final class ServiceController extends AbstractController
@@ -26,7 +25,6 @@ final class ServiceController extends AbstractController
 
     // Create a new service - Employee/Admin only
     #[Route('', methods: ['POST'])]
-    #[IsGranted('ROLE_EMPLOYEE')]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -68,8 +66,7 @@ final class ServiceController extends AbstractController
     }
 
     // Update a service - Employee/Admin only
-    #[Route('/{id}', methods: ['PATCH'])] // Or PUT
-    #[IsGranted('ROLE_EMPLOYEE')]
+    #[Route('/{id}', methods: ['PATCH'])]
     public function update(Service $service, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -96,12 +93,12 @@ final class ServiceController extends AbstractController
 
         $em->flush();
 
-        return $this->json(['message' => 'Service updated']);
+        // Return the updated service object
+        return $this->json($service);
     }
 
     // Delete a service - Employee/Admin only
     #[Route('/{id}', methods: ['DELETE'])]
-    #[IsGranted('ROLE_EMPLOYEE')]
     public function delete(Service $service, EntityManagerInterface $em): JsonResponse
     {
         // Consider checking if service is associated with active reservations before deleting?

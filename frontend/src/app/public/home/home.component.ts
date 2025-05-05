@@ -50,37 +50,6 @@ export class HomeComponent {
     }
   ];
 
-  // Datos para la sección de habitaciones destacadas
-  featuredRooms = [
-    {
-      name: 'Habitación Superior',
-      price: 120,
-      img: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8aG90ZWwlMjByb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
-      size: 28,
-      capacity: 2,
-      bathroom: 'Privado',
-      description: 'Elegante habitación con todas las comodidades para una estancia perfecta, con vistas a la ciudad.'
-    },
-    {
-      name: 'Suite Junior',
-      price: 180,
-      img: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWwlMjBzdWl0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-      size: 40,
-      capacity: 3,
-      bathroom: 'Privado Deluxe',
-      description: 'Amplia suite con salón independiente, ideal para familias o estancias prolongadas.'
-    },
-    {
-      name: 'Suite Premium',
-      price: 250,
-      img: 'https://images.unsplash.com/photo-1591088398332-8a7791972843?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bHV4dXJ5JTIwaG90ZWwlMjByb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
-      size: 55,
-      capacity: 4,
-      bathroom: 'Jacuzzi',
-      description: 'Nuestra suite más exclusiva, con vistas panorámicas, jacuzzi privado y servicios premium.'
-    }
-  ];
-
   // Datos para la sección de testimonios
   testimonials = [
     {

@@ -101,58 +101,6 @@
   </div>
 </section>
 
-<!-- Sección de habitaciones destacadas -->
-<section class="featured-rooms py-6 bg-white">
-  <div class="container">
-    <div class="row justify-content-center mb-5">
-      <div class="col-lg-6 text-center">
-        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-3">
-          <i class="bi bi-house-heart me-1"></i> Alojamiento de Lujo
-        </span>
-        <h2 class="display-5 fw-bold">Nuestras <span class="text-gradient">Habitaciones</span></h2>
-        <p class="lead text-muted">Espacios diseñados para tu máximo confort y relajación</p>
-      </div>
-    </div>
-
-    <div class="swiper-container">
-      <div class="rooms-slider row g-4">
-        <div class="col-lg-4 col-md-6" *ngFor="let room of featuredRooms; let i = index">
-          <div class="room-card hover-float rounded-4 overflow-hidden h-100 animate-fade-in" 
-               [style.animation-delay]="i * 0.15 + 's'">
-            <div class="room-img-wrapper position-relative">
-              <img [src]="room.img" [alt]="room.name" class="room-img w-100 object-fit-cover">
-              <div class="room-tag position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill bg-primary text-white">
-                Desde {{room.price}}€/noche
-              </div>
-            </div>
-            <div class="room-content p-4">
-              <h4 class="fw-bold mb-2">{{room.name}}</h4>
-              <div class="d-flex mb-3">
-                <div class="room-meta d-flex align-items-center me-3">
-                  <i class="bi bi-rulers me-2 text-primary"></i>
-                  <span class="text-muted">{{room.size}} m²</span>
-                </div>
-                <div class="room-meta d-flex align-items-center me-3">
-                  <i class="bi bi-people me-2 text-primary"></i>
-                  <span class="text-muted">{{room.capacity}} personas</span>
-                </div>
-                <div class="room-meta d-flex align-items-center">
-                  <i class="bi bi-droplet me-2 text-primary"></i>
-                  <span class="text-muted">{{room.bathroom}}</span>
-                </div>
-              </div>
-              <p class="text-muted mb-4">{{room.description}}</p>
-              <a routerLink="/rooms" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                Ver detalles <i class="bi bi-arrow-right ms-1"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Testimonials -->
 <section class="testimonials py-6 bg-light position-relative overflow-hidden">
   <div class="section-shape position-absolute"></div>

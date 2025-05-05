@@ -25,9 +25,11 @@ security:
             jwt: ~
 
     access_control:
-        # Public access for login and client registration
+        # Public access for login, client registration, and public reservation
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/register$, roles: PUBLIC_ACCESS } # Use $ for exact match
+        - { path: ^/api/reservations/public$, methods: [POST], roles: PUBLIC_ACCESS } # New public reservation endpoint
+        - { path: ^/api/rooms$, methods: [GET], roles: PUBLIC_ACCESS } # Allow public GET for rooms list
 
         # Admin only routes
         - { path: ^/api/register/employee, roles: ROLE_ADMIN }

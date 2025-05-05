@@ -6,6 +6,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { EmployeeLoginComponent } from './auth/employee-login/employee-login.component'; // Added import
 import { AuthGuard } from './auth/auth.guard';
+import { RoomsComponent } from './public/rooms/rooms.component'; // Import the new component
 
 export const routes: Routes = [
   {
@@ -16,7 +17,8 @@ export const routes: Routes = [
       { path: 'contact', component: ContactComponent },
       { path: 'auth/login', component: LoginComponent },
       { path: 'auth/register', component: RegisterComponent },
-      { path: 'employee/login', component: EmployeeLoginComponent }, // Added employee login route
+      { path: 'employee/login', component: EmployeeLoginComponent }, // Added comma
+      { path: 'rooms', component: RoomsComponent } // Corrected route definition
       // Ejemplo de ruta privada protegida:
       // { path: 'reservas', component: ReservasComponent, canActivate: [AuthGuard] }
     ]

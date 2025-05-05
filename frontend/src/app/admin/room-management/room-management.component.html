@@ -215,10 +215,22 @@
       </div>
       
       <div class="mb-3">
-        <label for="roomImage" class="form-label">URL de Imagen</label>
-        <input type="text" class="form-control form-control-lg rounded-3" id="roomImage" name="roomImage"
-               [(ngModel)]="newRoom.image">
-        <small class="text-muted">Opcional. Enlace a una imagen de la habitación.</small>
+        <label class="form-label">Imagen</label>
+        <div>
+          <!-- Hidden actual file input -->
+          <input type="file" class="d-none" id="roomImage" name="roomImage"
+                 accept="image/png, image/jpeg, image/webp" (change)="onFileSelected($event, 'new')" #newRoomFileInput>
+          <!-- Custom button label (Full width with text) -->
+          <label for="roomImage" class="btn btn-outline-secondary rounded-pill px-3 w-100 text-start"> <!-- Added w-100, text-start -->
+            <i class="bi bi-upload me-2"></i> <!-- Added me-2 back -->
+            Seleccionar imagen (PNG, JPG, WEBP)...
+          </label>
+          <!-- Removed small tag -->
+        </div>
+        <!-- Image Preview -->
+        <div *ngIf="newRoom.image" class="mt-2 text-center">
+          <img [src]="newRoom.image" alt="Vista previa" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+        </div>
       </div>
       
       <div class="mb-4">
@@ -295,9 +307,22 @@
       </div>
       
       <div class="mb-3">
-        <label for="editRoomImage" class="form-label">URL de Imagen</label>
-        <input type="text" class="form-control form-control-lg rounded-3" id="editRoomImage" name="editRoomImage"
-               [(ngModel)]="selectedRoom.image">
+        <label class="form-label">Imagen</label>
+         <div>
+          <!-- Hidden actual file input -->
+          <input type="file" class="d-none" id="editRoomImage" name="editRoomImage"
+                 accept="image/png, image/jpeg, image/webp" (change)="onFileSelected($event, 'edit')" #editRoomFileInput>
+          <!-- Custom button label (Full width with text) -->
+          <label for="editRoomImage" class="btn btn-outline-secondary rounded-pill px-3 w-100 text-start"> <!-- Added w-100, text-start -->
+            <i class="bi bi-upload me-2"></i> <!-- Added me-2 back -->
+            Cambiar imagen (PNG, JPG, WEBP)...
+          </label>
+          <!-- Removed small tag -->
+        </div>
+        <!-- Image Preview -->
+        <div *ngIf="selectedRoom.image" class="mt-2 text-center">
+          <img [src]="selectedRoom.image" alt="Vista previa" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+        </div>
       </div>
       
       <div class="mb-4">

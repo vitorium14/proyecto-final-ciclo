@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
+use Doctrine\DBAL\Types\Types; // Ensure this use statement is present
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
@@ -31,10 +31,10 @@ class Service
     #[ORM\Column(length: 50, nullable: true)] // Add category (nullable for now)
     private ?string $category = null;
 
-    #[ORM\Column(length: 255, nullable: true)] // Add image (nullable)
-    private ?string $image = null;
+   #[ORM\Column(type: Types::TEXT, nullable: true)] // Change image type to TEXT for Base64
+   private ?string $image = null;
 
-    /**
+   /**
      * @var Collection<int, ReservationService>
      */
     #[ORM\OneToMany(targetEntity: ReservationService::class, mappedBy: 'service')]

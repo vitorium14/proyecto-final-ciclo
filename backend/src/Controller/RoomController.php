@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/rooms')]
 final class RoomController extends AbstractController
@@ -51,7 +50,6 @@ final class RoomController extends AbstractController
     }
 
     #[Route('', methods: ['POST'])]
-    #[IsGranted('ROLE_EMPLOYEE')]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -106,11 +104,11 @@ final class RoomController extends AbstractController
 
         $em->flush();
 
-        return $this->json(['message' => 'Room updated']);
+        // Return the updated room object
+        return $this->json($room);
     }
 
     #[Route('/{id}', methods: ['DELETE'])]
-    #[IsGranted('ROLE_EMPLOYEE')]
     public function delete(Room $room, EntityManagerInterface $em): JsonResponse
     {
         $em->remove($room);

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\RoomRepository;
+use Doctrine\DBAL\Types\Types; // Add this use statement
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
@@ -28,7 +29,7 @@ class Room
     #[ORM\Column(type: 'integer')] // Add capacity property
     private ?int $capacity = null;
 
-    #[ORM\Column(length: 255, nullable: true)] // Add image property (nullable)
+    #[ORM\Column(type: Types::TEXT, nullable: true)] // Change image type to TEXT for Base64
     private ?string $image = null;
 
     public function getId(): ?int

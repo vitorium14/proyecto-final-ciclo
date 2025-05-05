@@ -188,9 +188,23 @@
             La categoría es obligatoria.
           </div>
         </div>
-        <div class="col-md-6"> <!-- Image URL -->
-          <label for="serviceImage" class="form-label">URL de imagen (Opcional)</label>
-          <input type="text" class="form-control form-control-lg rounded-3" id="serviceImage" [(ngModel)]="newService.image" name="image" placeholder="https://...">
+        <div class="col-md-6"> <!-- Image Upload -->
+          <label class="form-label">Imagen (Opcional)</label>
+          <div>
+            <!-- Hidden actual file input -->
+            <input type="file" class="d-none" id="serviceImage" name="image"
+                   accept="image/png, image/jpeg, image/webp" (change)="onFileSelected($event, 'new')" #newServiceFileInput>
+            <!-- Custom button label (Full width with text) -->
+            <label for="serviceImage" class="btn btn-outline-secondary rounded-pill px-3 w-100 text-start"> <!-- Added w-100, text-start -->
+              <i class="bi bi-upload me-2"></i> <!-- Added me-2 back -->
+              Seleccionar imagen (PNG, JPG, WEBP)...
+            </label>
+            <!-- Removed small tag -->
+          </div>
+          <!-- Image Preview -->
+          <div *ngIf="newService.image" class="mt-2 text-center">
+            <img [src]="newService.image" alt="Vista previa" class="img-thumbnail" style="max-width: 150px; max-height: 100px;">
+          </div>
         </div>
       </div>
     </form>
@@ -260,8 +274,22 @@
           </div>
         </div>
         <div class="col-md-6">
-          <label for="editServiceImage" class="form-label">URL de imagen (Opcional)</label>
-          <input type="text" class="form-control form-control-lg rounded-3" id="editServiceImage" [(ngModel)]="selectedService.image" name="image" placeholder="https://...">
+          <label class="form-label">Imagen (Opcional)</label>
+          <div>
+            <!-- Hidden actual file input -->
+            <input type="file" class="d-none" id="editServiceImage" name="image"
+                   accept="image/png, image/jpeg, image/webp" (change)="onFileSelected($event, 'edit')" #editServiceFileInput>
+            <!-- Custom button label (Full width with text) -->
+            <label for="editServiceImage" class="btn btn-outline-secondary rounded-pill px-3 w-100 text-start"> <!-- Added w-100, text-start -->
+              <i class="bi bi-upload me-2"></i> <!-- Added me-2 back -->
+              Cambiar imagen (PNG, JPG, WEBP)...
+            </label>
+            <!-- Removed small tag -->
+          </div>
+          <!-- Image Preview -->
+          <div *ngIf="selectedService.image" class="mt-2 text-center">
+            <img [src]="selectedService.image" alt="Vista previa" class="img-thumbnail" style="max-width: 150px; max-height: 100px;">
+          </div>
         </div>
       </div>
     </form>

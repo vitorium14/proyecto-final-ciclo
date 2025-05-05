@@ -290,6 +290,42 @@ export class RoomManagementComponent implements OnInit {
     
     return statusLabels[status] || status;
   }
-  
+
+  // Handle file selection and convert to Base64
+  onFileSelected(event: Event, mode: 'new' | 'edit'): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      // Simple type validation
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        this.error = 'Tipo de archivo no permitido. Use PNG, JPG o WEBP.';
+        input.value = ''; // Clear the input
+        return;
+      }
+
+      // Clear error if validation passes
+      this.error = null;
+
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const base64String = e.target?.result as string;
+        if (mode === 'new') {
+          this.newRoom.image = base64String;
+        } else if (mode === 'edit') {
+          this.selectedRoom.image = base64String;
+        }
+      };
+
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+        this.error = 'Error al leer el archivo de imagen.';
+      };
+
+      reader.readAsDataURL(file); // Read file as Base64 Data URL
+    }
+  }
+
   // Removed getMockRooms method
 }

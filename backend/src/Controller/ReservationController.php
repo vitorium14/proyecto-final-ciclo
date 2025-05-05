@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Reservation;
 use App\Repository\RoomRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Mime\Email;
@@ -219,5 +222,157 @@ final class ReservationController extends AbstractController
         // Consider sending a cancellation email
 
         return $this->json(['message' => 'Reserva eliminada'], \Symfony\Component\HttpFoundation\Response::HTTP_NO_CONTENT);
+    }
+
+    // --- New Public Reservation Endpoint ---
+
+    #[Route('/public', name: 'api_reservation_public_create', methods: ['POST'])]
+    public function publicCreate(
+        Request $request,
+        EntityManagerInterface $em,
+        UserRepository $userRepository,
+        RoomRepository $roomRepository,
+        UserPasswordHasherInterface $passwordHasher,
+        MailerInterface $mailer // Optional: for confirmation emails
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        // --- 1. Validate Input Data ---
+        $requiredFields = ['checkIn', 'checkOut', 'roomType', 'fullName', 'email', 'password'];
+        foreach ($requiredFields as $field) {
+            if (empty($data[$field])) {
+                return $this->json(['error' => "Missing required field: {$field}"], Response::HTTP_BAD_REQUEST);
+            }
+        }
+
+        // Basic email validation
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+             return $this->json(['error' => 'Invalid email format'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Basic password length (consider adding more complex rules)
+        if (strlen($data['password']) < 6) {
+             return $this->json(['error' => 'Password must be at least 6 characters long'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $checkIn = new \DateTime($data['checkIn']);
+            $checkOut = new \DateTime($data['checkOut']);
+        } catch (\Exception $e) {
+            return $this->json(['error' => 'Invalid date format'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($checkIn >= $checkOut) {
+            return $this->json(['error' => 'Check-out date must be after check-in date'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // --- 2. Handle User (Find or Create) ---
+        $user = $userRepository->findOneBy(['email' => $data['email']]);
+        $newUserCreated = false;
+
+        if (!$user) {
+            $user = new User();
+            $user->setEmail($data['email']);
+            $user->setFullName($data['fullName']);
+            $user->setRoles(['ROLE_CLIENT']); // Assign default client role
+            $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+            $user->setPassword($hashedPassword);
+            $newUserCreated = true;
+            // User will be persisted within the transaction
+        }
+
+        // --- 3. Find Available Room (Simplified: Find first by type, then check availability) ---
+        // TODO: Implement a more robust availability search (e.g., query for any available room of type)
+        $availableRoom = null;
+        $potentialRooms = $roomRepository->findBy(['type' => $data['roomType']]);
+
+        if (empty($potentialRooms)) {
+             return $this->json(['error' => 'No rooms found for the specified type'], Response::HTTP_NOT_FOUND);
+        }
+
+        foreach ($potentialRooms as $room) {
+            $qb = $em->getRepository(Reservation::class)->createQueryBuilder('r');
+            $qb->select('COUNT(r.id)')
+               ->where('r.room = :room')
+               ->andWhere('r.checkOut > :checkIn AND r.checkIn < :checkOut')
+               ->setParameters(new \Doctrine\Common\Collections\ArrayCollection([
+                   'room' => $room,
+                   'checkIn' => $checkIn,
+                   'checkOut' => $checkOut
+               ]));
+
+            $overlappingReservations = (int) $qb->getQuery()->getSingleScalarResult();
+
+            if ($overlappingReservations === 0) {
+                $availableRoom = $room;
+                break; // Found an available room
+            }
+        }
+
+        if (!$availableRoom) {
+            return $this->json(['error' => 'No available rooms of this type found for the selected dates'], Response::HTTP_CONFLICT); // 409 Conflict
+        }
+
+        // --- 4. Create Reservation (within a transaction) ---
+        $em->getConnection()->beginTransaction(); // Start transaction manually
+        try {
+            if ($newUserCreated) {
+                $em->persist($user); // Persist the new user if created
+            }
+
+            $reservation = new Reservation();
+            $reservation->setUser($user);
+            $reservation->setRoom($availableRoom);
+            $reservation->setCheckIn($checkIn);
+            $reservation->setCheckOut($checkOut);
+            $reservation->setStatus('confirmada'); // Or 'pendiente' depending on workflow
+            $reservation->setCreatedAt(new \DateTimeImmutable());
+
+            $em->persist($reservation);
+            $em->flush(); // Manually flush changes
+
+            $em->getConnection()->commit(); // Commit transaction
+
+            // --- 5. Send Confirmation Email (Optional - outside transaction) ---
+            try {
+                $subject = $newUserCreated ? 'Welcome and Reservation Confirmation' : 'Reservation Confirmation';
+                $text = "Hello {$user->getFullName()},\n\n";
+                if ($newUserCreated) {
+                    $text .= "Welcome to OrangeHotel! Your account has been created.\n";
+                }
+                $text .= "Your reservation details:\n" .
+                         "Room Type: " . $availableRoom->getType() . "\n" .
+                         "Room Number: " . $availableRoom->getNumber() . "\n" . // Display assigned room number
+                         "Check-in: " . $checkIn->format('Y-m-d') . "\n" .
+                         "Check-out: " . $checkOut->format('Y-m-d') . "\n\n" .
+                         "Thank you for choosing OrangeHotel!";
+
+                $email = (new Email())
+                    ->from('noreply@orangehotel.com') // Use a relevant sender
+                    ->to($user->getEmail())
+                    ->subject($subject)
+                    ->text($text);
+                $mailer->send($email);
+            } catch (\Exception $mailError) {
+                // Log the mail error but don't fail the whole request
+                // Use a proper logger in a real application
+                error_log("Failed to send confirmation email: " . $mailError->getMessage());
+            }
+
+
+            return $this->json([
+                'message' => 'Reservation created successfully!',
+                'reservationId' => $reservation->getId(),
+                'userId' => $user->getId(),
+                'newUserCreated' => $newUserCreated
+            ], Response::HTTP_CREATED);
+
+        } catch (\Exception $e) {
+            if ($em->getConnection()->isTransactionActive()) { // Check if transaction is active before rollback
+                $em->getConnection()->rollBack(); // Rollback transaction on error
+            }
+            // Log the exception $e->getMessage()
+            return $this->json(['error' => 'An unexpected error occurred during reservation.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
