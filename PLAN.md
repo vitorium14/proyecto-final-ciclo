@@ -27,3 +27,11 @@
 - [ ] Preparar Power-Point.
 - [ ] Preparar video (?)
 - [ ] Realizar la entrega **(PLAZO 17 de MAYO)**
+
+## POSIBLES MEJORAS
+
+- [ ] Crear un sistema de alertas interno
+- [ ] Permitir reservas Walk-in
+- [ ] Generar contabilidad y facturas (PDF)
+- [ ] Permitir subir varias imagenes para servicios y habitaciones
+- [ ] Hacer que el panel de estadisticas funcione
