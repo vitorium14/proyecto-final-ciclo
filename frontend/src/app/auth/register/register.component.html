@@ -36,9 +36,10 @@
             <div class="mb-3">
               <label for="dni" class="form-label">DNI</label>
               <input type="text" id="dni" name="dni" class="form-control" required minlength="8" maxlength="12" [(ngModel)]="dni" #dniCtrl="ngModel">
-              <div *ngIf="dniCtrl.invalid && dniCtrl.touched" class="text-danger small mt-1"></div>
+              <div *ngIf="dniCtrl.invalid && dniCtrl.touched" class="text-danger small mt-1">
                 El DNI es obligatorio (mínimo 8 caracteres).
               </div>
+            </div>
             <div *ngIf="registerError" class="alert alert-danger py-2 small mb-3">
               {{ registerError }}
             </div>

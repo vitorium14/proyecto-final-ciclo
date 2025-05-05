@@ -1,0 +1,48 @@
+<div class="admin-layout d-flex">
+  <!-- Modern Sidebar Navigation -->
+  <aside class="admin-sidebar bg-gradient-primary text-white p-4" style="min-height: 100vh; width: 280px;">
+    <h4 class="mb-4 fw-bold d-flex align-items-center gap-2">
+      <i class="bi bi-speedometer2"></i> Admin Panel
+    </h4>
+    <nav class="nav flex-column gap-2">
+      <a class="nav-link text-white rounded-pill px-3 py-2"
+         routerLink="/employee/dashboard"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}">
+         <i class="bi bi-speedometer2 me-2"></i> Dashboard
+      </a>
+      <a class="nav-link text-white rounded-pill px-3 py-2"
+         routerLink="/employee/rooms"
+         routerLinkActive="active">
+         <i class="bi bi-door-open me-2"></i> Rooms
+      </a>
+      <a class="nav-link text-white rounded-pill px-3 py-2"
+         routerLink="/employee/reservations"
+         routerLinkActive="active">
+         <i class="bi bi-calendar-check me-2"></i> Reservations
+      </a>
+      <a class="nav-link text-white rounded-pill px-3 py-2"
+         routerLink="/employee/services"
+         routerLinkActive="active">
+         <i class="bi bi-tools me-2"></i> Services
+      </a>
+      <a *ngIf="isAdmin"
+         class="nav-link text-white rounded-pill px-3 py-2"
+         routerLink="/employee/users"
+         routerLinkActive="active">
+         <i class="bi bi-people me-2"></i> Users
+      </a>
+    </nav>
+    <div class="mt-auto pt-3">
+      <button class="btn btn-light rounded-pill w-100 d-flex align-items-center justify-content-center gap-2"
+              (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="admin-content flex-grow-1 p-4 bg-light">
+    <router-outlet></router-outlet>
+  </main>
+</div>

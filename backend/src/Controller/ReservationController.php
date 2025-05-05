@@ -125,7 +125,7 @@ final class ReservationController extends AbstractController
     #[Route('', methods: ['GET'])]
     public function index(EntityManagerInterface $em): JsonResponse
     {
-        if (!$this->isGranted('ROLE_RECEPTIONIST') && !$this->isGranted('ROLE_ADMIN')) {
+        if (!$this->isGranted('ROLE_EMPLOYEE') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException('No tienes permiso para ver todas las reservas.');
         }
 
@@ -150,5 +150,72 @@ final class ReservationController extends AbstractController
         }, $reservations);
 
         return $this->json($data);
+    }
+// Added method to get a single reservation by ID
+    #[Route('/{id}', methods: ['GET'])]
+    public function show(Reservation $reservation, #[CurrentUser] ?User $user): JsonResponse
+    {
+        // Check if user is owner or employee/admin
+        if ($reservation->getUser() !== $user && !$this->isGranted('ROLE_EMPLOYEE')) {
+             throw $this->createAccessDeniedException('No tienes permiso para ver esta reserva.');
+        }
+
+        $data = [
+            'id' => $reservation->getId(),
+            'client' => [
+                'id' => $reservation->getUser()->getId(),
+                'name' => $reservation->getUser()->getFullName(),
+                'email' => $reservation->getUser()->getEmail(),
+            ],
+            'room' => [
+                'id' => $reservation->getRoom()->getId(),
+                'number' => $reservation->getRoom()->getNumber(),
+                'type' => $reservation->getRoom()->getType(),
+            ],
+            'checkIn' => $reservation->getCheckIn()->format('Y-m-d'),
+            'checkOut' => $reservation->getCheckOut()->format('Y-m-d'),
+            'status' => $reservation->getStatus(),
+            'createdAt' => $reservation->getCreatedAt()->format('Y-m-d H:i:s'),
+            // Add services associated with the reservation if needed later
+        ];
+        return $this->json($data);
+    }
+
+    // Added method to update a reservation (e.g., status)
+    #[Route('/{id}', methods: ['PATCH'])]
+    public function update(Reservation $reservation, Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        if (!$this->isGranted('ROLE_EMPLOYEE')) {
+             throw $this->createAccessDeniedException('No tienes permiso para modificar reservas.');
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        // Example: Update status
+        if (isset($data['status'])) {
+            // Add validation for allowed statuses if needed
+            $reservation->setStatus($data['status']);
+        }
+        // Add other updatable fields as necessary (e.g., checkIn, checkOut, room - with availability checks)
+
+        $em->flush();
+
+        return $this->json(['message' => 'Reserva actualizada']);
+    }
+
+    // Added method to delete a reservation
+    #[Route('/{id}', methods: ['DELETE'])]
+    public function delete(Reservation $reservation, EntityManagerInterface $em): JsonResponse
+    {
+        if (!$this->isGranted('ROLE_EMPLOYEE')) {
+             throw $this->createAccessDeniedException('No tienes permiso para eliminar reservas.');
+        }
+
+        $em->remove($reservation);
+        $em->flush();
+
+        // Consider sending a cancellation email
+
+        return $this->json(['message' => 'Reserva eliminada'], \Symfony\Component\HttpFoundation\Response::HTTP_NO_CONTENT);
     }
 }

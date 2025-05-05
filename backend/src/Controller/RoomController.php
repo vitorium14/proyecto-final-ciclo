@@ -31,8 +31,24 @@ final class RoomController extends AbstractController
         return $this->json($data);
     }
 
+    // Added method to get a single room by ID
+    #[Route('/{id}', methods: ['GET'])]
+    public function show(Room $room): JsonResponse
+    {
+        // Assuming Room entity has methods to get details
+        $data = [
+            'id' => $room->getId(),
+            'number' => $room->getNumber(),
+            'type' => $room->getType(),
+            'price' => $room->getPrice(),
+            'status' => $room->getStatus(),
+            // Add other relevant fields if necessary
+        ];
+        return $this->json($data);
+    }
+
     #[Route('', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EMPLOYEE')]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -50,7 +66,7 @@ final class RoomController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['PATCH'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EMPLOYEE')]
     public function update(Room $room, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -77,7 +93,7 @@ final class RoomController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['DELETE'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EMPLOYEE')]
     public function delete(Room $room, EntityManagerInterface $em): JsonResponse
     {
         $em->remove($room);

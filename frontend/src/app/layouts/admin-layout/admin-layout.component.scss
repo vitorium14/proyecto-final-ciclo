@@ -1,0 +1,17 @@
+/* Styles for Admin Layout Component */
+.admin-layout {
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  /* Basic sidebar styles */
+  .nav-link.active {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.25rem;
+  }
+}
+
+.admin-content {
+  background-color: #f8f9fa; /* Light background for content area */
+}

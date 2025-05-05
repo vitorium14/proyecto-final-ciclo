@@ -1,0 +1,47 @@
+<div class="user-management-page">
+  <h3 class="mb-4">User Management</h3>
+
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!isLoading && !error">
+    <!-- Add User Button (placeholder) -->
+    <div class="mb-3 text-end">
+      <button class="btn btn-success btn-sm">Add New User</button>
+    </div>
+
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Full Name</th>
+          <th>Roles</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.fullname }}</td>
+          <td>{{ user.roles.join(', ') }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2">Edit</button>
+            <button class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="users.length === 0">
+          <td colspan="5" class="text-center text-muted">No users found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

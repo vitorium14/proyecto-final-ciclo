@@ -1,0 +1,47 @@
+<div class="service-management-page">
+  <h3 class="mb-4">Service Management</h3>
+
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!isLoading && !error">
+    <!-- Add Service Button (placeholder) -->
+    <div class="mb-3 text-end">
+      <button class="btn btn-success btn-sm">Add New Service</button>
+    </div>
+
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price (€)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of services">
+          <td>{{ service.id }}</td>
+          <td>{{ service.name }}</td>
+          <td>{{ service.description }}</td>
+          <td>{{ service.price | number:'1.2-2' }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2">Edit</button>
+            <button class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="services.length === 0">
+          <td colspan="5" class="text-center text-muted">No services found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

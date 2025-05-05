@@ -1,0 +1,53 @@
+<div class="room-management-page">
+  <h3 class="mb-4">Room Management</h3>
+
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!isLoading && !error">
+    <!-- Add Room Button (placeholder) -->
+    <div class="mb-3 text-end">
+      <button class="btn btn-success btn-sm">Add New Room</button>
+    </div>
+
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Number</th>
+          <th>Type</th>
+          <th>Price (€)</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let room of rooms">
+          <td>{{ room.id }}</td>
+          <td>{{ room.number }}</td>
+          <td>{{ room.type }}</td>
+          <td>{{ room.price | number:'1.2-2' }}</td>
+          <td>
+            <span class="badge" [ngClass]="{'bg-success': room.status === 'available', 'bg-warning': room.status === 'occupied', 'bg-secondary': room.status !== 'available' && room.status !== 'occupied'}">
+              {{ room.status }}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2">Edit</button>
+            <button class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="rooms.length === 0">
+          <td colspan="6" class="text-center text-muted">No rooms found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

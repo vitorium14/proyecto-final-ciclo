@@ -10,9 +10,21 @@
   text-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
+// Styles for the background image within the hero section
+.hero-bg-img {
+  z-index: 0;
+  opacity: 0.35;
+}
+
+// Ensure the container is above the background image
+.hero > .container.position-relative {
+  z-index: 1;
+}
+
 .hero-text-bg {
   background: rgba(30, 20, 10, 0.82); /* Más oscuro y menos opacidad */
   backdrop-filter: blur(2px);
+  max-width: 650px; // Moved from inline style
 }
 
 .features .feature-card {
@@ -21,6 +33,11 @@
 .features .feature-card:hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 8px 32px rgba(255,136,0,0.10);
+}
+
+// Style for images within feature cards
+.features .feature-card img {
+  height: 140px; // Moved from inline style
 }
 
 .cta {

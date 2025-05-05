@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-lg-7">
         <h2 class="fw-bold mb-4 text-center text-primary">Contáctanos</h2>
-        <form #contactForm="ngForm" novalidate autocomplete="off">
+        <form #contactForm="ngForm" (ngSubmit)="onSubmit()" novalidate autocomplete="off"> <!-- Added ngSubmit -->
           <div class="mb-3">
             <label for="name" class="form-label">Nombre</label>
             <input type="text" id="name" name="name" class="form-control" required minlength="2" maxlength="50" [(ngModel)]="name" #nameCtrl="ngModel">
@@ -25,9 +25,17 @@
               El mensaje debe tener al menos 10 caracteres.
             </div>
           </div>
+          <!-- Submission Feedback -->
+          <div *ngIf="submitSuccess === true" class="alert alert-success py-2 small mb-3">
+            ¡Mensaje enviado con éxito! Gracias por contactarnos.
+          </div>
+          <div *ngIf="submitSuccess === false" class="alert alert-danger py-2 small mb-3">
+            Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.
+          </div>
+
           <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary btn-lg rounded-pill" [disabled]="contactForm.invalid">
-              Enviar mensaje
+            <button type="submit" class="btn btn-primary btn-lg rounded-pill" [disabled]="contactForm.invalid || isSubmitting">
+              {{ isSubmitting ? 'Enviando...' : 'Enviar mensaje' }} <!-- Updated button text/state -->
             </button>
           </div>
         </form>
@@ -48,14 +56,14 @@
         </div>
       </div>
     </div>
-    <div class="mt-5 rounded-4 overflow-hidden shadow-sm" style="height:340px;">
+    <div class="mt-5 rounded-4 overflow-hidden shadow-sm" >
       <iframe
-        src="https://www.openstreetmap.org/export/embed.html?bbox=-0.3785%2C39.4692%2C-0.3751%2C39.4712&amp;layer=mapnik&marker=39.47021,-0.376805"
-        style="border:0; width:100%; height:100%; min-height:300px;"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-3.7055%2C40.4155%2C-3.7011%2C40.4180&amp;layer=mapnik&amp;marker=40.416775,-3.703790"
+        
         allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
-        title="Ubicación OrangeHotel - Plaza del Ayuntamiento, Valencia"
+        title="Ubicación OrangeHotel - Cerca de Puerta del Sol, Madrid"
       ></iframe>
     </div>
   </div>

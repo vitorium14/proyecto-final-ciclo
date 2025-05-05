@@ -27,13 +27,23 @@ export class RegisterComponent {
     this.registerSuccess = null;
     this.loading = true;
     this.auth.register(this.email, this.password, this.fullname, this.phone, this.dni).subscribe({
-      next: () => {
+      next: (response) => { // Assuming the backend might return a message
         this.loading = false;
-        this.router.navigate(['/auth/login']);
+        this.registerSuccess = '¡Registro completado! Serás redirigido al login.'; // Set success message
+        console.log('Registration successful:', response);
+        // Navigate after a short delay to show the message
+        setTimeout(() => {
+          this.router.navigate(['/auth/login']);
+        }, 2000); // 2-second delay
       },
       error: (err) => {
         this.loading = false;
-        this.registerError = err;
+        console.error('Registration Error:', err); // Log the actual error
+        // Provide a user-friendly error message
+        this.registerError = 'El registro ha fallado. Por favor, revisa los datos e inténtalo de nuevo.';
+        if (err?.error?.message) { // Check if backend provides a specific message
+          this.registerError = err.error.message;
+        }
       }
     });
   }
