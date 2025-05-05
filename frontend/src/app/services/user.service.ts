@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-// Import User model later
-// import { User } from '../models/user.model';
+import { User } from '../models/user.model'; // Import User model
 
 @Injectable({
   providedIn: 'root'
@@ -15,29 +14,31 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   // GET /api/users - Admin only
-  getUsers(): Observable<any[]> { // Replace 'any' with User model
-    return this.http.get<any[]>(this.apiUrl).pipe(
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl).pipe(
       catchError(this.handleError)
     );
   }
 
   // GET /api/users/{id} - Admin or Self
-  getUser(id: number): Observable<any> { // Replace 'any' with User model
-    return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
   }
 
   // PATCH /api/users/{id} - Admin only
-  updateUser(id: number, userData: any): Observable<any> { // Replace 'any' with User model/update DTO
-    return this.http.patch<any>(`${this.apiUrl}/${id}`, userData).pipe(
+  // Use Partial<User> for userData as we might only send updated fields
+  updateUser(id: number, userData: Partial<User>): Observable<User> {
+    return this.http.patch<User>(`${this.apiUrl}/${id}`, userData).pipe(
       catchError(this.handleError)
     );
   }
 
   // DELETE /api/users/{id} - Admin only
-  deleteUser(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
+  // DELETE often returns no content (204) or an empty object
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
   }

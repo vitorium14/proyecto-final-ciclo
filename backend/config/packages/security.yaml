@@ -34,9 +34,9 @@ security:
         - { path: ^/api/users, methods: [GET, PATCH, DELETE], roles: ROLE_ADMIN } # List, Update, Delete users
 
         # Employee (and Admin) routes
-        - { path: ^/api/rooms, methods: [POST, PATCH, DELETE], roles: ROLE_EMPLOYEE }
-        - { path: ^/api/reservations$, methods: [GET], roles: ROLE_EMPLOYEE } # List all reservations
-        - { path: ^/api/reservations/\d+$, methods: [PATCH, DELETE], roles: ROLE_EMPLOYEE } # Update/Delete specific reservation
+        - { path: ^/api/rooms, methods: [POST, PATCH, DELETE], roles: [ROLE_EMPLOYEE, ROLE_ADMIN] }
+        - { path: ^/api/reservations$, methods: [GET], roles: [ROLE_EMPLOYEE, ROLE_ADMIN] } # List all reservations
+        - { path: ^/api/reservations/\d+$, methods: [PATCH, DELETE], roles: [ROLE_EMPLOYEE, ROLE_ADMIN] } # Update/Delete specific reservation
         - { path: ^/api/services, methods: [POST, PATCH, DELETE], roles: ROLE_EMPLOYEE }
 
         # Authenticated users (covers GET /api/users/{id}, GET /api/reservations/{id}, GET /api/reservations/my, POST /api/reservations)

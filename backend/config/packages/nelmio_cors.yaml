@@ -9,7 +9,7 @@ nelmio_cors:
   paths:
     "^/": # Aplica CORS a todas las rutas
       allow_origin: ["http://localhost:4200"] # Origen del frontend
-      allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+      allow_methods: ["GET", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"]
       allow_headers: ["Content-Type", "Authorization"]
       expose_headers: ["Authorization"]
       max_age: 3600

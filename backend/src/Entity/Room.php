@@ -25,6 +25,12 @@ class Room
     #[ORM\Column(length: 20)]
     private ?string $status = null;
 
+    #[ORM\Column(type: 'integer')] // Add capacity property
+    private ?int $capacity = null;
+
+    #[ORM\Column(length: 255, nullable: true)] // Add image property (nullable)
+    private ?string $image = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +80,30 @@ class Room
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCapacity(): ?int
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(int $capacity): static
+    {
+        $this->capacity = $capacity;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

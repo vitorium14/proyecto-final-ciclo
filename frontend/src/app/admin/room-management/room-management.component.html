@@ -1,53 +1,342 @@
 <div class="room-management-page">
-  <h3 class="mb-4">Room Management</h3>
-
-  <div *ngIf="isLoading" class="text-center">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+  <div class="container-fluid px-4">
+    <!-- Header con título y botón de añadir -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h3 class="fw-bold mb-1">Gestión de Habitaciones</h3>
+        <p class="text-muted mb-0">Administra las habitaciones del hotel</p>
+      </div>
+      <div>
+        <button class="btn btn-primary rounded-pill px-4 d-flex align-items-center" (click)="openAddRoomModal(addRoomModalContent)">
+          <i class="bi bi-plus-circle me-2"></i> Nueva Habitación
+        </button>
+      </div>
     </div>
-  </div>
-
-  <div *ngIf="error" class="alert alert-danger">
-    {{ error }}
-  </div>
-
-  <div *ngIf="!isLoading && !error">
-    <!-- Add Room Button (placeholder) -->
-    <div class="mb-3 text-end">
-      <button class="btn btn-success btn-sm">Add New Room</button>
+    
+    <!-- Panel de filtros y búsqueda -->
+    <div class="bg-white p-3 rounded-4 shadow-sm mb-4">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="search-box position-relative">
+            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+            <input 
+              type="text" 
+              class="form-control ps-5 rounded-pill" 
+              placeholder="Buscar habitaciones..." 
+              [(ngModel)]="searchTerm"
+              (input)="applyFilters()"
+            >
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select 
+            class="form-select rounded-pill" 
+            [(ngModel)]="filterType" 
+            (change)="applyFilters()"
+          >
+            <option value="">Todos los tipos</option>
+            <option value="standard">Estándar</option>
+            <option value="deluxe">Deluxe</option>
+            <option value="suite">Suite</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select 
+            class="form-select rounded-pill" 
+            [(ngModel)]="filterStatus" 
+            (change)="applyFilters()"
+          >
+            <option value="">Todos los estados</option>
+            <option value="available">Disponible</option>
+            <option value="occupied">Ocupada</option>
+            <option value="maintenance">Mantenimiento</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-secondary rounded-pill w-100" (click)="resetFilters()">
+            <i class="bi bi-x-circle me-1"></i> Limpiar
+          </button>
+        </div>
+      </div>
     </div>
 
-    <table class="table table-striped table-hover table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th>ID</th>
-          <th>Number</th>
-          <th>Type</th>
-          <th>Price (€)</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let room of rooms">
-          <td>{{ room.id }}</td>
-          <td>{{ room.number }}</td>
-          <td>{{ room.type }}</td>
-          <td>{{ room.price | number:'1.2-2' }}</td>
-          <td>
-            <span class="badge" [ngClass]="{'bg-success': room.status === 'available', 'bg-warning': room.status === 'occupied', 'bg-secondary': room.status !== 'available' && room.status !== 'occupied'}">
-              {{ room.status }}
-            </span>
-          </td>
-          <td>
-            <button class="btn btn-primary btn-sm me-2">Edit</button>
-            <button class="btn btn-danger btn-sm">Delete</button>
-          </td>
-        </tr>
-        <tr *ngIf="rooms.length === 0">
-          <td colspan="6" class="text-center text-muted">No rooms found.</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="text-center p-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2 text-muted">Cargando habitaciones...</p>
+    </div>
+    
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="alert alert-danger d-flex align-items-center rounded-3">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      <div>{{ error }}</div>
+    </div>
+    
+    <!-- Sin resultados -->
+    <div *ngIf="!isLoading && !error && filteredRooms.length === 0" class="text-center p-5 bg-white rounded-4 shadow-sm">
+      <div class="empty-state mb-3">
+        <i class="bi bi-search fs-1 text-muted"></i>
+      </div>
+      <h5>No se encontraron habitaciones</h5>
+      <p class="text-muted">Intenta con otros filtros o crea una nueva habitación</p>
+    </div>
+    
+    <!-- Tabla de habitaciones -->
+    <div *ngIf="!isLoading && !error && filteredRooms.length > 0" class="table-responsive bg-white rounded-4 shadow-sm">
+      <table class="table table-hover mb-0 room-table">
+        <thead>
+          <tr>
+            <th class="ps-4">Nº</th>
+            <th>Imagen</th>
+            <th>Tipo</th>
+            <th>Capacidad</th>
+            <th>Precio (€)</th>
+            <th>Estado</th>
+            <th class="text-end pe-4">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let room of filteredRooms" class="align-middle">
+            <td class="fw-bold ps-4">{{ room.number }}</td>
+            <td>
+              <div class="room-img-small rounded-3" [style.backgroundImage]="'url(' + (room.image || 'https://via.placeholder.com/80x60?text=Room') + ')'"></div>
+            </td>
+            <td>{{ room.type }}</td>
+            <td>{{ room.capacity }} personas</td>
+            <td class="fw-semibold">{{ room.price | currency:'EUR':'symbol':'1.2-2' }}</td>
+            <td>
+              <span class="badge rounded-pill py-2 px-3" 
+                [ngClass]="{
+                  'bg-success bg-opacity-75': room.status === 'available',
+                  'bg-warning text-dark': room.status === 'occupied',
+                  'bg-secondary': room.status === 'maintenance'
+                }">
+                <i class="bi me-1" 
+                  [ngClass]="{
+                    'bi-check-circle': room.status === 'available',
+                    'bi-person-fill': room.status === 'occupied',
+                    'bi-tools': room.status === 'maintenance'
+                  }"></i>
+                {{ getStatusLabel(room.status) }}
+              </span>
+            </td>
+            <td class="text-end pe-4">
+              <button class="btn btn-sm btn-outline-primary rounded-pill me-2" (click)="openEditRoomModal(editRoomModalContent, room)">
+                <i class="bi bi-pencil"></i> Editar
+              </button>
+              <button class="btn btn-sm btn-outline-danger rounded-pill" (click)="openDeleteRoomModal(deleteRoomModalContent, room)">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Paginación -->
+    <div *ngIf="!isLoading && filteredRooms.length > 0" class="d-flex justify-content-between align-items-center mt-4">
+      <div class="text-muted small">
+        Mostrando {{ filteredRooms.length }} de {{ totalRooms }} habitaciones
+      </div>
+      <nav aria-label="Navegación de páginas">
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage - 1)">
+              <i class="bi bi-chevron-left small"></i>
+            </a>
+          </li>
+          <ng-container *ngFor="let page of getPageArray()">
+            <li class="page-item" [class.active]="page === currentPage">
+              <a class="page-link" href="javascript:void(0)" (click)="changePage(page)">{{ page }}</a>
+            </li>
+          </ng-container>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" href="javascript:void(0)" (click)="changePage(currentPage + 1)">
+              <i class="bi bi-chevron-right small"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </div>
+
+<!-- Modal para Añadir Habitación -->
+<ng-template #addRoomModalContent let-modal>
+  <div class="modal-header border-0 pb-0">
+    <h5 class="modal-title fw-bold" id="modal-basic-title">Nueva Habitación</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form #addRoomForm="ngForm" (ngSubmit)="addRoom()" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="roomNumber" class="form-label">Número de Habitación</label>
+        <input type="text" class="form-control form-control-lg rounded-3" id="roomNumber" name="roomNumber"
+               [(ngModel)]="newRoom.number" required #roomNumber="ngModel">
+        <div *ngIf="roomNumber.invalid && (roomNumber.dirty || roomNumber.touched)" class="invalid-feedback d-block">
+          Este campo es obligatorio
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="roomType" class="form-label">Tipo de Habitación</label>
+        <select class="form-select form-select-lg rounded-3" id="roomType" name="roomType"
+                [(ngModel)]="newRoom.type" required #roomType="ngModel">
+          <option value="" disabled>Seleccione tipo</option> <!-- Added disabled -->
+          <option *ngFor="let type of availableTypes" [value]="type.value">{{ type.label }}</option>
+        </select>
+        <div *ngIf="roomType.invalid && (roomType.dirty || roomType.touched)" class="invalid-feedback d-block">
+          Seleccione un tipo de habitación
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col">
+          <label for="roomCapacity" class="form-label">Capacidad</label>
+          <input type="number" class="form-control form-control-lg rounded-3" id="roomCapacity" name="roomCapacity"
+                 min="1" max="10" [(ngModel)]="newRoom.capacity" required #roomCapacity="ngModel">
+          <div *ngIf="roomCapacity.invalid && (roomCapacity.dirty || roomCapacity.touched)" class="invalid-feedback d-block">
+            Capacidad inválida (1-10)
+          </div>
+        </div>
+        <div class="col">
+          <label for="roomPrice" class="form-label">Precio (€)</label>
+          <div class="input-group">
+            <span class="input-group-text">€</span>
+            <input type="number" class="form-control form-control-lg rounded-end-3" id="roomPrice" name="roomPrice"
+                   min="0" step="0.01" [(ngModel)]="newRoom.price" required #roomPrice="ngModel">
+          </div>
+          <div *ngIf="roomPrice.invalid && (roomPrice.dirty || roomPrice.touched)" class="invalid-feedback d-block">
+            Precio inválido (mínimo 0)
+          </div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="roomImage" class="form-label">URL de Imagen</label>
+        <input type="text" class="form-control form-control-lg rounded-3" id="roomImage" name="roomImage"
+               [(ngModel)]="newRoom.image">
+        <small class="text-muted">Opcional. Enlace a una imagen de la habitación.</small>
+      </div>
+      
+      <div class="mb-4">
+        <label for="roomStatus" class="form-label">Estado</label>
+        <select class="form-select form-select-lg rounded-3" id="roomStatus" name="roomStatus"
+                [(ngModel)]="newRoom.status" required #roomStatus="ngModel">
+          <option *ngFor="let status of availableStatuses" [value]="status.value">{{ status.label }}</option>
+        </select>
+         <div *ngIf="roomStatus.invalid && (roomStatus.dirty || roomStatus.touched)" class="invalid-feedback d-block">
+          Seleccione un estado
+        </div>
+      </div>
+      
+      <div class="d-grid gap-2">
+        <button type="submit" [disabled]="addRoomForm.invalid || isSubmitting" class="btn btn-primary btn-lg">
+          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Guardar Habitación
+        </button>
+        <button type="button" class="btn btn-light btn-lg" (click)="modal.dismiss('Cancel click')">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Modal para Editar Habitación -->
+<ng-template #editRoomModalContent let-modal>
+  <div class="modal-header border-0 pb-0">
+    <h5 class="modal-title fw-bold" id="modal-edit-title">Editar Habitación</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form #editRoomForm="ngForm" (ngSubmit)="updateRoom()" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="editRoomNumber" class="form-label">Número de Habitación</label>
+        <input type="text" class="form-control form-control-lg rounded-3" id="editRoomNumber" name="editRoomNumber"
+               [(ngModel)]="selectedRoom.number" required #editRoomNumber="ngModel">
+         <div *ngIf="editRoomNumber.invalid && (editRoomNumber.dirty || editRoomNumber.touched)" class="invalid-feedback d-block">
+          Este campo es obligatorio
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="editRoomType" class="form-label">Tipo de Habitación</label>
+        <select class="form-select form-select-lg rounded-3" id="editRoomType" name="editRoomType"
+                [(ngModel)]="selectedRoom.type" required #editRoomType="ngModel">
+          <option value="" disabled>Seleccione tipo</option> <!-- Added disabled -->
+          <option *ngFor="let type of availableTypes" [value]="type.value">{{ type.label }}</option>
+        </select>
+         <div *ngIf="editRoomType.invalid && (editRoomType.dirty || editRoomType.touched)" class="invalid-feedback d-block">
+          Seleccione un tipo de habitación
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col">
+          <label for="editRoomCapacity" class="form-label">Capacidad</label>
+          <input type="number" class="form-control form-control-lg rounded-3" id="editRoomCapacity" name="editRoomCapacity"
+                 min="1" max="10" [(ngModel)]="selectedRoom.capacity" required #editRoomCapacity="ngModel">
+           <div *ngIf="editRoomCapacity.invalid && (editRoomCapacity.dirty || editRoomCapacity.touched)" class="invalid-feedback d-block">
+            Capacidad inválida (1-10)
+          </div>
+        </div>
+        <div class="col">
+          <label for="editRoomPrice" class="form-label">Precio (€)</label>
+          <div class="input-group">
+            <span class="input-group-text">€</span>
+            <input type="number" class="form-control form-control-lg rounded-end-3" id="editRoomPrice" name="editRoomPrice"
+                   min="0" step="0.01" [(ngModel)]="selectedRoom.price" required #editRoomPrice="ngModel">
+          </div>
+           <div *ngIf="editRoomPrice.invalid && (editRoomPrice.dirty || editRoomPrice.touched)" class="invalid-feedback d-block">
+            Precio inválido (mínimo 0)
+          </div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="editRoomImage" class="form-label">URL de Imagen</label>
+        <input type="text" class="form-control form-control-lg rounded-3" id="editRoomImage" name="editRoomImage"
+               [(ngModel)]="selectedRoom.image">
+      </div>
+      
+      <div class="mb-4">
+        <label for="editRoomStatus" class="form-label">Estado</label>
+        <select class="form-select form-select-lg rounded-3" id="editRoomStatus" name="editRoomStatus"
+                [(ngModel)]="selectedRoom.status" required #editRoomStatus="ngModel">
+          <option *ngFor="let status of availableStatuses" [value]="status.value">{{ status.label }}</option>
+        </select>
+         <div *ngIf="editRoomStatus.invalid && (editRoomStatus.dirty || editRoomStatus.touched)" class="invalid-feedback d-block">
+          Seleccione un estado
+        </div>
+      </div>
+      
+      <div class="d-grid gap-2">
+        <button type="submit" [disabled]="editRoomForm.invalid || isSubmitting" class="btn btn-primary btn-lg">
+          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Guardar Cambios
+        </button>
+        <button type="button" class="btn btn-light btn-lg" (click)="modal.dismiss('Cancel click')">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Modal para Eliminar Habitación -->
+<ng-template #deleteRoomModalContent let-modal>
+   <div class="modal-body text-center p-5">
+     <button type="button" class="btn-close position-absolute top-0 end-0 p-3" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+     <div class="modal-icon bg-danger bg-opacity-10 text-danger rounded-circle mx-auto mb-4">
+       <i class="bi bi-trash fs-1"></i>
+     </div>
+     <h3 class="fw-bold mb-3">¿Eliminar habitación?</h3>
+     <p class="text-muted mb-4">¿Estás seguro de que quieres eliminar la habitación <span class="fw-bold">{{ selectedRoom.number }}</span>? Esta acción no se puede deshacer.</p>
+     <div class="d-flex gap-3">
+       <button type="button" class="btn btn-light btn-lg flex-fill" (click)="modal.dismiss('Cancel click')">Cancelar</button>
+       <button type="button" class="btn btn-danger btn-lg flex-fill" (click)="deleteRoom()" [disabled]="isSubmitting">
+         <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+         Eliminar
+       </button>
+     </div>
+   </div>
+</ng-template>

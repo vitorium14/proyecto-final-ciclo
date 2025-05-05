@@ -69,7 +69,12 @@ final class UserController extends AbstractController
             $user->setEmail($data['email']);
         }
 
-        // Add other updatable fields as necessary (fullname, phone, dni?)
+        // Handle fullName update
+        if (isset($data['fullName'])) {
+            $user->setFullName($data['fullName']);
+        }
+
+        // Add other updatable fields as necessary (phone, documentId?)
 
         $entityManager->flush();
 

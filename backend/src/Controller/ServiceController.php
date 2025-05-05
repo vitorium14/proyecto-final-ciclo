@@ -42,6 +42,16 @@ final class ServiceController extends AbstractController
         if (isset($data['description'])) {
             $service->setDescription($data['description']);
         }
+        // Set duration, category, image (handle potential missing keys)
+        if (isset($data['duration'])) {
+            $service->setDuration((int)$data['duration']); // Cast to int
+        }
+        if (isset($data['category'])) {
+            $service->setCategory($data['category']);
+        }
+        if (isset($data['image'])) {
+            $service->setImage($data['image']);
+        }
 
         $em->persist($service);
         $em->flush();
@@ -72,6 +82,16 @@ final class ServiceController extends AbstractController
         }
         if (array_key_exists('description', $data)) { // Allow setting description to null/empty
             $service->setDescription($data['description']);
+        }
+        // Update duration, category, image if provided
+        if (isset($data['duration'])) {
+            $service->setDuration((int)$data['duration']);
+        }
+        if (array_key_exists('category', $data)) { // Allow setting category to null/empty
+            $service->setCategory($data['category']);
+        }
+        if (array_key_exists('image', $data)) { // Allow setting image to null/empty
+            $service->setImage($data['image']);
         }
 
         $em->flush();

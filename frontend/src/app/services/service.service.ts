@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-// Import Service model later
-// import { Service } from '../models/service.model';
+import { Service } from '../models/service.model'; // Import Service model
 
 @Injectable({
   providedIn: 'root'
@@ -14,37 +13,38 @@ export class ServiceService {
   constructor(private http: HttpClient) {}
 
   // GET /api/services - Public
-  getServices(): Observable<any[]> { // Replace 'any' with Service model
-    return this.http.get<any[]>(this.apiUrl).pipe(
+  getServices(): Observable<Service[]> {
+    return this.http.get<Service[]>(this.apiUrl).pipe(
       catchError(this.handleError)
     );
   }
 
   // GET /api/services/{id} - Public
-  getService(id: number): Observable<any> { // Replace 'any' with Service model
-    return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
+  getService(id: number): Observable<Service> {
+    return this.http.get<Service>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
   }
 
   // POST /api/services - Employee/Admin only
-  createService(serviceData: any): Observable<any> { // Replace 'any' with Service model/create DTO
-    // Needs name, price, optional description
-    return this.http.post<any>(this.apiUrl, serviceData).pipe(
+  // Use Omit<Service, 'id'> for create DTO
+  createService(serviceData: Omit<Service, 'id'>): Observable<Service> {
+    return this.http.post<Service>(this.apiUrl, serviceData).pipe(
       catchError(this.handleError)
     );
   }
 
   // PATCH /api/services/{id} - Employee/Admin only
-  updateService(id: number, serviceData: any): Observable<any> { // Replace 'any' with Service model/update DTO
-    return this.http.patch<any>(`${this.apiUrl}/${id}`, serviceData).pipe(
+  // Use Partial<Service> for update DTO
+  updateService(id: number, serviceData: Partial<Service>): Observable<Service> {
+    return this.http.patch<Service>(`${this.apiUrl}/${id}`, serviceData).pipe(
       catchError(this.handleError)
     );
   }
 
   // DELETE /api/services/{id} - Employee/Admin only
-  deleteService(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
+  deleteService(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
   }

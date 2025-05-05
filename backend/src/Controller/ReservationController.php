@@ -116,6 +116,7 @@ final class ReservationController extends AbstractController
                 'checkIn' => $r->getCheckIn()->format('Y-m-d'),
                 'checkOut' => $r->getCheckOut()->format('Y-m-d'),
                 'status' => $r->getStatus(),
+                'createdAt' => $r->getCreatedAt()->format('Y-m-d H:i:s'), // Add createdAt
             ];
         }, $reservations);
 
@@ -146,6 +147,7 @@ final class ReservationController extends AbstractController
                 'checkIn' => $r->getCheckIn()->format('Y-m-d'),
                 'checkOut' => $r->getCheckOut()->format('Y-m-d'),
                 'status' => $r->getStatus(),
+                'createdAt' => $r->getCreatedAt()->format('Y-m-d H:i:s'), // Add createdAt
             ];
         }, $reservations);
 

@@ -25,6 +25,15 @@ class Service
     #[ORM\Column]
     private ?float $price = null;
 
+    #[ORM\Column(type: 'integer', options: ['default' => 0])] // Add duration (in minutes, default 0)
+    private ?int $duration = 0;
+
+    #[ORM\Column(length: 50, nullable: true)] // Add category (nullable for now)
+    private ?string $category = null;
+
+    #[ORM\Column(length: 255, nullable: true)] // Add image (nullable)
+    private ?string $image = null;
+
     /**
      * @var Collection<int, ReservationService>
      */
@@ -103,6 +112,42 @@ class Service
                 $reservationService->setService(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDuration(): ?int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): static
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

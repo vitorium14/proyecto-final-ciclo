@@ -26,6 +26,8 @@ final class RoomController extends AbstractController
             'type' => $room->getType(),
             'price' => $room->getPrice(),
             'status' => $room->getStatus(),
+            'capacity' => $room->getCapacity(), // Add capacity
+            'image' => $room->getImage(),       // Add image
         ], $rooms);
 
         return $this->json($data);
@@ -42,7 +44,8 @@ final class RoomController extends AbstractController
             'type' => $room->getType(),
             'price' => $room->getPrice(),
             'status' => $room->getStatus(),
-            // Add other relevant fields if necessary
+            'capacity' => $room->getCapacity(), // Add capacity
+            'image' => $room->getImage(),       // Add image
         ];
         return $this->json($data);
     }
@@ -58,6 +61,13 @@ final class RoomController extends AbstractController
         $room->setType($data['type']);
         $room->setPrice($data['price']);
         $room->setStatus($data['status']);
+        // Set capacity and image (handle potential missing keys)
+        if (isset($data['capacity'])) {
+            $room->setCapacity((int)$data['capacity']); // Cast to int
+        }
+        if (isset($data['image'])) {
+            $room->setImage($data['image']);
+        }
 
         $em->persist($room);
         $em->flush();
@@ -66,7 +76,7 @@ final class RoomController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['PATCH'])]
-    #[IsGranted('ROLE_EMPLOYEE')]
+    // Removed #[IsGranted('ROLE_EMPLOYEE')] - Handled by security.yaml access_control
     public function update(Room $room, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -85,6 +95,13 @@ final class RoomController extends AbstractController
 
         if (isset($data['status'])) {
             $room->setStatus($data['status']);
+        }
+        // Update capacity and image if provided
+        if (isset($data['capacity'])) {
+            $room->setCapacity((int)$data['capacity']);
+        }
+        if (array_key_exists('image', $data)) { // Use array_key_exists to allow setting image to null/empty
+            $room->setImage($data['image']);
         }
 
         $em->flush();
