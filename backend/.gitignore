@@ -3,10 +3,11 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/.env.dev
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
-/vendor/
+vendor/*
 ###< symfony/framework-bundle ###
 
 ###> lexik/jwt-authentication-bundle ###
