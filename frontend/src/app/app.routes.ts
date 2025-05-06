@@ -7,6 +7,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AuthGuard } from './guards/auth.guard';
 import { EmployeeGuard } from './guards/employee.guard';
+import { RoomListComponent } from './pages/rooms/room-list/room-list.component';
+import { RoomFormComponent } from './pages/rooms/room-form/room-form.component';
+import { RoomDetailComponent } from './pages/rooms/room-detail/room-detail.component';
 
 export const routes: Routes = [
   {
@@ -24,7 +27,11 @@ export const routes: Routes = [
     canActivate: [EmployeeGuard],
     canActivateChild: [EmployeeGuard],
     children: [
-      { path: '', component: DashboardHomeComponent, pathMatch: 'full' }
+      { path: '', component: DashboardHomeComponent, pathMatch: 'full' },
+      { path: 'rooms', component: RoomListComponent },
+      { path: 'rooms/new', component: RoomFormComponent },
+      { path: 'rooms/:id', component: RoomDetailComponent },
+      { path: 'rooms/:id/edit', component: RoomFormComponent }
     ]
   },
   { path: '**', redirectTo: '' }

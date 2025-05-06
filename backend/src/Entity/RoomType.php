@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RoomTypeRepository::class)]
 class RoomType
@@ -14,15 +15,19 @@ class RoomType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['room:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['room:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Groups(['room:read'])]
     private ?string $price = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['room:read'])]
     private ?string $amenities = null;
 
     /**
@@ -35,6 +40,7 @@ class RoomType
      * @var Collection<int, Image>
      */
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'roomType')]
+    #[Groups(['room:read'])]
     private Collection $images;
 
     public function __construct()

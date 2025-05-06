@@ -1,0 +1,108 @@
+<div class="animate-fade-in">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+    <div>
+      <h1 class="h2 fw-bold mb-0">Detalles de Habitación</h1>
+      <p class="text-muted">Información detallada de la habitación</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a routerLink="/dashboard/rooms" class="btn btn-outline-secondary rounded-pill px-4">
+        <i class="bi bi-arrow-left me-2"></i> Volver
+      </a>
+      <a *ngIf="room" [routerLink]="['/dashboard/rooms', room.id, 'edit']" class="btn btn-primary rounded-pill px-4">
+        <i class="bi bi-pencil me-2"></i> Editar
+      </a>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2 text-muted">Cargando detalles de la habitación...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="alert alert-danger mb-4">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+  </div>
+
+  <!-- Room Details -->
+  <div *ngIf="!isLoading && !error && room" class="row">
+    <!-- Main Details -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="card-title mb-0">Habitación {{ room.number }}</h3>
+            <span class="badge rounded-pill px-3 py-2" [ngClass]="getRoomStatusClass(room.status)">
+              {{ getRoomStatusLabel(room.status) }}
+            </span>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="detail-item">
+                <h6 class="detail-label">Tipo de Habitación</h6>
+                <p class="detail-value">{{ room.roomType.name }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-item">
+                <h6 class="detail-label">Precio Base</h6>
+                <p class="detail-value">{{ room.roomType.price | currency:'EUR':'symbol':'1.2-2' }}</p>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="detail-item">
+                <h6 class="detail-label">Amenidades</h6>
+                <p class="detail-value">{{ room.roomType.amenities || 'No hay información disponible sobre amenidades' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Sidebar -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3">Acciones</h5>
+          <div class="d-grid gap-2">
+            <a [routerLink]="['/dashboard/rooms', room.id, 'edit']" class="btn btn-outline-primary">
+              <i class="bi bi-pencil me-2"></i> Editar Habitación
+            </a>
+            <button (click)="deleteRoom()" class="btn btn-outline-danger">
+              <i class="bi bi-trash me-2"></i> Eliminar Habitación
+            </button>
+            <a *ngIf="room.status === 'available'" href="#" class="btn btn-success">
+              <i class="bi bi-box-arrow-in-right me-2"></i> Realizar Check-in
+            </a>
+            <a *ngIf="room.status === 'occupied'" href="#" class="btn btn-warning">
+              <i class="bi bi-box-arrow-right me-2"></i> Realizar Check-out
+            </a>
+            <a *ngIf="room.status !== 'cleaning'" href="#" class="btn btn-info text-white">
+              <i class="bi bi-brush me-2"></i> Marcar en Limpieza
+            </a>
+            <a *ngIf="room.status !== 'maintenance'" href="#" class="btn btn-secondary">
+              <i class="bi bi-tools me-2"></i> Marcar en Mantenimiento
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3">Información del Tipo</h5>
+          <p class="mb-3 text-muted small">Información detallada sobre este tipo de habitación.</p>
+          <div class="d-grid">
+            <a [routerLink]="['/dashboard/room-types', room.roomType.id]" class="btn btn-outline-secondary">
+              <i class="bi bi-info-circle me-2"></i> Ver Tipo de Habitación
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

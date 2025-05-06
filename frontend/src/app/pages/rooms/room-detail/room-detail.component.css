@@ -1,0 +1,20 @@
+.detail-label {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--gray-800);
+  margin-bottom: 0;
+}
+
+.detail-item {
+  margin-bottom: 1rem;
+}
+
+.badge {
+  font-weight: 500;
+}
