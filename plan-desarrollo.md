@@ -41,38 +41,38 @@ Aplicación web para la gestión completa de un hostal, con una parte pública p
 
 #### 1.1 Configuración del Proyecto Angular
 - [x] Instalar Bootstrap y Bootstrap Icons
-- [ ] Configurar enrutamiento base
-- [ ] Implementar interceptores HTTP para autenticación
-- [ ] Establecer guardias de rutas
+- [x] Configurar enrutamiento base
+- [x] Implementar interceptores HTTP para autenticación
+- [x] Establecer guardias de rutas
 
 #### 1.2 Estructura de Componentes Base
-- [ ] Crear componentes compartidos (header, footer, sidebar)
-- [ ] Implementar layout para la parte pública
-- [ ] Implementar layout para el dashboard
+- [x] Crear componentes compartidos (header, footer, sidebar)
+- [x] Implementar layout para la parte pública
+- [x] Implementar layout para el dashboard
 - [ ] Diseñar y aplicar tema visual coherente
 
 ### 2. Autenticación y Autorización
 
 #### 2.1 Sistema de Autenticación
-- [ ] Implementar servicio de autenticación
-- [ ] Crear formulario de login
-- [ ] Crear formulario de registro
-- [ ] Implementar almacenamiento seguro de tokens JWT
-- [ ] Gestionar cierre de sesión
+- [x] Implementar servicio de autenticación
+- [x] Crear formulario de login
+- [x] Crear formulario de registro
+- [x] Implementar almacenamiento seguro de tokens JWT
+- [x] Gestionar cierre de sesión
 
 #### 2.2 Gestión de Roles y Permisos
-- [ ] Configurar guardias para rutas protegidas
+- [x] Configurar guardias para rutas protegidas
 - [ ] Implementar directivas para control de acceso en la UI
-- [ ] Verificar permisos para acciones específicas
+- [x] Verificar permisos para acciones específicas
 
 ### 3. Parte Pública
 
 #### 3.1 Home
-- [ ] Diseñar página principal atractiva
+- [x] Diseñar página principal atractiva
 - [ ] Implementar carrusel de imágenes destacadas
-- [ ] Mostrar información general del hostal
-- [ ] Incluir sección de habitaciones destacadas
-- [ ] Añadir sección de servicios destacados
+- [x] Mostrar información general del hostal
+- [x] Incluir sección de habitaciones destacadas
+- [x] Añadir sección de servicios destacados
 
 #### 3.2 Páginas Informativas
 - [ ] Crear página de servicios con listado y detalles

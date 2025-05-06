@@ -1,0 +1,44 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6 col-lg-4">
+    <div class="card">
+      <div class="card-header bg-primary text-white text-center">
+        <h4>Iniciar Sesión</h4>
+      </div>
+      <div class="card-body">
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" formControlName="email" placeholder="correo@ejemplo.com">
+            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger small mt-1">
+              <div *ngIf="loginForm.get('email')?.errors?.['required']">El email es obligatorio</div>
+              <div *ngIf="loginForm.get('email')?.errors?.['email']">El formato del email no es válido</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" formControlName="password">
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger small mt-1">
+              <div *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es obligatoria</div>
+            </div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="remember" formControlName="remember">
+            <label class="form-check-label" for="remember">Recordarme</label>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid || isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              Iniciar Sesión
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        <p class="mb-0">¿No tienes cuenta? <a routerLink="/register">Regístrate</a></p>
+      </div>
+    </div>
+  </div>
+</div>
