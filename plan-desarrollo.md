@@ -49,7 +49,7 @@ Aplicación web para la gestión completa de un hostal, con una parte pública p
 - [x] Crear componentes compartidos (header, footer, sidebar)
 - [x] Implementar layout para la parte pública
 - [x] Implementar layout para el dashboard
-- [ ] Diseñar y aplicar tema visual coherente
+- [x] Diseñar y aplicar tema visual coherente
 
 ### 2. Autenticación y Autorización
 
@@ -69,7 +69,7 @@ Aplicación web para la gestión completa de un hostal, con una parte pública p
 
 #### 3.1 Home
 - [x] Diseñar página principal atractiva
-- [ ] Implementar carrusel de imágenes destacadas
+- [x] Implementar carrusel de imágenes destacadas
 - [x] Mostrar información general del hostal
 - [x] Incluir sección de habitaciones destacadas
 - [x] Añadir sección de servicios destacados
@@ -86,7 +86,7 @@ Aplicación web para la gestión completa de un hostal, con una parte pública p
 - [ ] Implementar funcionalidad para cambiar contraseña
 
 #### 3.4 Sistema de Reservas
-- [ ] Crear buscador de disponibilidad
+- [x] Crear buscador de disponibilidad
 - [ ] Diseñar formulario de reserva paso a paso
 - [ ] Implementar selección de fechas con validación
 - [ ] Añadir selección de servicios adicionales
@@ -96,10 +96,10 @@ Aplicación web para la gestión completa de un hostal, con una parte pública p
 ### 4. Dashboard (Parte Privada)
 
 #### 4.1 Panel de Control
-- [ ] Diseñar dashboard con estadísticas generales
-- [ ] Mostrar ocupación actual
-- [ ] Visualizar reservas próximas
-- [ ] Implementar gráficos de datos relevantes
+- [x] Diseñar dashboard con estadísticas generales
+- [x] Mostrar ocupación actual
+- [x] Visualizar reservas próximas
+- [x] Implementar gráficos de datos relevantes
 
 #### 4.2 Gestión de Check-in/Check-out
 - [ ] Crear lista de reservas pendientes de check-in
@@ -153,14 +153,14 @@ Aplicación web para la gestión completa de un hostal, con una parte pública p
 ### 6. Mejoras y Optimización
 
 #### 6.1 Optimización de Rendimiento
-- [ ] Implementar lazy loading para módulos
+- [x] Implementar lazy loading para módulos
 - [ ] Optimizar carga de imágenes
 - [ ] Mejorar tiempos de respuesta
 
 #### 6.2 Mejoras de UX
-- [ ] Implementar feedback visual para acciones
-- [ ] Añadir animaciones sutiles
-- [ ] Optimizar para dispositivos móviles
+- [x] Implementar feedback visual para acciones
+- [x] Añadir animaciones sutiles
+- [x] Optimizar para dispositivos móviles
 - [ ] Realizar pruebas de usabilidad
 
 #### 6.3 SEO y Accesibilidad

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '07aa04c744e44c80d18b9a761a16aa83f97230f7',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '94f3b1113ef0a72a4ca02e70ba5877f98d308fc4',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '07aa04c744e44c80d18b9a761a16aa83f97230f7',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '94f3b1113ef0a72a4ca02e70ba5877f98d308fc4',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -36,6 +36,15 @@
             'install_path' => __DIR__ . '/../doctrine/collections',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'doctrine/data-fixtures' => array(
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'reference' => 'f7f1e12d6bceb58c204b3e77210a103c1c57601e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../doctrine/data-fixtures',
+            'aliases' => array(),
+            'dev_requirement' => true,
         ),
         'doctrine/dbal' => array(
             'pretty_version' => '3.9.4',
@@ -63,6 +72,15 @@
             'install_path' => __DIR__ . '/../doctrine/doctrine-bundle',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'doctrine/doctrine-fixtures-bundle' => array(
+            'pretty_version' => '4.1.0',
+            'version' => '4.1.0.0',
+            'reference' => 'a06db6b81ff20a2980bf92063d80c013bb8b4b7c',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../doctrine/doctrine-fixtures-bundle',
+            'aliases' => array(),
+            'dev_requirement' => true,
         ),
         'doctrine/doctrine-migrations-bundle' => array(
             'pretty_version' => '3.4.2',
@@ -169,6 +187,15 @@
             'reference' => 'ebe0e2c6a0ae17b4702feffc89e32e3aaba6cb61',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../lexik/jwt-authentication-bundle',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'nelmio/cors-bundle' => array(
+            'pretty_version' => '2.5.0',
+            'version' => '2.5.0.0',
+            'reference' => '3a526fe025cd20e04a6a11370cf5ab28dbb5a544',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../nelmio/cors-bundle',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
