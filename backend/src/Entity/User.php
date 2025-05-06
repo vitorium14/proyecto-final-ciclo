@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -16,33 +16,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $surnames = null;
+
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
-    private array $roles = [];
-
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $password = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $fullName = null;
-
-    #[ORM\Column(length: 9)]
-    private ?string $phone = null;
-
-    #[ORM\Column(length: 9)]
-    private ?string $documentId = null;
+    #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    private ?string $role = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getSurnames(): ?string
+    {
+        return $this->surnames;
+    }
+
+    public function setSurnames(string $surnames): static
+    {
+        $this->surnames = $surnames;
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -53,7 +70,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -69,30 +85,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     * @return list<string>
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // If you store a single role as a string:
+        $roles = [$this->role];
+        // Ensure every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER'; // You might adjust this logic depending on your needs
 
         return array_unique($roles);
+
+        // If you stored roles as a JSON array in the DB:
+        // $roles = $this->roles; // Assuming $this->roles is the property mapped to the JSON column
+        // $roles[] = 'ROLE_USER';
+        // return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
+    // If you store a single role as a string:
+    public function getRole(): ?string
     {
-        $this->roles = $roles;
+        return $this->role;
+    }
 
+    // If you store a single role as a string:
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
         return $this;
     }
+
+    // If storing roles as JSON array, adjust the getter/setter accordingly.
 
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -100,7 +128,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -111,41 +138,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getFullName(): ?string
-    {
-        return $this->fullName;
-    }
-
-    public function setFullName(string $fullName): static
-    {
-        $this->fullName = $fullName;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): static
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getDocumentId(): ?string
-    {
-        return $this->documentId;
-    }
-
-    public function setDocumentId(string $documentId): static
-    {
-        $this->documentId = $documentId;
-
-        return $this;
     }
 }

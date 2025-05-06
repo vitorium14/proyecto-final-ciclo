@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\RoomRepository;
-use Doctrine\DBAL\Types\Types; // Add this use statement
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
@@ -14,23 +13,12 @@ class Room
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 50)]
     private ?string $number = null;
 
-    #[ORM\Column(length: 20)]
-    private ?string $type = null;
-
-    #[ORM\Column]
-    private ?float $price = null;
-
-    #[ORM\Column(length: 20)]
-    private ?string $status = null;
-
-    #[ORM\Column(type: 'integer')] // Add capacity property
-    private ?int $capacity = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)] // Change image type to TEXT for Base64
-    private ?string $image = null;
+    #[ORM\ManyToOne(inversedBy: 'rooms')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?RoomType $roomType = null;
 
     public function getId(): ?int
     {
@@ -49,62 +37,14 @@ class Room
         return $this;
     }
 
-    public function getType(): ?string
+    public function getRoomType(): ?RoomType
     {
-        return $this->type;
+        return $this->roomType;
     }
 
-    public function setType(string $type): static
+    public function setRoomType(?RoomType $roomType): static
     {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): static
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function getCapacity(): ?int
-    {
-        return $this->capacity;
-    }
-
-    public function setCapacity(int $capacity): static
-    {
-        $this->capacity = $capacity;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
+        $this->roomType = $roomType;
 
         return $this;
     }

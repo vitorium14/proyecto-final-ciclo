@@ -1,50 +1,70 @@
 security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
-        App\Entity\User:
-            algorithm: auto
-
+        # Use standard password hasher for your user entity
+        App\Entity\User: 'auto'
+        # Keep the default for other potential user types if needed
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
+        # Remove or comment out the default memory provider:
+        # users_in_memory: { memory: null }
+        # Add the Doctrine entity provider for your User class
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
-    
+                property: email # The field used for login
     firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        # Define firewall for the login endpoint
         login:
             pattern: ^/api/login
             stateless: true
             json_login:
-                check_path: /api/login
-                username_path: email
+                check_path: /api/login # The URL users submit credentials to
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
+        # Define the main firewall for your API routes
         api:
-            pattern:   ^/api
+            pattern:   ^/api # All routes starting with /api
             stateless: true
-            jwt: ~
+            jwt:
+                provider: app_user_provider # Use the provider defined above
+            # Remove or comment out the main firewall if it's not needed anymore
+        # main:
+        #     lazy: true
+        #     provider: users_in_memory # Change this if you keep the main firewall
 
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
     access_control:
-        # Public access for login, client registration, and public reservation
+        # Allow anonymous access to the login route
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/register$, roles: PUBLIC_ACCESS } # Use $ for exact match
-        - { path: ^/api/reservations/public$, methods: [POST], roles: PUBLIC_ACCESS } # New public reservation endpoint
-        - { path: ^/api/rooms$, methods: [GET], roles: PUBLIC_ACCESS } # Allow public GET for rooms list
+        # Allow anonymous access to the client user creation route
+        - { path: ^/api/users/client, roles: PUBLIC_ACCESS, methods: [POST] }
+        # Secure other API routes, requiring an authenticated user (valid JWT)
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        # Comment out or remove default access controls if not needed
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
 
-        # Admin only routes
-        - { path: ^/api/register/employee, roles: ROLE_ADMIN }
-        - { path: ^/api/users, methods: [GET, PATCH, DELETE], roles: ROLE_ADMIN } # List, Update, Delete users
-
-        # Employee (and Admin) routes
-        - { path: ^/api/rooms, methods: [POST, PATCH, DELETE], roles: [ROLE_EMPLOYEE, ROLE_ADMIN] }
-        - { path: ^/api/reservations$, methods: [GET], roles: [ROLE_EMPLOYEE, ROLE_ADMIN] } # List all reservations
-        - { path: ^/api/reservations/\d+$, methods: [PATCH, DELETE], roles: [ROLE_EMPLOYEE, ROLE_ADMIN] } # Update/Delete specific reservation
-        - { path: ^/api/services, methods: [POST, PATCH, DELETE], roles: ROLE_EMPLOYEE }
-
-        # Authenticated users (covers GET /api/users/{id}, GET /api/reservations/{id}, GET /api/reservations/my, POST /api/reservations)
-        # Also covers public GET for /api/rooms and /api/services if needed, otherwise they are public by default if not matched above
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-
-        # Default: Allow public access to anything else (e.g., potentially docs if added later)
-        # - { path: ^/, roles: PUBLIC_ACCESS } # Uncomment if needed, but usually covered by firewall setup
-
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon

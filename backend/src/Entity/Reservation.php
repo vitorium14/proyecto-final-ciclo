@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
@@ -15,41 +16,34 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?\DateTime $checkIn = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?\DateTime $checkOut = null;
 
-    #[ORM\Column(length: 20)]
-    private ?string $status = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $totalPrice = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @var Collection<int, ReservationService>
-     */
-    #[ORM\OneToMany(targetEntity: ReservationService::class, mappedBy: 'reservation')]
-    private Collection $reservationServices;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $observations = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Room $room = null;
-
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?\DateTimeImmutable $checkedInAt = null;
-
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?\DateTimeImmutable $checkedOutAt = null;
+    /**
+     * @var Collection<int, Service>
+     */
+    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'reservations')]
+    private Collection $services;
 
     public function __construct()
     {
-        $this->reservationServices = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,7 +56,7 @@ class Reservation
         return $this->checkIn;
     }
 
-    public function setCheckIn(?\DateTime $checkIn): static
+    public function setCheckIn(\DateTime $checkIn): static
     {
         $this->checkIn = $checkIn;
 
@@ -74,21 +68,21 @@ class Reservation
         return $this->checkOut;
     }
 
-    public function setCheckOut(?\DateTime $checkOut): static
+    public function setCheckOut(\DateTime $checkOut): static
     {
         $this->checkOut = $checkOut;
 
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getTotalPrice(): ?string
     {
-        return $this->status;
+        return $this->totalPrice;
     }
 
-    public function setStatus(string $status): static
+    public function setTotalPrice(string $totalPrice): static
     {
-        $this->status = $status;
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
@@ -105,32 +99,14 @@ class Reservation
         return $this;
     }
 
-    /**
-     * @return Collection<int, ReservationService>
-     */
-    public function getReservationServices(): Collection
+    public function getObservations(): ?string
     {
-        return $this->reservationServices;
+        return $this->observations;
     }
 
-    public function addReservationService(ReservationService $reservationService): static
+    public function setObservations(?string $observations): static
     {
-        if (!$this->reservationServices->contains($reservationService)) {
-            $this->reservationServices->add($reservationService);
-            $reservationService->setReservation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservationService(ReservationService $reservationService): static
-    {
-        if ($this->reservationServices->removeElement($reservationService)) {
-            // set the owning side to null (unless already changed)
-            if ($reservationService->getReservation() === $this) {
-                $reservationService->setReservation(null);
-            }
-        }
+        $this->observations = $observations;
 
         return $this;
     }
@@ -147,38 +123,26 @@ class Reservation
         return $this;
     }
 
-    public function getCheckedInAt(): ?\DateTimeImmutable
+    /**
+     * @return Collection<int, Service>
+     */
+    public function getServices(): Collection
     {
-        return $this->checkedInAt;
+        return $this->services;
     }
 
-    public function setCheckedInAt(?\DateTimeImmutable $checkedInAt): static
+    public function addService(Service $service): static
     {
-        $this->checkedInAt = $checkedInAt;
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
+        }
 
         return $this;
     }
 
-    public function getCheckedOutAt(): ?\DateTimeImmutable
+    public function removeService(Service $service): static
     {
-        return $this->checkedOutAt;
-    }
-
-    public function setCheckedOutAt(?\DateTimeImmutable $checkedOutAt): static
-    {
-        $this->checkedOutAt = $checkedOutAt;
-
-        return $this;
-    }
-
-    public function getRoom(): ?Room
-    {
-        return $this->room;
-    }
-
-    public function setRoom(?Room $room): static
-    {
-        $this->room = $room;
+        $this->services->removeElement($service);
 
         return $this;
     }

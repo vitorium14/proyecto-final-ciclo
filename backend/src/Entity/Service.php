@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types; // Ensure this use statement is present
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
@@ -16,33 +16,31 @@ class Service
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?float $price = null;
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $duration = null;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])] // Add duration (in minutes, default 0)
-    private ?int $duration = 0;
-
-    #[ORM\Column(length: 50, nullable: true)] // Add category (nullable for now)
-    private ?string $category = null;
-
-   #[ORM\Column(type: Types::TEXT, nullable: true)] // Change image type to TEXT for Base64
-   private ?string $image = null;
-
-   /**
-     * @var Collection<int, ReservationService>
+    /**
+     * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: ReservationService::class, mappedBy: 'service')]
-    private Collection $reservationServices;
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'service')]
+    private Collection $images;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'services')]
+    private Collection $reservations;
 
     public function __construct()
     {
-        $this->reservationServices = new ArrayCollection();
+        $this->images = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,87 +65,78 @@ class Service
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): static
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ReservationService>
-     */
-    public function getReservationServices(): Collection
-    {
-        return $this->reservationServices;
-    }
-
-    public function addReservationService(ReservationService $reservationService): static
-    {
-        if (!$this->reservationServices->contains($reservationService)) {
-            $this->reservationServices->add($reservationService);
-            $reservationService->setService($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservationService(ReservationService $reservationService): static
-    {
-        if ($this->reservationServices->removeElement($reservationService)) {
-            // set the owning side to null (unless already changed)
-            if ($reservationService->getService() === $this) {
-                $reservationService->setService(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getDuration(): ?int
+    public function getDuration(): ?string
     {
         return $this->duration;
     }
 
-    public function setDuration(int $duration): static
+    public function setDuration(?string $duration): static
     {
         $this->duration = $duration;
 
         return $this;
     }
 
-    public function getCategory(): ?string
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
     {
-        return $this->category;
+        return $this->images;
     }
 
-    public function setCategory(?string $category): static
+    public function addImage(Image $image): static
     {
-        $this->category = $category;
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setService($this);
+        }
 
         return $this;
     }
 
-    public function getImage(): ?string
+    public function removeImage(Image $image): static
     {
-        return $this->image;
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getService() === $this) {
+                $image->setService(null);
+            }
+        }
+
+        return $this;
     }
 
-    public function setImage(?string $image): static
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
     {
-        $this->image = $image;
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->addService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            $reservation->removeService($this);
+        }
 
         return $this;
     }
