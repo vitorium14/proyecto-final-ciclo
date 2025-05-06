@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'; // Added HttpParams
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Reservation } from '../models/reservation.model'; // Import Reservation model
@@ -13,6 +13,26 @@ export interface PublicReservationPayload {
   fullName: string;
   email: string;
   password?: string; // Password is required by backend logic
+}
+
+// Interface for the admin calendar reservation data
+export interface AdminCalendarReservation {
+  id: number;
+  startDate: string;
+  endDate: string;
+  status: string;
+  roomNumber?: string;
+  roomType?: string;
+  clientName?: string;
+  clientId?: number;
+}
+
+// Interface for check-in/check-out response
+export interface CheckInOutResponse {
+  message: string;
+  checkedInAt?: string;
+  checkedOutAt?: string;
+  status?: string;
 }
 
 @Injectable({
@@ -72,6 +92,31 @@ export class ReservationService {
   createPublicReservation(payload: PublicReservationPayload): Observable<PublicReservationSuccessResponse> {
     return this.http.post<PublicReservationSuccessResponse>(`${this.apiUrl}/public`, payload).pipe(
       catchError(this.handleError) // Reuse existing error handler
+    );
+  }
+
+  // GET /api/reservations/admin/calendar - Admin only
+  getAdminCalendarReservations(year: number, month: number): Observable<AdminCalendarReservation[]> {
+    let params = new HttpParams();
+    params = params.append('year', year.toString());
+    params = params.append('month', month.toString());
+
+    return this.http.get<AdminCalendarReservation[]>(`${this.apiUrl}/admin/calendar`, { params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // POST /api/reservations/{id}/check-in - Employee/Admin only
+  checkInReservation(id: number): Observable<CheckInOutResponse> {
+    return this.http.post<CheckInOutResponse>(`${this.apiUrl}/${id}/check-in`, {}).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // POST /api/reservations/{id}/check-out - Employee/Admin only
+  checkOutReservation(id: number): Observable<CheckInOutResponse> {
+    return this.http.post<CheckInOutResponse>(`${this.apiUrl}/${id}/check-out`, {}).pipe(
+      catchError(this.handleError)
     );
   }
 

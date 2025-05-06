@@ -10,5 +10,8 @@ export interface Reservation {
   checkIn: string; // ISO date string
   checkOut: string; // ISO date string
   status: string; // e.g., 'pending', 'confirmed', 'cancelled', 'checked-in', 'checked-out'
-  // Add other relevant fields if needed, e.g., totalPrice, createdAt
+  createdAt?: string | Date; // Optional, from backend
+  checkedInAt?: string | Date; // Optional, ISO date string or Date object
+  checkedOutAt?: string | Date; // Optional, ISO date string or Date object
+  // Add other relevant fields if needed, e.g., totalPrice
 }

@@ -41,6 +41,12 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private ?Room $room = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $checkedInAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $checkedOutAt = null;
+
     public function __construct()
     {
         $this->reservationServices = new ArrayCollection();
@@ -137,6 +143,30 @@ class Reservation
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCheckedInAt(): ?\DateTimeImmutable
+    {
+        return $this->checkedInAt;
+    }
+
+    public function setCheckedInAt(?\DateTimeImmutable $checkedInAt): static
+    {
+        $this->checkedInAt = $checkedInAt;
+
+        return $this;
+    }
+
+    public function getCheckedOutAt(): ?\DateTimeImmutable
+    {
+        return $this->checkedOutAt;
+    }
+
+    public function setCheckedOutAt(?\DateTimeImmutable $checkedOutAt): static
+    {
+        $this->checkedOutAt = $checkedOutAt;
 
         return $this;
     }

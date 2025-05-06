@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Reservation;
 use App\Repository\RoomRepository;
+use App\Repository\ReservationRepository; // Added
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -373,6 +374,111 @@ final class ReservationController extends AbstractController
             }
             // Log the exception $e->getMessage()
             return $this->json(['error' => 'An unexpected error occurred during reservation.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        } // End of catch for publicCreate
+    } // End of publicCreate method
+
+    #[Route('/admin/calendar', name: 'api_admin_reservations_calendar', methods: ['GET'])]
+    public function adminCalendar(
+        Request $request,
+        ReservationRepository $reservationRepository
+    ): JsonResponse {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('No tienes permiso para ver el calendario de reservas.');
         }
+
+        $year = $request->query->getInt('year');
+        $month = $request->query->getInt('month');
+
+        if (!$year || !$month) {
+            // Default to current year and month if not provided
+            $today = new \DateTimeImmutable();
+            $year = (int) $today->format('Y');
+            $month = (int) $today->format('m');
+        }
+
+        if ($month < 1 || $month > 12) {
+            return $this->json(['error' => 'Mes inválido.'], Response::HTTP_BAD_REQUEST);
+        }
+        // Basic year validation (e.g., within a reasonable range)
+        if ($year < 2000 || $year > 2100) {
+             return $this->json(['error' => 'Año inválido.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $reservations = $reservationRepository->findByYearAndMonth($year, $month);
+
+        $data = array_map(function (Reservation $r) {
+            return [
+                'id' => $r->getId(),
+                'startDate' => $r->getCheckIn()->format('Y-m-d'),
+                'endDate' => $r->getCheckOut()->format('Y-m-d'),
+                'status' => $r->getStatus(),
+                'roomNumber' => $r->getRoom()?->getNumber(), // Handle potential null room
+                'roomType' => $r->getRoom()?->getType(),   // Handle potential null room
+                'clientName' => $r->getUser()?->getFullName(), // Handle potential null user
+                'clientId' => $r->getUser()?->getId(),       // Handle potential null user
+            ];
+        }, $reservations);
+
+        return $this->json($data);
+    } // End of adminCalendar method
+
+    #[Route('/{id}/check-in', name: 'api_reservation_check_in', methods: ['POST'])]
+    public function checkIn(Reservation $reservation, EntityManagerInterface $em): JsonResponse
+    {
+        if (!$this->isGranted('ROLE_EMPLOYEE') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('No tienes permiso para realizar el check-in.');
+        }
+
+        if ($reservation->getCheckedInAt()) {
+            return $this->json(['error' => 'La reserva ya tiene check-in registrado.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Optionally, add more logic: e.g., check if today is the check-in day
+        // $today = new \DateTimeImmutable('today');
+        // if ($reservation->getCheckIn()->setTime(0,0,0) > $today) {
+        //     return $this->json(['error' => 'El check-in solo puede realizarse el día de llegada o después.'], Response::HTTP_BAD_REQUEST);
+        // }
+
+        $reservation->setCheckedInAt(new \DateTimeImmutable());
+        $reservation->setStatus('checked-in'); // Update status
+        $em->flush();
+
+        return $this->json([
+            'message' => 'Check-in realizado con éxito.',
+            'checkedInAt' => $reservation->getCheckedInAt()->format('Y-m-d H:i:s'),
+            'status' => $reservation->getStatus()
+        ]);
     }
-}
+
+    #[Route('/{id}/check-out', name: 'api_reservation_check_out', methods: ['POST'])]
+    public function checkOut(Reservation $reservation, EntityManagerInterface $em): JsonResponse
+    {
+        if (!$this->isGranted('ROLE_EMPLOYEE') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('No tienes permiso para realizar el check-out.');
+        }
+
+        if (!$reservation->getCheckedInAt()) {
+            return $this->json(['error' => 'No se puede realizar el check-out sin un check-in previo.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($reservation->getCheckedOutAt()) {
+            return $this->json(['error' => 'La reserva ya tiene check-out registrado.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Optionally, add more logic: e.g., check if today is on or after check-out day
+        // $today = new \DateTimeImmutable('today');
+        // if ($reservation->getCheckOut()->setTime(0,0,0) > $today) {
+        //     return $this->json(['error' => 'El check-out solo puede realizarse el día de salida o después.'], Response::HTTP_BAD_REQUEST);
+        // }
+
+        $reservation->setCheckedOutAt(new \DateTimeImmutable());
+        $reservation->setStatus('checked-out'); // Update status
+        $em->flush();
+
+        return $this->json([
+            'message' => 'Check-out realizado con éxito.',
+            'checkedOutAt' => $reservation->getCheckedOutAt()->format('Y-m-d H:i:s'),
+            'status' => $reservation->getStatus()
+        ]);
+    }
+} // End of ReservationController class

@@ -1,0 +1,66 @@
+<div class="checkin-checkout-container">
+  <h2>Gestión de Check-in / Check-out</h2>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Cargando reservas...</p>
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && reservations.length === 0 && !errorMessage" class="no-reservations">
+    <p>No se encontraron reservas.</p>
+    <!-- Add a button to refresh or filter options later if needed -->
+  </div>
+
+  <div *ngIf="!isLoading && reservations.length > 0" class="reservations-table">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Habitación</th>
+          <th>Fecha Check-in</th>
+          <th>Fecha Check-out</th>
+          <th>Estado</th>
+          <th>Check-in Realizado</th>
+          <th>Check-out Realizado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let res of reservations" [class.table-secondary]="res.status === 'checked-out'">
+          <td>{{ res.id }}</td>
+          <td>{{ res.client?.fullName || 'N/A' }} ({{res.client?.email || 'N/A'}})</td>
+          <td>{{ res.room?.number || 'N/A' }}</td>
+          <td>{{ res.checkIn | date: 'mediumDate' }}</td>
+          <td>{{ res.checkOut | date: 'mediumDate' }}</td>
+          <td><span class="badge" [ngClass]="getStatusClass(res.status)">{{ res.status }}</span></td>
+          <td>{{ res.checkedInAt ? (res.checkedInAt | date: 'medium') : 'N/A' }}</td>
+          <td>{{ res.checkedOutAt ? (res.checkedOutAt | date: 'medium') : 'N/A' }}</td>
+          <td>
+            <button
+              class="btn btn-success btn-sm me-2"
+              (click)="handleCheckIn(res.id)"
+              [disabled]="res.status === 'checked-in' || res.status === 'checked-out' || res.status === 'cancelada'"
+              title="Registrar Check-in">
+              Check-in
+            </button>
+            <button
+              class="btn btn-warning btn-sm"
+              (click)="handleCheckOut(res.id)"
+              [disabled]="res.status !== 'checked-in'"
+              title="Registrar Check-out">
+              Check-out
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

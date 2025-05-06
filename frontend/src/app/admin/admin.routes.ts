@@ -6,6 +6,8 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { RoomManagementComponent } from './room-management/room-management.component'; // Added import
 import { ReservationManagementComponent } from './reservation-management/reservation-management.component'; // Added import
 import { ServiceManagementComponent } from './service-management/service-management.component'; // Added import
+import { AdminCalendarComponent } from './admin-calendar/admin-calendar.component'; // Added import
+import { CheckinCheckoutComponent } from './checkin-checkout/checkin-checkout.component'; // Added import
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -13,15 +15,19 @@ export const ADMIN_ROUTES: Routes = [
     component: AdminLayoutComponent,
     canActivate: [EmployeeGuard], // Protect all child routes
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'users', component: UserManagementComponent }, // Added user management route
-      { path: 'rooms', component: RoomManagementComponent }, // Added room management route
-      { path: 'reservations', component: ReservationManagementComponent }, // Added reservation management route
-      { path: 'services', component: ServiceManagementComponent }, // Added service management route
+      // { path: 'dashboard', component: DashboardComponent }, // Old dashboard, will become statistics
+      { path: 'calendar', component: AdminCalendarComponent }, // Main admin view
+      { path: 'statistics', component: DashboardComponent }, // Statistics page (using old DashboardComponent)
+      { path: 'users', component: UserManagementComponent },
+      { path: 'rooms', component: RoomManagementComponent },
+      { path: 'reservations', component: ReservationManagementComponent },
+      { path: 'services', component: ServiceManagementComponent },
+      { path: 'checkin-checkout', component: CheckinCheckoutComponent },
       // Add routes for other CRUD components here later (Phase 4)
 
-      // Redirect base path within admin section to dashboard
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      // Redirect base path within admin section to calendar
+      { path: '', redirectTo: 'calendar', pathMatch: 'full' },
+      { path: 'dashboard', redirectTo: 'calendar', pathMatch: 'full' } // Redirect old dashboard path
     ]
   }
 ];
