@@ -1,37 +1,320 @@
-<div class="jumbotron bg-light p-5 rounded">
-  <h1 class="display-4">Bienvenidos a Hostal Manager</h1>
-  <p class="lead">Sistema de gestión integral para su hostal. Disfrute de nuestras instalaciones y servicios de calidad.</p>
-  <hr class="my-4">
-  <p>Descubra nuestras habitaciones y reserve de forma rápida y sencilla.</p>
-  <a class="btn btn-primary btn-lg" href="#" role="button">Ver Habitaciones</a>
+<!-- Hero Section con Carrusel -->
+<div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://images.unsplash.com/photo-1598605272254-16f0c0ecdfa5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80" class="d-block w-100" alt="Hostal" style="height: 80vh; object-fit: cover; filter: brightness(0.7);">
+      <div class="carousel-caption d-none d-md-block animate-fade-in">
+        <h1 class="display-4 fw-bold">Bienvenidos a Hostal Manager</h1>
+        <p class="lead">La mejor experiencia para su estancia</p>
+        <button class="btn btn-primary btn-lg px-4 mt-3">Reservar Ahora</button>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1596436889106-be35e843f974?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80" class="d-block w-100" alt="Habitación" style="height: 70vh; object-fit: cover; filter: brightness(0.7);">
+      <div class="carousel-caption d-none d-md-block animate-fade-in">
+        <h1 class="display-4 fw-bold">Habitaciones Confortables</h1>
+        <p class="lead">Diseñadas para su máxima comodidad</p>
+        <button class="btn btn-primary btn-lg px-4 mt-3">Ver Habitaciones</button>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="https://images.unsplash.com/photo-1445019980597-93fa8acb246c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80" class="d-block w-100" alt="Servicio" style="height: 70vh; object-fit: cover; filter: brightness(0.7);">
+      <div class="carousel-caption d-none d-md-block animate-fade-in">
+        <h1 class="display-4 fw-bold">Servicios Premium</h1>
+        <p class="lead">Atención personalizada durante toda su estancia</p>
+        <button class="btn btn-primary btn-lg px-4 mt-3">Ver Servicios</button>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
 </div>
 
-<div class="row mt-5">
-  <div class="col-md-4">
-    <div class="card mb-4">
-      <div class="card-body text-center">
-        <i class="bi bi-house-door fs-1 mb-3 text-primary"></i>
-        <h3 class="card-title">Habitaciones Confortables</h3>
-        <p class="card-text">Disfrute de nuestras habitaciones completamente equipadas para su comodidad.</p>
+<!-- Search Box Section -->
+<div class="container-fluid search-box-container px-4">
+  <div class="search-box p-4 bg-white rounded-4 shadow animate-slide-up">
+    <h4 class="text-center mb-4"><i class="bi bi-search text-primary me-2"></i> Buscar Disponibilidad</h4>
+    <form class="row g-3">
+      <div class="col-lg-3 col-md-6">
+        <label for="checkIn" class="form-label">Llegada</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+          <input type="date" class="form-control" id="checkIn">
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card mb-4">
-      <div class="card-body text-center">
-        <i class="bi bi-stars fs-1 mb-3 text-primary"></i>
-        <h3 class="card-title">Servicios Premium</h3>
-        <p class="card-text">Ofrecemos servicios de alta calidad para hacer su estancia inolvidable.</p>
+      <div class="col-lg-3 col-md-6">
+        <label for="checkOut" class="form-label">Salida</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+          <input type="date" class="form-control" id="checkOut">
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card mb-4">
-      <div class="card-body text-center">
-        <i class="bi bi-geo-alt fs-1 mb-3 text-primary"></i>
-        <h3 class="card-title">Ubicación Estratégica</h3>
-        <p class="card-text">Situados en una ubicación privilegiada con fácil acceso a los principales puntos de interés.</p>
+      <div class="col-lg-2 col-md-6">
+        <label for="adults" class="form-label">Adultos</label>
+        <select class="form-select" id="adults">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
       </div>
-    </div>
+      <div class="col-lg-2 col-md-6">
+        <label for="children" class="form-label">Niños</label>
+        <select class="form-select" id="children">
+          <option value="0" selected>0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+      <div class="col-lg-2 col-md-12 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100 btn-lg"><i class="bi bi-search me-2"></i> Buscar</button>
+      </div>
+    </form>
   </div>
 </div>
+
+<!-- Features Section -->
+<section class="py-5 mt-5 bg-light">
+  <div class="container-fluid px-4 px-lg-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Nuestros Servicios</h2>
+      <p class="text-muted">Todo lo que necesita para una estancia perfecta</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6 animate-slide-up">
+        <div class="card h-100 border-0 hover-card">
+          <div class="card-body text-center p-4">
+            <div class="rounded-circle bg-primary p-3 d-inline-flex mb-4 feature-icon-container">
+              <i class="bi bi-house-door-fill text-white fs-2"></i>
+            </div>
+            <h3 class="card-title h4 mb-3">Habitaciones Confortables</h3>
+            <p class="card-text text-muted">Disfrute de nuestras habitaciones completamente equipadas para su comodidad. Todas incluyen baño privado, aire acondicionado y WiFi gratuito.</p>
+            <a href="/habitaciones" class="btn btn-outline-primary mt-3">Ver Habitaciones <i class="bi bi-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 animate-slide-up" style="animation-delay: 0.2s;">
+        <div class="card h-100 border-0 hover-card">
+          <div class="card-body text-center p-4">
+            <div class="rounded-circle bg-primary p-3 d-inline-flex mb-4 feature-icon-container">
+              <i class="bi bi-stars text-white fs-2"></i>
+            </div>
+            <h3 class="card-title h4 mb-3">Servicios Premium</h3>
+            <p class="card-text text-muted">Ofrecemos servicios de alta calidad para hacer su estancia inolvidable. Desde desayuno hasta lavandería y servicio de habitaciones.</p>
+            <a href="/servicios" class="btn btn-outline-primary mt-3">Ver Servicios <i class="bi bi-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 animate-slide-up" style="animation-delay: 0.4s;">
+        <div class="card h-100 border-0 hover-card">
+          <div class="card-body text-center p-4">
+            <div class="rounded-circle bg-primary p-3 d-inline-flex mb-4 feature-icon-container">
+              <i class="bi bi-geo-alt-fill text-white fs-2"></i>
+            </div>
+            <h3 class="card-title h4 mb-3">Ubicación Estratégica</h3>
+            <p class="card-text text-muted">Situados en una ubicación privilegiada con fácil acceso a los principales puntos de interés, restaurantes y zonas comerciales.</p>
+            <a href="/contacto" class="btn btn-outline-primary mt-3">Cómo Llegar <i class="bi bi-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Habitaciones Destacadas -->
+<section class="py-5">
+  <div class="container-fluid px-4 px-lg-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Habitaciones Destacadas</h2>
+      <p class="text-muted">Elija la habitación perfecta para su estancia</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6 animate-slide-up" style="animation-delay: 0.1s;">
+        <div class="card room-card border-0">
+          <div class="room-img-container">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="card-img-top" alt="Habitación Individual">
+            <div class="room-price">
+              <span>Desde</span>
+              <h4>€50<small>/noche</small></h4>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <h3 class="card-title h5 mb-3">Habitación Individual</h3>
+            <div class="d-flex mb-3">
+              <span class="badge bg-primary me-2"><i class="bi bi-person me-1"></i> 1 persona</span>
+              <span class="badge bg-secondary me-2"><i class="bi bi-rulers me-1"></i> 15m²</span>
+              <span class="badge bg-secondary"><i class="bi bi-wifi me-1"></i> WiFi</span>
+            </div>
+            <p class="card-text text-muted">Cómoda habitación individual con baño privado, perfecta para estancias cortas o viajes de negocios.</p>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+              <a href="#" class="btn btn-primary">Reservar Ahora</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 animate-slide-up" style="animation-delay: 0.2s;">
+        <div class="card room-card border-0">
+          <div class="room-img-container">
+            <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" class="card-img-top" alt="Habitación Doble">
+            <div class="room-price">
+              <span>Desde</span>
+              <h4>€80<small>/noche</small></h4>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <h3 class="card-title h5 mb-3">Habitación Doble</h3>
+            <div class="d-flex mb-3">
+              <span class="badge bg-primary me-2"><i class="bi bi-people me-1"></i> 2 personas</span>
+              <span class="badge bg-secondary me-2"><i class="bi bi-rulers me-1"></i> 25m²</span>
+              <span class="badge bg-secondary"><i class="bi bi-wifi me-1"></i> WiFi</span>
+            </div>
+            <p class="card-text text-muted">Espaciosa habitación con cama matrimonial, ideal para parejas o viajeros que buscan más espacio.</p>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+              <a href="#" class="btn btn-primary">Reservar Ahora</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 animate-slide-up" style="animation-delay: 0.3s;">
+        <div class="card room-card border-0">
+          <div class="room-img-container">
+            <img src="https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" class="card-img-top" alt="Suite">
+            <div class="room-price">
+              <span>Desde</span>
+              <h4>€120<small>/noche</small></h4>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <h3 class="card-title h5 mb-3">Suite Premium</h3>
+            <div class="d-flex mb-3">
+              <span class="badge bg-primary me-2"><i class="bi bi-people me-1"></i> 2-4 personas</span>
+              <span class="badge bg-secondary me-2"><i class="bi bi-rulers me-1"></i> 40m²</span>
+              <span class="badge bg-secondary"><i class="bi bi-wifi me-1"></i> WiFi</span>
+            </div>
+            <p class="card-text text-muted">Lujosa suite con sala de estar, dormitorio separado y todas las comodidades para una estancia inolvidable.</p>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="#" class="btn btn-outline-primary">Ver Detalles</a>
+              <a href="#" class="btn btn-primary">Reservar Ahora</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <a href="/habitaciones" class="btn btn-lg btn-outline-primary px-4">Ver Todas las Habitaciones</a>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+  <div class="container-fluid px-4 px-lg-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Experiencias de Nuestros Clientes</h2>
+      <p class="text-muted">Lo que dicen quienes ya han disfrutado de nuestros servicios</p>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6 mb-4 animate-slide-up">
+        <div class="card h-100 border-0 testimonial-card">
+          <div class="card-body p-4">
+            <div class="testimonial-stars mb-3">
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+            </div>
+            <p class="card-text mb-4">"Excelente ubicación y servicio. Las habitaciones son muy confortables y el personal es amable y atento. Sin duda volveré en mi próximo viaje."</p>
+            <div class="d-flex align-items-center">
+              <div class="testimonial-avatar me-3">
+                <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Avatar" class="rounded-circle" width="50" height="50">
+              </div>
+              <div>
+                <h5 class="mb-0 fw-bold">María García</h5>
+                <small class="text-muted">Madrid, España</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4 animate-slide-up" style="animation-delay: 0.2s;">
+        <div class="card h-100 border-0 testimonial-card">
+          <div class="card-body p-4">
+            <div class="testimonial-stars mb-3">
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-half text-warning"></i>
+            </div>
+            <p class="card-text mb-4">"Un lugar perfecto para descansar. La habitación era espaciosa y limpia. El desayuno estaba delicioso y variado. Recomendaría este hostal a cualquiera."</p>
+            <div class="d-flex align-items-center">
+              <div class="testimonial-avatar me-3">
+                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Avatar" class="rounded-circle" width="50" height="50">
+              </div>
+              <div>
+                <h5 class="mb-0 fw-bold">Juan Rodríguez</h5>
+                <small class="text-muted">Barcelona, España</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4 animate-slide-up" style="animation-delay: 0.4s;">
+        <div class="card h-100 border-0 testimonial-card">
+          <div class="card-body p-4">
+            <div class="testimonial-stars mb-3">
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star text-warning"></i>
+            </div>
+            <p class="card-text mb-4">"La relación calidad-precio es inmejorable. Personal muy amable y habitaciones limpias y cómodas. Además, la ubicación es perfecta para explorar la ciudad."</p>
+            <div class="d-flex align-items-center">
+              <div class="testimonial-avatar me-3">
+                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Avatar" class="rounded-circle" width="50" height="50">
+              </div>
+              <div>
+                <h5 class="mb-0 fw-bold">Laura Martínez</h5>
+                <small class="text-muted">Valencia, España</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 cta-section text-white" style="background-color: var(--primary-color);">
+  <div class="container-fluid px-4 px-lg-5 py-4">
+    <div class="row align-items-center">
+      <div class="col-lg-9 mb-4 mb-lg-0">
+        <h2 class="fw-bold mb-3">¿Listo para disfrutar de una experiencia inolvidable?</h2>
+        <p class="lead mb-0">Reserve ahora y obtenga un 10% de descuento en su primera estancia.</p>
+      </div>
+      <div class="col-lg-3 text-lg-end">
+        <a href="/habitaciones" class="btn btn-light btn-lg px-4">Reservar Ahora</a>
+      </div>
+    </div>
+  </div>
+</section>

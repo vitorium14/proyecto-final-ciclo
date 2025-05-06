@@ -1,43 +1,122 @@
-<div class="row justify-content-center mt-5">
-  <div class="col-md-6 col-lg-4">
-    <div class="card">
-      <div class="card-header bg-primary text-white text-center">
-        <h4>Iniciar Sesión</h4>
-      </div>
-      <div class="card-body">
-        <div *ngIf="errorMessage" class="alert alert-danger">
-          {{ errorMessage }}
+<div class="container py-5 animate-fade-in">
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+      <div class="card border-0 shadow-lg overflow-hidden">
+        <div class="card-header bg-primary text-white text-center p-4 border-0">
+          <h4 class="mb-0 fw-bold">
+            <i class="bi bi-person-circle me-2"></i> Iniciar Sesión
+          </h4>
         </div>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" formControlName="email" placeholder="correo@ejemplo.com">
-            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger small mt-1">
-              <div *ngIf="loginForm.get('email')?.errors?.['required']">El email es obligatorio</div>
-              <div *ngIf="loginForm.get('email')?.errors?.['email']">El formato del email no es válido</div>
+
+        <div class="card-body p-4">
+          <!-- Alert para errores -->
+          <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center animate-slide-up" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>{{ errorMessage }}</div>
+            <button type="button" class="btn-close ms-auto" (click)="errorMessage = null"></button>
+          </div>
+          
+          <!-- Formulario de login -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-4">
+            <div class="form-floating mb-3">
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                formControlName="email" 
+                placeholder="correo@ejemplo.com"
+                [ngClass]="{'is-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}"
+              >
+              <label for="email">
+                <i class="bi bi-envelope-fill me-1 text-primary"></i> Email
+              </label>
+              <div class="invalid-feedback" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                <span *ngIf="loginForm.get('email')?.errors?.['required']">El email es obligatorio</span>
+                <span *ngIf="loginForm.get('email')?.errors?.['email']">El formato del email no es válido</span>
+              </div>
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="password" formControlName="password">
-            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger small mt-1">
-              <div *ngIf="loginForm.get('password')?.errors?.['required']">La contraseña es obligatoria</div>
+            
+            <div class="form-floating mb-3">
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                formControlName="password"
+                placeholder="Contraseña"
+                [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}"
+              >
+              <label for="password">
+                <i class="bi bi-lock-fill me-1 text-primary"></i> Contraseña
+              </label>
+              <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                La contraseña es obligatoria
+              </div>
             </div>
+            
+            <div class="form-check mb-3">
+              <input 
+                type="checkbox" 
+                class="form-check-input" 
+                id="remember" 
+                formControlName="remember"
+              >
+              <label class="form-check-label" for="remember">
+                Recordarme en este dispositivo
+              </label>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary btn-lg shadow-sm"
+                [disabled]="loginForm.invalid || isLoading"
+              >
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <i *ngIf="!isLoading" class="bi bi-box-arrow-in-right me-2"></i>
+                Iniciar Sesión
+              </button>
+              <a routerLink="/" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i> Volver a Inicio
+              </a>
+            </div>
+          </form>
+          
+          <div class="text-center mt-4">
+            <a href="#" class="text-decoration-none text-primary">¿Olvidaste tu contraseña?</a>
           </div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="remember" formControlName="remember">
-            <label class="form-check-label" for="remember">Recordarme</label>
-          </div>
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid || isLoading">
-              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-              Iniciar Sesión
-            </button>
-          </div>
-        </form>
+        </div>
+        
+        <div class="card-footer bg-light text-center p-3 border-0">
+          <p class="mb-0">¿No tienes cuenta? <a routerLink="/register" class="text-primary fw-bold">Regístrate ahora</a></p>
+        </div>
       </div>
-      <div class="card-footer text-center">
-        <p class="mb-0">¿No tienes cuenta? <a routerLink="/register">Regístrate</a></p>
+      
+      <!-- Additional features -->
+      <div class="row mt-4 g-3">
+        <div class="col-md-4">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-primary p-2 me-2 login-feature-icon">
+              <i class="bi bi-shield-check text-white"></i>
+            </div>
+            <small>Conexión segura</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-primary p-2 me-2 login-feature-icon">
+              <i class="bi bi-clock-history text-white"></i>
+            </div>
+            <small>Acceso 24/7</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="d-flex align-items-center">
+            <div class="rounded-circle bg-primary p-2 me-2 login-feature-icon">
+              <i class="bi bi-headset text-white"></i>
+            </div>
+            <small>Soporte disponible</small>
+          </div>
+        </div>
       </div>
     </div>
   </div>

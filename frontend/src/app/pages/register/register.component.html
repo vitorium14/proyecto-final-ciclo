@@ -1,62 +1,201 @@
-<div class="row justify-content-center mt-5">
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header bg-primary text-white text-center">
-        <h4>Registro de Usuario</h4>
-      </div>
-      <div class="card-body">
-        <div *ngIf="errorMessage" class="alert alert-danger">
-          {{ errorMessage }}
+<div class="container py-5 animate-fade-in">
+  <div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-9">
+      <div class="card border-0 shadow-lg overflow-hidden">
+        <div class="row g-0">
+          <!-- Imagen lateral en pantallas grandes -->
+          <div class="col-lg-5 d-none d-lg-block">
+            <div class="h-100 registration-img-bg d-flex align-items-center justify-content-center text-center text-white p-4">
+              <div>
+                <div class="mb-4">
+                  <i class="bi bi-person-plus-fill display-1"></i>
+                </div>
+                <h3 class="mb-3">¡Únase a Nosotros!</h3>
+                <p class="mb-4">Cree su cuenta y disfrute de todas las ventajas de nuestro sistema de reservas.</p>
+                <div class="registration-benefits">
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                    <span>Reservas fáciles y rápidas</span>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                    <span>Acceso a ofertas exclusivas</span>
+                  </div>
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                    <span>Historial de reservas</span>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                    <span>Soporte personalizado</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Formulario de registro -->
+          <div class="col-lg-7">
+            <div class="card-header bg-primary text-white text-center p-4 border-0">
+              <h4 class="mb-0 fw-bold">
+                <i class="bi bi-person-plus-fill me-2"></i> Registro de Usuario
+              </h4>
+            </div>
+            
+            <div class="card-body p-4">
+              <!-- Alert para errores -->
+              <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center animate-slide-up" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div>{{ errorMessage }}</div>
+                <button type="button" class="btn-close ms-auto" (click)="errorMessage = null"></button>
+              </div>
+              
+              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-4">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="firstName" 
+                        formControlName="firstName"
+                        placeholder="Nombre"
+                        [ngClass]="{'is-invalid': registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched}"
+                      >
+                      <label for="firstName">
+                        <i class="bi bi-person-fill me-1 text-primary"></i> Nombre
+                      </label>
+                      <div class="invalid-feedback" *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+                        El nombre es obligatorio
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input 
+                        type="text" 
+                        class="form-control" 
+                        id="lastName" 
+                        formControlName="lastName"
+                        placeholder="Apellidos"
+                        [ngClass]="{'is-invalid': registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched}"
+                      >
+                      <label for="lastName">
+                        <i class="bi bi-person-fill me-1 text-primary"></i> Apellidos
+                      </label>
+                      <div class="invalid-feedback" *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+                        Los apellidos son obligatorios
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-floating mb-3 mt-3">
+                  <input 
+                    type="email" 
+                    class="form-control" 
+                    id="email" 
+                    formControlName="email"
+                    placeholder="correo@ejemplo.com"
+                    [ngClass]="{'is-invalid': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}"
+                  >
+                  <label for="email">
+                    <i class="bi bi-envelope-fill me-1 text-primary"></i> Email
+                  </label>
+                  <div class="invalid-feedback" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                    <span *ngIf="registerForm.get('email')?.errors?.['required']">El email es obligatorio</span>
+                    <span *ngIf="registerForm.get('email')?.errors?.['email']">El formato del email no es válido</span>
+                  </div>
+                </div>
+                
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input 
+                        type="password" 
+                        class="form-control" 
+                        id="password" 
+                        formControlName="password"
+                        placeholder="Contraseña"
+                        [ngClass]="{'is-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}"
+                      >
+                      <label for="password">
+                        <i class="bi bi-lock-fill me-1 text-primary"></i> Contraseña
+                      </label>
+                      <div class="invalid-feedback" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                        <span *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es obligatoria</span>
+                        <span *ngIf="registerForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input 
+                        type="password" 
+                        class="form-control" 
+                        id="confirmPassword" 
+                        formControlName="confirmPassword"
+                        placeholder="Confirmar Contraseña"
+                        [ngClass]="{'is-invalid': registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched}"
+                      >
+                      <label for="confirmPassword">
+                        <i class="bi bi-lock-fill me-1 text-primary"></i> Confirmar Contraseña
+                      </label>
+                      <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+                        <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">La confirmación es obligatoria</span>
+                        <span *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">Las contraseñas no coinciden</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-check mb-4">
+                  <input class="form-check-input" type="checkbox" id="terms">
+                  <label class="form-check-label" for="terms">
+                    Acepto los <a href="#" class="text-primary">términos y condiciones</a> y la <a href="#" class="text-primary">política de privacidad</a>
+                  </label>
+                </div>
+                
+                <div class="d-grid gap-2">
+                  <button 
+                    type="submit" 
+                    class="btn btn-primary btn-lg shadow-sm"
+                    [disabled]="registerForm.invalid || isLoading"
+                  >
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    <i *ngIf="!isLoading" class="bi bi-person-plus me-2"></i>
+                    Crear Cuenta
+                  </button>
+                  <a routerLink="/login" class="btn btn-outline-secondary">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Ya tengo cuenta
+                  </a>
+                </div>
+              </form>
+              
+              <div class="text-center mt-4">
+                <p class="text-muted small">
+                  Al hacer clic en "Crear Cuenta", acepta que ha leído y está de acuerdo con nuestros términos y condiciones.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          <div class="mb-3">
-            <label for="firstName" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="firstName" formControlName="firstName">
-            <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="text-danger small mt-1">
-              <div *ngIf="registerForm.get('firstName')?.errors?.['required']">El nombre es obligatorio</div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="lastName" class="form-label">Apellidos</label>
-            <input type="text" class="form-control" id="lastName" formControlName="lastName">
-            <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="text-danger small mt-1">
-              <div *ngIf="registerForm.get('lastName')?.errors?.['required']">Los apellidos son obligatorios</div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" formControlName="email" placeholder="correo@ejemplo.com">
-            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger small mt-1">
-              <div *ngIf="registerForm.get('email')?.errors?.['required']">El email es obligatorio</div>
-              <div *ngIf="registerForm.get('email')?.errors?.['email']">El formato del email no es válido</div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" id="password" formControlName="password">
-            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger small mt-1">
-              <div *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es obligatoria</div>
-              <div *ngIf="registerForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-            <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
-            <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="text-danger small mt-1">
-              <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">La confirmación de contraseña es obligatoria</div>
-              <div *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">Las contraseñas no coinciden</div>
-            </div>
-          </div>
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid || isLoading">
-              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-              Registrarse
-            </button>
-          </div>
-        </form>
       </div>
-      <div class="card-footer text-center">
-        <p class="mb-0">¿Ya tienes cuenta? <a routerLink="/login">Iniciar Sesión</a></p>
+      
+      <!-- Social registration options -->
+      <div class="text-center mt-4">
+        <p class="mb-3 text-muted">O regístrese con</p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="#" class="btn btn-outline-secondary rounded-circle social-btn">
+            <i class="bi bi-google"></i>
+          </a>
+          <a href="#" class="btn btn-outline-secondary rounded-circle social-btn">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" class="btn btn-outline-secondary rounded-circle social-btn">
+            <i class="bi bi-apple"></i>
+          </a>
+        </div>
       </div>
     </div>
   </div>
