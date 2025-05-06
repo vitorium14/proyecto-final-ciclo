@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\RoomType;
+use App\Entity\Image;
 use App\Repository\RoomTypeRepository;
+use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,17 +20,20 @@ final class RoomTypeController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private RoomTypeRepository $roomTypeRepository;
+    private ImageRepository $imageRepository;
     private SerializerInterface $serializer;
     private ValidatorInterface $validator;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         RoomTypeRepository $roomTypeRepository,
+        ImageRepository $imageRepository,
         SerializerInterface $serializer,
         ValidatorInterface $validator
     ) {
         $this->entityManager = $entityManager;
         $this->roomTypeRepository = $roomTypeRepository;
+        $this->imageRepository = $imageRepository;
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
@@ -102,8 +107,24 @@ final class RoomTypeController extends AbstractController
             return $this->json(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
         }
         
+        // Persistir el tipo de habitación primero para poder relacionar las imágenes
         $this->entityManager->persist($roomType);
         $this->entityManager->flush();
+        
+        // Procesar imágenes si existen
+        if (isset($data['images']) && is_array($data['images'])) {
+            foreach ($data['images'] as $imageData) {
+                if (isset($imageData['image']) && !empty($imageData['image'])) {
+                    $image = new Image();
+                    $image->setImage($imageData['image']);
+                    $image->setMain(false); // Por defecto no es la imagen principal
+                    $image->setRoomType($roomType);
+                    
+                    $this->entityManager->persist($image);
+                }
+            }
+            $this->entityManager->flush();
+        }
         
         return $this->json($roomType, Response::HTTP_CREATED, [], ['groups' => ['room:read']]);
     }
@@ -140,6 +161,35 @@ final class RoomTypeController extends AbstractController
             return $this->json(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
         }
         
+        // Procesar imágenes si existen
+        if (isset($data['images']) && is_array($data['images'])) {
+            // IDs de imágenes a mantener
+            $keepImageIds = [];
+            
+            foreach ($data['images'] as $imageData) {
+                // Conservar imágenes existentes
+                if (isset($imageData['id']) && !isset($imageData['isNew'])) {
+                    $keepImageIds[] = $imageData['id'];
+                }
+                // Añadir nuevas imágenes
+                elseif (isset($imageData['image']) && !empty($imageData['image']) && isset($imageData['isNew']) && $imageData['isNew']) {
+                    $image = new Image();
+                    $image->setImage($imageData['image']);
+                    $image->setMain(false);
+                    $image->setRoomType($roomType);
+                    
+                    $this->entityManager->persist($image);
+                }
+            }
+            
+            // Eliminar imágenes que ya no están en el listado
+            foreach ($roomType->getImages() as $existingImage) {
+                if (!in_array($existingImage->getId(), $keepImageIds)) {
+                    $this->entityManager->remove($existingImage);
+                }
+            }
+        }
+        
         $this->entityManager->flush();
         
         return $this->json($roomType, Response::HTTP_OK, [], ['groups' => ['room:read']]);
@@ -157,6 +207,11 @@ final class RoomTypeController extends AbstractController
         // Check if the room type is in use
         if (!$roomType->getRooms()->isEmpty()) {
             return $this->json(['error' => 'Cannot delete a room type that is in use'], Response::HTTP_CONFLICT);
+        }
+        
+        // Eliminar las imágenes asociadas
+        foreach ($roomType->getImages() as $image) {
+            $this->entityManager->remove($image);
         }
         
         $this->entityManager->remove($roomType);

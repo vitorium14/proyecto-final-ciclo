@@ -109,16 +109,16 @@ Aplicación web para la gestión completa de un hostal, con una parte pública p
 - [ ] Generar recibos/facturas
 
 #### 4.3 CRUD de Habitaciones
-- [ ] Listar habitaciones con filtros
-- [ ] Crear formulario para añadir/editar habitaciones
-- [ ] Implementar visualización detallada
-- [ ] Añadir funcionalidad de eliminación segura
+- [x] Listar habitaciones con filtros
+- [x] Crear formulario para añadir/editar habitaciones
+- [x] Implementar visualización detallada
+- [x] Añadir funcionalidad de eliminación segura
 
 #### 4.4 CRUD de Tipos de Habitaciones
-- [ ] Listar tipos de habitaciones
-- [ ] Crear formulario para añadir/editar tipos
-- [ ] Implementar gestor de imágenes
-- [ ] Permitir definir amenidades/características
+- [x] Listar tipos de habitaciones
+- [x] Crear formulario para añadir/editar tipos
+- [x] Implementar gestor de imágenes
+- [x] Permitir definir amenidades/características
 
 #### 4.5 CRUD de Servicios
 - [ ] Listar servicios disponibles
@@ -141,9 +141,9 @@ Aplicación web para la gestión completa de un hostal, con una parte pública p
 ### 5. Integración con Backend
 
 #### 5.1 Servicios de API
-- [ ] Implementar servicios para todas las entidades
-- [ ] Crear interceptores para manejo de errores
-- [ ] Configurar mapeo de modelos
+- [x] Implementar servicios para todas las entidades
+- [x] Crear interceptores para manejo de errores
+- [x] Configurar mapeo de modelos
 
 #### 5.2 Pruebas de Integración
 - [ ] Verificar comunicación correcta con endpoints

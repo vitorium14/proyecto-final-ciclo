@@ -10,6 +10,9 @@ import { EmployeeGuard } from './guards/employee.guard';
 import { RoomListComponent } from './pages/rooms/room-list/room-list.component';
 import { RoomFormComponent } from './pages/rooms/room-form/room-form.component';
 import { RoomDetailComponent } from './pages/rooms/room-detail/room-detail.component';
+import { RoomTypeListComponent } from './pages/room-types/room-type-list/room-type-list.component';
+import { RoomTypeFormComponent } from './pages/room-types/room-type-form/room-type-form.component';
+import { RoomTypeDetailComponent } from './pages/room-types/room-type-detail/room-type-detail.component';
 
 export const routes: Routes = [
   {
@@ -31,7 +34,11 @@ export const routes: Routes = [
       { path: 'rooms', component: RoomListComponent },
       { path: 'rooms/new', component: RoomFormComponent },
       { path: 'rooms/:id', component: RoomDetailComponent },
-      { path: 'rooms/:id/edit', component: RoomFormComponent }
+      { path: 'rooms/:id/edit', component: RoomFormComponent },
+      { path: 'room-types', component: RoomTypeListComponent },
+      { path: 'room-types/new', component: RoomTypeFormComponent },
+      { path: 'room-types/:id', component: RoomTypeDetailComponent },
+      { path: 'room-types/:id/edit', component: RoomTypeFormComponent }
     ]
   },
   { path: '**', redirectTo: '' }

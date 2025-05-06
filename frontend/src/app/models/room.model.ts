@@ -21,8 +21,10 @@ export interface RoomType {
 }
 
 export interface Image {
-  id: number;
-  path: string;
+  id?: number;
+  image: string; // Esto contendrá la imagen en base64
+  path?: string; // Para compatibilidad con API existente
+  isNew?: boolean; // Para indicar si es una imagen nueva o existente
   roomType?: RoomType;
 }
 

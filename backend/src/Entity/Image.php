@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ImageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -12,12 +13,15 @@ class Image
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['room:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['room:read'])]
     private ?string $image = null;
 
     #[ORM\Column]
+    #[Groups(['room:read'])]
     private ?bool $main = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]

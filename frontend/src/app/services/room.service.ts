@@ -52,4 +52,16 @@ export class RoomService {
   getRoomType(id: number): Observable<RoomType> {
     return this.http.get<RoomType>(`${this.roomTypesUrl}/${id}`);
   }
+  
+  createRoomType(roomType: Partial<RoomType>): Observable<RoomType> {
+    return this.http.post<RoomType>(this.roomTypesUrl, roomType);
+  }
+
+  updateRoomType(id: number, roomType: Partial<RoomType>): Observable<RoomType> {
+    return this.http.put<RoomType>(`${this.roomTypesUrl}/${id}`, roomType);
+  }
+
+  deleteRoomType(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.roomTypesUrl}/${id}`);
+  }
 }

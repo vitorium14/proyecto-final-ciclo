@@ -1,0 +1,114 @@
+<div class="animate-fade-in">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+    <div>
+      <h1 class="h2 fw-bold mb-0">Detalles de Tipo de Habitación</h1>
+      <p class="text-muted" *ngIf="roomType">{{ roomType.name }} - Información detallada</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a [routerLink]="['/dashboard/room-types']" class="btn btn-outline-secondary rounded-pill px-4">
+        <i class="bi bi-arrow-left me-2"></i> Volver
+      </a>
+      <a *ngIf="roomType" [routerLink]="['/dashboard/room-types', roomType.id, 'edit']" class="btn btn-primary rounded-pill px-4">
+        <i class="bi bi-pencil me-2"></i> Editar
+      </a>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2 text-muted">Cargando detalles del tipo de habitación...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="alert alert-danger mb-4">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+  </div>
+
+  <!-- Room Type Details -->
+  <div *ngIf="!isLoading && !error && roomType" class="row">
+    <!-- Main Details -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="card-title mb-0">{{ roomType.name }}</h3>
+            <span class="badge bg-success rounded-pill px-3 py-2">
+              {{ roomType.price | currency:'EUR':'symbol':'1.2-2' }} / noche
+            </span>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-12">
+              <div class="detail-item">
+                <h6 class="detail-label">Características</h6>
+                <p class="detail-value">{{ roomType.amenities || 'No hay información disponible sobre características' }}</p>
+              </div>
+            </div>
+            
+            <!-- Image Gallery -->
+            <div class="col-md-12">
+              <h6 class="detail-label mb-3">Imágenes</h6>
+              <div class="main-image-container mb-3">
+                <img 
+                  *ngIf="roomType.images && roomType.images.length > 0 && roomType.images[selectedImageIndex]" 
+                  [src]="getImageSrc(roomType.images[selectedImageIndex])" 
+                  alt="Imagen principal" 
+                  class="img-fluid rounded">
+                <div *ngIf="!roomType.images || roomType.images.length === 0" class="text-center py-5 bg-light rounded">
+                  <i class="bi bi-image text-muted fs-1"></i>
+                  <p class="mt-2 text-muted">No hay imágenes disponibles</p>
+                </div>
+              </div>
+              
+              <!-- Thumbnails -->
+              <div *ngIf="roomType.images && roomType.images.length > 1" class="d-flex flex-wrap">
+                <div 
+                  *ngFor="let image of roomType.images; let i = index" 
+                  class="thumbnail-container m-1"
+                  [class.active]="i === selectedImageIndex"
+                  (click)="selectImage(i)">
+                  <img [src]="getImageSrc(image)" alt="Miniatura" class="img-thumbnail" *ngIf="image">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Sidebar -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3">Acciones</h5>
+          <div class="d-grid gap-2">
+            <a [routerLink]="['/dashboard/room-types', roomType.id, 'edit']" class="btn btn-outline-primary">
+              <i class="bi bi-pencil me-2"></i> Editar Tipo de Habitación
+            </a>
+            <button (click)="deleteRoomType()" class="btn btn-outline-danger">
+              <i class="bi bi-trash me-2"></i> Eliminar Tipo de Habitación
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3">Habitaciones Relacionadas</h5>
+          <p class="mb-3 text-muted small">Acciones relacionadas con este tipo de habitación.</p>
+          <div class="d-grid gap-2">
+            <a [routerLink]="['/dashboard/rooms']" [queryParams]="{roomTypeId: roomType.id}" class="btn btn-outline-primary">
+              <i class="bi bi-search me-2"></i> Ver Habitaciones de Este Tipo
+            </a>
+            <a [routerLink]="['/dashboard/rooms/new']" [queryParams]="{roomTypeId: roomType.id}" class="btn btn-outline-success">
+              <i class="bi bi-plus-circle me-2"></i> Crear Nueva Habitación
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
