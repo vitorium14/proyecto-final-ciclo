@@ -1,0 +1,153 @@
+<div class="animate-fade-in">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+    <div>
+      <h1 class="h2 fw-bold mb-0">Gestión de Usuarios</h1>
+      <p class="text-muted">Administra los usuarios del sistema</p>
+    </div>
+    <div>
+      <a routerLink="/dashboard/users/new" class="btn btn-primary rounded-pill px-4">
+        <i class="bi bi-person-plus-fill me-2"></i> Nuevo Usuario
+      </a>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">
+      <h5 class="card-title mb-3">Filtros</h5>
+      <form (ngSubmit)="onSearch()" class="row g-3">
+        <div class="col-md-5">
+          <label for="search" class="form-label">Búsqueda</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input
+              type="text"
+              id="search"
+              [(ngModel)]="searchTerm"
+              name="searchTerm"
+              (keyup.enter)="onSearch()"
+              placeholder="Buscar por nombre o email"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="role" class="form-label">Filtrar por rol</label>
+          <select
+            id="role"
+            [(ngModel)]="selectedRole"
+            name="selectedRole"
+            (change)="onRoleChange()"
+            class="form-select"
+          >
+            <option *ngFor="let option of roleOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button
+            type="submit"
+            class="btn btn-primary w-100"
+          >
+            <i class="bi bi-funnel-fill me-1"></i> Aplicar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2 text-muted fs-5">Cargando usuarios...</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error && !loading" class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+  </div>
+
+  <!-- Table -->
+  <div class="card border-0 shadow-sm" *ngIf="!loading && !error && users.length > 0">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Email</th>
+              <th scope="col">Rol</th>
+              <th scope="col" class="text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td><strong>{{ user.name }} {{ user.surnames }}</strong></td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span *ngFor="let role of user.roles" [class]="getRoleClass(role) + ' rounded-pill px-3 py-1 me-1'">
+                  {{ getRoleLabel(role) }}
+                </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/dashboard/users', user.id]" class="btn btn-sm btn-outline-primary" title="Ver">
+                    <i class="bi bi-eye"></i>
+                  </a>
+                  <a [routerLink]="['/dashboard/users', user.id, 'edit']" class="btn btn-sm btn-outline-secondary" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <button (click)="deleteUser(user.id!)" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && users.length === 0" class="text-center my-5">
+    <div class="p-5 rounded bg-light">
+      <i class="bi bi-people text-muted display-1"></i>
+      <h3 class="mt-3">No hay usuarios registrados</h3>
+      <p class="text-muted">No se encontraron usuarios con los filtros aplicados o aún no hay datos.</p>
+      <button class="btn btn-primary mt-3 rounded-pill px-4" (click)="onSearch()">
+        <i class="bi bi-arrow-clockwise me-1"></i> Reintentar Búsqueda
+      </button>
+       <a routerLink="/dashboard/users/new" class="btn btn-outline-primary mt-3 ms-2 rounded-pill px-4">
+        <i class="bi bi-person-plus-fill me-2"></i> Crear Nuevo Usuario
+      </a>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-between align-items-center mt-4" *ngIf="!loading && totalItems > 0 && totalPages > 1">
+    <div>
+      <p class="text-muted mb-0">
+        Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ currentPage * itemsPerPage > totalItems ? totalItems : currentPage * itemsPerPage }} de {{ totalItems }} usuarios
+      </p>
+    </div>
+    <nav aria-label="User pagination">
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1" aria-label="Anterior">
+            <i class="bi bi-chevron-left small"></i>
+          </button>
+        </li>
+        <li class="page-item" *ngFor="let pageNum of [].constructor(totalPages); let i = index" [class.active]="currentPage === (i + 1)">
+          <button class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</button>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages" aria-label="Siguiente">
+            <i class="bi bi-chevron-right small"></i>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div> 

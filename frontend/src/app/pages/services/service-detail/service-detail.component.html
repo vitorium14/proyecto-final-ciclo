@@ -1,0 +1,119 @@
+<div class="animate-fade-in">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+    <div>
+      <h1 class="h2 fw-bold mb-0">Detalles del Servicio</h1>
+      <p class="text-muted">Información detallada del servicio</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a routerLink="/dashboard/services" class="btn btn-outline-secondary rounded-pill px-4">
+        <i class="bi bi-arrow-left me-2"></i> Volver
+      </a>
+      <a *ngIf="service" [routerLink]="['/dashboard/services', service.id, 'edit']" class="btn btn-primary rounded-pill px-4">
+        <i class="bi bi-pencil me-2"></i> Editar
+      </a>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2 text-muted">Cargando detalles del servicio...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="alert alert-danger mb-4">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+  </div>
+
+  <!-- Service Details -->
+  <div *ngIf="!isLoading && !error && service" class="row">
+    <!-- Main Details -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="card-title mb-0">{{ service.name }}</h3>
+            <span class="badge rounded-pill px-3 py-2" [ngClass]="service.status === 'available' ? 'bg-success' : 'bg-danger'">
+              {{ getStatusLabel(service .status) }}
+            </span>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="detail-item">
+                <h6 class="detail-label">ID del Servicio</h6>
+                <p class="detail-value">{{ service.id }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-item">
+                <h6 class="detail-label">Precio</h6>
+                <p class="detail-value">{{ service.price | currency:'EUR':'symbol':'1.2-2' }}</p>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="detail-item">
+                <h6 class="detail-label">Descripción</h6>
+                <p class="detail-value">{{ service.description }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-item">
+                <h6 class="detail-label">Fecha de Creación</h6>
+                <p class="detail-value">{{ service.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-item">
+                <h6 class="detail-label">Última Actualización</h6>
+                <p class="detail-value">{{ service.updatedAt | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Sidebar -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3">Acciones</h5>
+          <div class="d-grid gap-2">
+            <a [routerLink]="['/dashboard/services', service.id, 'edit']" class="btn btn-outline-primary">
+              <i class="bi bi-pencil me-2"></i> Editar Servicio
+            </a>
+            <button (click)="deleteService()" class="btn btn-outline-danger">
+              <i class="bi bi-trash me-2"></i> Eliminar Servicio
+            </button>
+            <button *ngIf="service.status !== 'available'" (click)="toggleStatus()" class="btn btn-outline-secondary">
+              <i class="bi bi-pause-circle me-2"></i> Desactivar Servicio
+            </button>
+            <button *ngIf="service.status !== 'unavailable'" (click)="toggleStatus()" class="btn btn-outline-success">
+              <i class="bi bi-check-circle me-2"></i> Activar Servicio
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3">Estadísticas</h5>
+          <p class="mb-3 text-muted small">Información sobre el uso de este servicio.</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>En reservas activas</span>
+              <span class="badge bg-primary rounded-pill">0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Total reservas históricas</span>
+              <span class="badge bg-secondary rounded-pill">0</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

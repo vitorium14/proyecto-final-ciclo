@@ -30,6 +30,15 @@
     </li>
     <li class="nav-item mb-2">
       <a class="nav-link d-flex align-items-center rounded-pill px-3 py-2 sidebar-link" 
+         routerLink="/dashboard/reservations"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-calendar-check me-3 icon-hover"></i>
+        <span>Reservas</span>
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a class="nav-link d-flex align-items-center rounded-pill px-3 py-2 sidebar-link" 
          routerLink="/dashboard/rooms"
          routerLinkActive="active"
          [routerLinkActiveOptions]="{exact: true}">
@@ -55,7 +64,7 @@
         <span>Servicios</span>
       </a>
     </li>
-    <li class="nav-item mb-2">
+    <li class="nav-item mb-2" *ngIf="authService.isAdmin()">
       <a class="nav-link d-flex align-items-center rounded-pill px-3 py-2 sidebar-link" 
          routerLink="/dashboard/users"
          routerLinkActive="active"
@@ -64,7 +73,7 @@
         <span>Usuarios</span>
       </a>
     </li>
-    <li class="nav-item mb-2">
+    <li class="nav-item mb-2" *ngIf="authService.isAdmin()">
       <a class="nav-link d-flex align-items-center rounded-pill px-3 py-2 sidebar-link" 
          routerLink="/dashboard/logs"
          routerLinkActive="active"
@@ -73,6 +82,7 @@
         <span>Logs</span>
       </a>
     </li>
+    
   </ul>
 
   <hr class="mx-3 mt-4">

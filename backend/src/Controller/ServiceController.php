@@ -35,6 +35,7 @@ final class ServiceController extends AbstractController
         $this->serviceRepository = $serviceRepository;
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->logService = $logService;
     }
 
     #[Route('', name: 'get_services', methods: ['GET'])]

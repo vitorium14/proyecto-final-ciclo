@@ -4,25 +4,19 @@ import { Service } from './service.model';
 
 export interface Reservation {
   id: number;
-  user: User;
   room: Room;
-  checkIn: Date;
-  checkOut: Date;
+  user: User;
+  checkIn: string; // ISO date string
+  checkOut: string; // ISO date string
   status: ReservationStatus;
   totalPrice: number;
-  additionalServices?: ReservationService[];
-  notes?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  observations?: string;
+  services?: ReservationService[];
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
 }
 
-export enum ReservationStatus {
-  PENDING = 'pending',
-  CONFIRMED = 'confirmed',
-  CHECKED_IN = 'checked_in',
-  CHECKED_OUT = 'checked_out',
-  CANCELLED = 'cancelled'
-}
+export type ReservationStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed';
 
 export interface ReservationService {
   service: Service;
@@ -34,38 +28,37 @@ export interface ReservationResponse {
   reservations: Reservation[];
   total: number;
   page: number;
-  pages: number;
   limit: number;
 }
 
 export interface ReservationFilterOptions {
-  userId?: number;
   roomId?: number;
+  userId?: number;
   status?: ReservationStatus;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string; // ISO date string
+  endDate?: string; // ISO date string
   page?: number;
   limit?: number;
+  searchTerm?: string;
 }
 
 export interface CreateReservationRequest {
   roomId: number;
-  checkIn: Date;
-  checkOut: Date;
-  additionalServices?: {
-    serviceId: number;
+  checkIn: string; // YYYY-MM-DD
+  checkOut: string; // YYYY-MM-DD
+  observations?: string;
+  services?: {
+    id: number;
     quantity: number;
   }[];
-  notes?: string;
 }
 
 export interface UpdateReservationRequest {
-  status?: ReservationStatus;
-  checkIn?: Date;
-  checkOut?: Date;
-  additionalServices?: {
-    serviceId: number;
+  checkIn?: string; // YYYY-MM-DD
+  checkOut?: string; // YYYY-MM-DD
+  observations?: string;
+  services?: {
+    id: number;
     quantity: number;
   }[];
-  notes?: string;
 } 

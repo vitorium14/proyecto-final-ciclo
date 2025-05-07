@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\LogRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LogRepository::class)]
 class Log
@@ -12,18 +13,31 @@ class Log
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['log:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['log:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 50)]
+    #[Groups(['log:read'])]
+    private ?string $action = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    #[ORM\Column(length: 50)]
+    #[Groups(['log:read'])]
+    private ?string $entityType = null;
+
+    #[ORM\Column]
+    #[Groups(['log:read'])]
+    private ?int $entityId = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['log:read'])]
+    private ?string $details = null;
 
     #[ORM\ManyToOne(inversedBy: 'logs')]
+    #[Groups(['log:read'])]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -43,26 +57,50 @@ class Log
         return $this;
     }
 
-    public function getName(): ?string
+    public function getAction(): ?string
     {
-        return $this->name;
+        return $this->action;
     }
 
-    public function setName(string $name): static
+    public function setAction(string $action): static
     {
-        $this->name = $name;
+        $this->action = $action;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getEntityType(): ?string
     {
-        return $this->description;
+        return $this->entityType;
     }
 
-    public function setDescription(?string $description): static
+    public function setEntityType(string $entityType): static
     {
-        $this->description = $description;
+        $this->entityType = $entityType;
+
+        return $this;
+    }
+
+    public function getEntityId(): ?int
+    {
+        return $this->entityId;
+    }
+
+    public function setEntityId(int $entityId): static
+    {
+        $this->entityId = $entityId;
+
+        return $this;
+    }
+
+    public function getDetails(): ?string
+    {
+        return $this->details;
+    }
+
+    public function setDetails(string $details): static
+    {
+        $this->details = $details;
 
         return $this;
     }

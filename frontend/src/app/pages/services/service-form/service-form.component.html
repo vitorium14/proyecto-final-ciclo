@@ -1,0 +1,123 @@
+<div class="animate-fade-in">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+    <div>
+      <h1 class="h2 fw-bold mb-0">{{ isEditMode ? 'Editar' : 'Nuevo' }} Servicio</h1>
+      <p class="text-muted">{{ isEditMode ? 'Modifica los datos del servicio' : 'Añade un nuevo servicio al hostal' }}</p>
+    </div>
+    <div>
+      <a routerLink="/dashboard/services" class="btn btn-outline-secondary rounded-pill px-4">
+        <i class="bi bi-arrow-left me-2"></i> Volver
+      </a>
+    </div>
+  </div>
+
+  <!-- Alert for errors -->
+  <div *ngIf="error" class="alert alert-danger mb-4">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+  </div>
+
+  <!-- Service Form -->
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="name" class="form-label">Nombre del Servicio <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="name" 
+              formControlName="name"
+              [ngClass]="{'is-invalid': serviceForm.get('name')?.invalid && serviceForm.get('name')?.touched}"
+              placeholder="Ej: Limpieza de habitación, Desayuno, etc.">
+            <div class="invalid-feedback" *ngIf="serviceForm.get('name')?.errors?.['required'] && serviceForm.get('name')?.touched">
+              El nombre del servicio es obligatorio
+            </div>
+            <div class="invalid-feedback" *ngIf="serviceForm.get('name')?.errors?.['maxlength'] && serviceForm.get('name')?.touched">
+              El nombre no puede exceder los 100 caracteres
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="price" class="form-label">Precio <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text">€</span>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="price" 
+                formControlName="price" 
+                [ngClass]="{'is-invalid': serviceForm.get('price')?.invalid && serviceForm.get('price')?.touched}"
+                min="0" 
+                step="0.01"
+                placeholder="0.00">
+              <div class="invalid-feedback" *ngIf="serviceForm.get('price')?.errors?.['required'] && serviceForm.get('price')?.touched">
+                El precio es obligatorio
+              </div>
+              <div class="invalid-feedback" *ngIf="serviceForm.get('price')?.errors?.['min'] && serviceForm.get('price')?.touched">
+                El precio no puede ser negativo
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="category" class="form-label">Categoría <span class="text-danger">*</span></label>
+            <select 
+              class="form-select" 
+              id="category" 
+              formControlName="category"
+              [ngClass]="{'is-invalid': serviceForm.get('category')?.invalid && serviceForm.get('category')?.touched}">
+              <option value="">Selecciona una categoría</option>
+              <option *ngFor="let category of categoryOptions" [value]="category.value">{{ category.label }}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="serviceForm.get('category')?.invalid && serviceForm.get('category')?.touched">
+              La categoría es obligatoria
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="status" class="form-label">Estado <span class="text-danger">*</span></label>
+            <select 
+              class="form-select" 
+              id="status" 
+              formControlName="status"
+              [ngClass]="{'is-invalid': serviceForm.get('status')?.invalid && serviceForm.get('status')?.touched}">
+              <option *ngFor="let status of statusOptions" [value]="status.value">{{ status.label }}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="serviceForm.get('status')?.invalid && serviceForm.get('status')?.touched">
+              El estado es obligatorio
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <label for="description" class="form-label">Descripción <span class="text-danger">*</span></label>
+            <textarea 
+              class="form-control" 
+              id="description" 
+              formControlName="description"
+              [ngClass]="{'is-invalid': serviceForm.get('description')?.invalid && serviceForm.get('description')?.touched}"
+              rows="4"
+              placeholder="Describe los detalles del servicio"></textarea>
+            <div class="invalid-feedback" *ngIf="serviceForm.get('description')?.errors?.['required'] && serviceForm.get('description')?.touched">
+              La descripción es obligatoria
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+          <button type="button" routerLink="/dashboard/services" class="btn btn-light me-2 rounded-pill" [disabled]="isLoading">
+            <i class="bi bi-x-lg me-1"></i> Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary px-4 rounded-pill" [disabled]="serviceForm.invalid || isLoading">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!isLoading" class="bi bi-check-lg me-1"></i> {{ isEditMode ? 'Guardar Cambios' : 'Crear Servicio' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

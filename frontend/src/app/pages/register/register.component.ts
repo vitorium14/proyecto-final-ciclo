@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../services/auth.service';
 import { finalize } from 'rxjs/operators';
 import { NgIf, NgClass } from '@angular/common';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -47,6 +49,13 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.invalid) {
+      Object.keys(this.registerForm.controls).forEach(key => {
+        const control = this.registerForm.get(key);
+        if (control?.invalid) {
+          control.markAsTouched();
+        }
+      });
+      this.toastService.error('Por favor, completa todos los campos correctamente');
       return;
     }
 
@@ -62,10 +71,12 @@ export class RegisterComponent {
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: () => {
+        this.toastService.success('Registro exitoso', 'Bienvenido');
         this.router.navigate(['/']);
       },
       error: (error) => {
         this.errorMessage = error.message || 'Error en el registro';
+        this.toastService.error(this.errorMessage!, 'Error de registro');
       }
     });
   }

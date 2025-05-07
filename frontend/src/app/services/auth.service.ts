@@ -77,7 +77,19 @@ export class AuthService {
 
   hasRole(role: string): boolean {
     const user = this.currentUserValue;
-    return !!user && user.roles.includes(role);
+    if (!user) return false;
+    
+    // Si user.roles existe, usamos ese array
+    if (user.roles && Array.isArray(user.roles)) {
+      return user.roles.includes(role);
+    }
+    
+    // Si user.role existe como string, verificamos si coincide
+    if (user.roles) {
+      return user.roles === role;
+    }
+    
+    return false;
   }
 
   isAdmin(): boolean {

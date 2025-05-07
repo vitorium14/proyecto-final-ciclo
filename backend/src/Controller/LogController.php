@@ -75,6 +75,76 @@ class LogController extends AbstractController
             'page' => $page,
             'limit' => $limit,
             'pages' => ceil($total / $limit)
+        ], JsonResponse::HTTP_OK, [], ['groups' => ['log:read']]);
+    }
+    
+    #[Route('/stats', name: 'get_log_stats', methods: ['GET'])]
+    public function getLogStats(
+        LogRepository $logRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        // Total number of logs
+        $totalLogs = $logRepository->count([]);
+        
+        // Logs by action type
+        $logsByAction = $entityManager->createQuery(
+            'SELECT l.action, COUNT(l.id) as count
+             FROM App\Entity\Log l
+             GROUP BY l.action
+             ORDER BY count DESC'
+        )->getResult();
+        
+        // Logs by entity type
+        $logsByEntityType = $entityManager->createQuery(
+            'SELECT l.entityType, COUNT(l.id) as count
+             FROM App\Entity\Log l
+             GROUP BY l.entityType
+             ORDER BY count DESC'
+        )->getResult();
+        
+        // Logs by user
+        $logsByUser = $entityManager->createQuery(
+            'SELECT u.id, u.name, u.email, COUNT(l.id) as count
+             FROM App\Entity\Log l
+             JOIN l.user u
+             GROUP BY u.id, u.name, u.email
+             ORDER BY count DESC'
+        )->getResult();
+        
+        // Logs by date (last 7 days)
+        $dateStats = [];
+        $now = new \DateTime();
+        for ($i = 6; $i >= 0; $i--) {
+            $date = clone $now;
+            $date->modify("-$i days");
+            $dateFormatted = $date->format('Y-m-d');
+            
+            $startDate = clone $date;
+            $startDate->setTime(0, 0, 0);
+            
+            $endDate = clone $date;
+            $endDate->setTime(23, 59, 59);
+            
+            $count = $logRepository->createQueryBuilder('l')
+                ->select('COUNT(l.id)')
+                ->where('l.createdAt BETWEEN :start AND :end')
+                ->setParameter('start', $startDate)
+                ->setParameter('end', $endDate)
+                ->getQuery()
+                ->getSingleScalarResult();
+            
+            $dateStats[] = [
+                'date' => $dateFormatted,
+                'count' => (int)$count
+            ];
+        }
+        
+        return $this->json([
+            'totalLogs' => $totalLogs,
+            'byAction' => $logsByAction,
+            'byEntityType' => $logsByEntityType,
+            'byUser' => $logsByUser,
+            'byDate' => $dateStats
         ]);
     }
 } 

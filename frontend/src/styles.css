@@ -28,6 +28,19 @@
   --gray-800: #343a40;
   --gray-900: #212529;
   --black: #000000;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+}
+
+/* Badges personalizados */
+.badge.bg-purple {
+  background-color: var(--purple);
+  color: white;
+}
+
+.badge.bg-pink {
+  background-color: var(--pink);
+  color: white;
 }
 
 /* Sobrescribir variables de Bootstrap */

@@ -1,9 +1,22 @@
 export interface User {
-  id: number;
+  id?: number;
+  name: string;
+  surnames: string;
   email: string;
-  firstName: string;
-  lastName: string;
   roles: string[];
+  password?: string;
+}
+
+export interface UserCreate extends User {
+  password: string;
+}
+
+export interface UserList {
+  users: User[];
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
 }
 
 export interface AuthResponse {

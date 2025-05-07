@@ -2,12 +2,28 @@ import { User } from './user.model';
 
 export interface Log {
   id: number;
-  user: User;
-  action: LogAction;
-  entityType: LogEntityType;
+  createdAt: string;
+  action: string;
+  entityType: string;
   entityId: number;
   details: string;
-  createdAt: Date;
+  user: User;
+}
+
+export interface LogList {
+  logs: Log[];
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
+}
+
+export interface LogStats {
+  totalLogs: number;
+  byAction: { action: string; count: number }[];
+  byEntityType: { entityType: string; count: number }[];
+  byUser: { id: number; name: string; email: string; count: number }[];
+  byDate: { date: string; count: number }[];
 }
 
 export enum LogAction {

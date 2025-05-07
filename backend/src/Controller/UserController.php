@@ -94,12 +94,12 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (empty($data['email']) || empty($data['password']) || empty($data['name']) || empty($data['surnames']) || empty($data['role'])) {
+        if (empty($data['email']) || empty($data['password']) || empty($data['name']) || empty($data['surnames']) || empty($data['roles'])) {
             return new JsonResponse(['error' => 'Missing required fields: email, password, name, surnames, role'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $allowedRoles = ['ROLE_ADMIN', 'ROLE_EMPLOYEE'];
-        if (!in_array($data['role'], $allowedRoles)) {
+        if (!in_array($data['roles'], $allowedRoles)) {
             return new JsonResponse(['error' => 'Invalid role specified. Must be ROLE_ADMIN or ROLE_EMPLOYEE.'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
@@ -114,7 +114,7 @@ class UserController extends AbstractController
         $user->setSurnames($data['surnames']);
         $user->setEmail($data['email']);
         $user->setPassword($this->passwordHasher->hashPassword($user, $data['password']));
-        $user->setRole($data['role']);
+        $user->setRole($data['roles']);
 
         // Basic validation
         $errors = $this->validator->validate($user);
@@ -144,7 +144,7 @@ class UserController extends AbstractController
             $details
         );
 
-        return new JsonResponse(['message' => $data['role'] . ' user created successfully', 'userId' => $user->getId()], JsonResponse::HTTP_CREATED);
+        return new JsonResponse(['message' => $data['roles'] . ' user created successfully', 'userId' => $user->getId()], JsonResponse::HTTP_CREATED);
     }
 
     #[Route('', name: 'api_users_list', methods: ['GET'])]
@@ -176,13 +176,13 @@ class UserController extends AbstractController
             ->getQuery()
             ->getResult();
         
-        return new JsonResponse([
+        return $this->json([
             'users' => $users,
             'total' => $totalUsers,
             'page' => $page,
             'limit' => $limit,
             'pages' => ceil($totalUsers / $limit)
-        ], JsonResponse::HTTP_OK);
+        ], JsonResponse::HTTP_OK, [], ['groups' => ['user:list']]);
     }
 
     #[Route('/{id}', name: 'api_user_get', methods: ['GET'])]
@@ -195,7 +195,7 @@ class UserController extends AbstractController
             return new JsonResponse(['error' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
         }
         
-        return new JsonResponse($user, JsonResponse::HTTP_OK);
+        return $this->json($user, JsonResponse::HTTP_OK, [], ['groups' => ['user:read']]);
     }
 
     #[Route('/{id}', name: 'api_user_update', methods: ['PUT'])]
