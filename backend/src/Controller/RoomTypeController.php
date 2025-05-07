@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Service\LogService;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/room-types')]
 final class RoomTypeController extends AbstractController
@@ -23,19 +25,22 @@ final class RoomTypeController extends AbstractController
     private ImageRepository $imageRepository;
     private SerializerInterface $serializer;
     private ValidatorInterface $validator;
+    private LogService $logService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         RoomTypeRepository $roomTypeRepository,
         ImageRepository $imageRepository,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        LogService $logService
     ) {
         $this->entityManager = $entityManager;
         $this->roomTypeRepository = $roomTypeRepository;
         $this->imageRepository = $imageRepository;
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->logService = $logService;
     }
 
     #[Route('', name: 'get_room_types', methods: ['GET'])]
@@ -82,6 +87,7 @@ final class RoomTypeController extends AbstractController
     }
 
     #[Route('', name: 'create_room_type', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function createRoomType(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -126,10 +132,25 @@ final class RoomTypeController extends AbstractController
             $this->entityManager->flush();
         }
         
+        // Crear log de la acción
+        $details = sprintf(
+            'Tipo de habitación "%s" creado. Precio: %s',
+            $roomType->getName(),
+            $roomType->getPrice()
+        );
+        $this->logService->createLog(
+            $this->getUser(),
+            'create',
+            'room_type',
+            $roomType->getId(),
+            $details
+        );
+        
         return $this->json($roomType, Response::HTTP_CREATED, [], ['groups' => ['room:read']]);
     }
 
     #[Route('/{id}', name: 'update_room_type', methods: ['PUT'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function updateRoomType(int $id, Request $request): JsonResponse
     {
         $roomType = $this->roomTypeRepository->find($id);
@@ -141,10 +162,12 @@ final class RoomTypeController extends AbstractController
         $data = json_decode($request->getContent(), true);
         
         if (isset($data['name'])) {
+            $oldName = $roomType->getName();
             $roomType->setName($data['name']);
         }
         
         if (isset($data['price'])) {
+            $oldPrice = $roomType->getPrice();
             $roomType->setPrice($data['price']);
         }
         
@@ -192,10 +215,38 @@ final class RoomTypeController extends AbstractController
         
         $this->entityManager->flush();
         
+        // Crear log de la acción
+        $changes = [];
+        if (isset($oldName) && $oldName !== $roomType->getName()) {
+            $changes[] = "Nombre: $oldName -> {$roomType->getName()}";
+        }
+        if (isset($oldPrice) && $oldPrice !== $roomType->getPrice()) {
+            $changes[] = "Precio: $oldPrice -> {$roomType->getPrice()}";
+        }
+        if (isset($data['amenities']) && $roomType->getAmenities() !== $data['amenities']) {
+            $changes[] = "Amenities actualizadas";
+        }
+        
+        if (!empty($changes)) {
+            $details = sprintf(
+                'Tipo de habitación %d actualizado. Cambios: %s',
+                $roomType->getId(),
+                implode(', ', $changes)
+            );
+            $this->logService->createLog(
+                $this->getUser(),
+                'update',
+                'room_type',
+                $roomType->getId(),
+                $details
+            );
+        }
+        
         return $this->json($roomType, Response::HTTP_OK, [], ['groups' => ['room:read']]);
     }
 
     #[Route('/{id}', name: 'delete_room_type', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function deleteRoomType(int $id): JsonResponse
     {
         $roomType = $this->roomTypeRepository->find($id);
@@ -216,6 +267,20 @@ final class RoomTypeController extends AbstractController
         
         $this->entityManager->remove($roomType);
         $this->entityManager->flush();
+        
+        // Crear log de la acción
+        $details = sprintf(
+            'Tipo de habitación eliminado. Nombre: %s, Precio: %s',
+            $roomType->getName(),
+            $roomType->getPrice()
+        );
+        $this->logService->createLog(
+            $this->getUser(),
+            'delete',
+            'room_type',
+            $id,
+            $details
+        );
         
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
