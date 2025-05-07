@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { NgIf, NgFor, NgClass, CurrencyPipe } from '@angular/common';
+import { NgIf, NgFor, CurrencyPipe } from '@angular/common';
 import { RoomService } from '../../../services/room.service';
 import { RoomType, Image } from '../../../models/room.model';
 
@@ -9,7 +9,7 @@ import { RoomType, Image } from '../../../models/room.model';
   templateUrl: './room-type-detail.component.html',
   styleUrls: ['./room-type-detail.component.css'],
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, RouterLink, CurrencyPipe]
+  imports: [NgIf, NgFor, RouterLink, CurrencyPipe]
 })
 export class RoomTypeDetailComponent implements OnInit {
   roomType: RoomType | null = null;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomType, RoomTypeResponse } from '../../../models/room.model';
 import { RoomService } from '../../../services/room.service';
-import { NgIf, NgFor, NgClass, CurrencyPipe } from '@angular/common';
+import { NgIf, NgFor, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './room-type-list.component.html',
   styleUrls: ['./room-type-list.component.css'],
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, RouterLink, ReactiveFormsModule, CurrencyPipe]
+  imports: [NgIf, NgFor, RouterLink, ReactiveFormsModule, CurrencyPipe]
 })
 export class RoomTypeListComponent implements OnInit {
   roomTypes: RoomType[] = [];

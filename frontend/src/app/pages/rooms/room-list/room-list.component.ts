@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Room, RoomFilterOptions, RoomStatus, RoomType } from '../../../models/room.model';
 import { RoomService } from '../../../services/room.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { NgIf, NgFor, NgClass, KeyValuePipe, CurrencyPipe } from '@angular/common';
+import { NgIf, NgFor, NgClass, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './room-list.component.html',
   styleUrls: ['./room-list.component.css'],
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, ReactiveFormsModule, RouterLink, KeyValuePipe, CurrencyPipe]
+  imports: [NgIf, NgFor, NgClass, ReactiveFormsModule, RouterLink, CurrencyPipe]
 })
 export class RoomListComponent implements OnInit {
   rooms: Room[] = [];
