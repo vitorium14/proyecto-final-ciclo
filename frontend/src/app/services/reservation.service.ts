@@ -38,6 +38,10 @@ export class ReservationService {
     return this.http.post<Reservation>(this.baseUrl, reservation);
   }
 
+  createPublicReservation(reservationData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/public`, reservationData);
+  }
+
   updateReservation(id: number, reservation: Partial<Reservation>): Observable<Reservation> {
     return this.http.put<Reservation>(`${this.baseUrl}/${id}`, reservation);
   }

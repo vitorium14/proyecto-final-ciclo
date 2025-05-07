@@ -51,6 +51,9 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         # Allow anonymous access to the client user creation route
         - { path: ^/api/users/client, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/rooms, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/room-types, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/services, roles: PUBLIC_ACCESS, methods: [GET] }
         # Secure other API routes, requiring an authenticated user (valid JWT)
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
         # Comment out or remove default access controls if not needed

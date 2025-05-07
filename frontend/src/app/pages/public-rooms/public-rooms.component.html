@@ -1,0 +1,206 @@
+<!-- Hero Section -->
+<div class="hero-container">
+  <div class="overlay"></div>
+  <div class="hero-content animate-fade-in">
+    <h1 class="display-4 fw-bold">Nuestras Habitaciones</h1>
+    <p class="lead">Confort y elegancia para una experiencia inolvidable</p>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container py-5">
+  <!-- Loading and Error States -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-3">Cargando habitaciones...</p>
+  </div>
+
+  <div *ngIf="error && !isLoading" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+
+  <!-- Room Types Content -->
+  <div *ngIf="!isLoading && !error && roomTypes.length > 0" class="room-content">
+    <!-- Room Selector Tabs -->
+    <div class="room-tabs mb-5">
+      <ul class="nav nav-pills nav-fill">
+        <li class="nav-item" *ngFor="let room of roomTypes">
+          <button class="nav-link" [class.active]="activeRoom?.id === room.id" (click)="setActiveRoom(room)">
+            {{ room.name }}
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Active Room Display -->
+    <div *ngIf="activeRoom" class="animate-fade-in">
+      <div class="row g-5">
+        <!-- Room Images Gallery -->
+        <div class="col-lg-7">
+          <div class="room-gallery">
+            <div class="main-image-container">
+              <div *ngIf="activeRoom.images && activeRoom.images.length > 0" class="image-wrapper">
+                <img [src]="activeRoom.images[activeImageIndex].image" alt="{{activeRoom.name}}" class="img-fluid rounded-4 shadow">
+                
+                <!-- Gallery Navigation -->
+                <div class="gallery-nav">
+                  <button class="gallery-nav-btn prev" (click)="prevImage()" *ngIf="activeRoom.images && activeRoom.images.length > 1">
+                    <i class="bi bi-chevron-left"></i>
+                  </button>
+                  <button class="gallery-nav-btn next" (click)="nextImage()" *ngIf="activeRoom.images && activeRoom.images.length > 1">
+                    <i class="bi bi-chevron-right"></i>
+                  </button>
+                </div>
+                
+                <!-- Image Counter -->
+                <div class="image-counter" *ngIf="activeRoom.images && activeRoom.images.length > 1">
+                  {{activeImageIndex + 1}}/{{activeRoom.images.length}}
+                </div>
+              </div>
+              
+              <!-- Fallback if no images -->
+              <div *ngIf="!activeRoom.images || activeRoom.images.length === 0" class="no-image">
+                <i class="bi bi-image text-muted"></i>
+                <p>No hay imágenes disponibles</p>
+              </div>
+            </div>
+            
+            <!-- Thumbnails -->
+            <div class="thumbnails mt-3" *ngIf="activeRoom.images && activeRoom.images.length > 1">
+              <div class="row g-2">
+                <div class="col-3" *ngFor="let image of activeRoom.images; let i = index">
+                  <div class="thumbnail" [class.active]="i === activeImageIndex" (click)="activeImageIndex = i">
+                    <img [src]="image.image" alt="Thumbnail" class="img-fluid rounded">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Room Info -->
+        <div class="col-lg-5">
+          <div class="room-info">
+            <h2 class="mb-4">{{activeRoom.name}}</h2>
+            
+            <div class="price-tag mb-4">
+              <span class="text-muted">Desde</span>
+              <h3 class="display-5 fw-bold text-primary">€{{activeRoom.price}}<small class="text-muted fs-6">/noche</small></h3>
+            </div>
+            
+            <hr class="my-4">
+            
+            <!-- Amenities -->
+            <h4 class="mb-3">Características</h4>
+            <ul class="amenities-list">
+              <li *ngFor="let amenity of getAmenityList(activeRoom.amenities)">
+                <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                {{amenity}}
+              </li>
+            </ul>
+            
+            <hr class="my-4">
+            
+            <!-- CTA Buttons -->
+            <div class="d-grid gap-2">
+              <button class="btn btn-primary btn-lg" (click)="reserveRoom(activeRoom)">
+                <i class="bi bi-calendar-check me-2"></i> Reservar Ahora
+              </button>
+              <button class="btn btn-outline-primary" (click)="requestInfo(activeRoom)">
+                <i class="bi bi-info-circle me-2"></i> Solicitar Información
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- No Rooms Available -->
+  <div *ngIf="!isLoading && !error && roomTypes.length === 0" class="text-center py-5">
+    <i class="bi bi-house-slash display-1 text-muted"></i>
+    <h3 class="mt-4">No hay habitaciones disponibles</h3>
+    <p class="text-muted">Por favor, vuelva a intentarlo más tarde o contacte con nosotros.</p>
+  </div>
+</div>
+
+<!-- Room Booking Banner -->
+<section class="booking-banner py-5 my-5">
+  <div class="container text-center">
+    <h2 class="text-white mb-4">¿Listo para vivir una experiencia inolvidable?</h2>
+    <p class="text-white lead mb-4">Reserve su habitación ahora y disfrute de nuestras ofertas especiales</p>
+    <div class="d-flex justify-content-center gap-3">
+      <button class="btn btn-light btn-lg px-4" (click)="activeRoom && reserveRoom(activeRoom)">
+        <i class="bi bi-calendar-check me-2"></i> Reservar
+      </button>
+      <button class="btn btn-outline-light btn-lg px-4" routerLink="/contacto">
+        <i class="bi bi-telephone me-2"></i> Contactar
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Preguntas Frecuentes</h2>
+    <p class="text-muted">Todo lo que necesita saber sobre nuestras habitaciones</p>
+  </div>
+  
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="accordion" id="accordionFAQ">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+              ¿Cuál es la hora de check-in y check-out?
+            </button>
+          </h2>
+          <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#accordionFAQ">
+            <div class="accordion-body">
+              El check-in es a partir de las 14:00h y el check-out es hasta las 12:00h. Si necesita horarios especiales, por favor contacte con recepción.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+              ¿Hay WiFi disponible?
+            </button>
+          </h2>
+          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+            <div class="accordion-body">
+              Sí, todas nuestras habitaciones disponen de WiFi gratuito de alta velocidad.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+              ¿Se admiten mascotas?
+            </button>
+          </h2>
+          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+            <div class="accordion-body">
+              Lamentablemente, no se permiten mascotas en nuestras instalaciones, excepto perros guía para personas con discapacidad visual.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+              ¿Incluyen las habitaciones desayuno?
+            </button>
+          </h2>
+          <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+            <div class="accordion-body">
+              El desayuno está disponible como un servicio adicional con un coste de €10 por persona y día. Puede añadirlo durante su reserva o en recepción.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 

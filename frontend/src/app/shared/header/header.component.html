@@ -1,61 +1,60 @@
-<nav class="navbar navbar-expand-lg sticky-top" style="background-color: var(--primary-color); box-shadow: 0 3px 5px rgba(0,0,0,0.1);">
+<nav class="navbar navbar-expand-lg sticky-top">
   <div class="container-fluid px-4">
     <a class="navbar-brand d-flex align-items-center text-white" routerLink="/">
-      <i class="bi bi-building fs-3 me-2"></i>
+      <i class="bi bi-building fs-3 me-2 text-white"></i>
       <span class="fw-bold">Hostal Manager</span>
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list text-white fs-3"></i>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/" routerLinkActive="fw-bold" [routerLinkActiveOptions]="{exact: true}">
-            <i class="bi bi-house-door me-1"></i> Inicio
+          <a class="nav-link text-white" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <i class="bi bi-house-door me-1 icon-hover"></i> Inicio
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/servicios">
-            <i class="bi bi-stars me-1"></i> Servicios
+          <a class="nav-link text-white" routerLink="/servicios" routerLinkActive="active">
+            <i class="bi bi-stars me-1 icon-hover"></i> Servicios
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/habitaciones">
-            <i class="bi bi-door-open me-1"></i> Habitaciones
+          <a class="nav-link text-white" routerLink="/habitaciones" routerLinkActive="active">
+            <i class="bi bi-door-open me-1 icon-hover"></i> Habitaciones
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/contacto">
-            <i class="bi bi-envelope me-1"></i> Contacto
+          <a class="nav-link text-white" routerLink="/contacto" routerLinkActive="active">
+            <i class="bi bi-envelope me-1 icon-hover"></i> Contacto
           </a>
         </li>
         
-        <!-- Dashboard link for employees and admins -->
-        <li class="nav-item" *ngIf="isAuthenticated && isEmployeeOrAdmin">
-          <a class="nav-link text-white ms-2 btn btn-success btn-sm py-1 px-3 rounded-pill" routerLink="/dashboard">
-            <i class="bi bi-speedometer2 me-1"></i> Dashboard
-          </a>
-        </li>
-        
-        <!-- Authentication buttons -->
-        <ng-container *ngIf="!isAuthenticated">
-          <li class="nav-item">
-            <a class="nav-link text-white ms-2 btn btn-outline-light btn-sm py-1 px-3 rounded-pill" routerLink="/login">
-              <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white ms-2 btn btn-dark btn-sm py-1 px-3 rounded-pill" routerLink="/register">
-              <i class="bi bi-person-plus me-1"></i> Registrarse
-            </a>
-          </li>
-        </ng-container>
-        
-        <!-- Logout button for authenticated users -->
-        <li class="nav-item" *ngIf="isAuthenticated">
-          <button class="nav-link text-white ms-2 btn btn-outline-light btn-sm py-1 px-3 rounded-pill" (click)="logout()">
-            <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
-          </button>
+        <li class="nav-item ms-3">
+          <div class="d-flex align-items-center">
+            <!-- Dashboard link for employees and admins -->
+            <div *ngIf="isAuthenticated && isEmployeeOrAdmin">
+              <a class="btn btn-dashboard btn-sm py-1 px-3 rounded-pill text-white d-flex align-items-center" routerLink="/dashboard">
+                <i class="bi bi-speedometer2 me-1"></i> Dashboard
+              </a>
+            </div>
+            
+            <!-- Authentication buttons -->
+            <ng-container *ngIf="!isAuthenticated">
+              <a class="btn btn-login btn-sm py-1 px-3 rounded-pill text-white mx-1" routerLink="/login">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
+              </a>
+              <a class="btn btn-register btn-sm py-1 px-3 rounded-pill text-white mx-1" routerLink="/register">
+                <i class="bi bi-person-plus me-1"></i> Registrarse
+              </a>
+            </ng-container>
+            
+            <!-- Logout button for authenticated users -->
+            <button *ngIf="isAuthenticated" class="btn btn-login btn-sm py-1 px-3 rounded-pill text-white" (click)="logout()">
+              <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+            </button>
+          </div>
         </li>
       </ul>
     </div>

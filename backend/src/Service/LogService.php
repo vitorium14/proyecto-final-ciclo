@@ -13,7 +13,7 @@ class LogService
     ) {}
 
     public function createLog(
-        User $user,
+        ?User $user,
         string $action,
         string $entityType,
         int $entityId,

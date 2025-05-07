@@ -39,8 +39,8 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (empty($data['email']) || empty($data['password']) || empty($data['name']) || empty($data['surnames'])) {
-            return new JsonResponse(['error' => 'Missing required fields: email, password, name, surnames'], JsonResponse::HTTP_BAD_REQUEST);
+        if (empty($data['email']) || empty($data['password']) || empty($data['firstName']) || empty($data['lastName'])) {
+            return new JsonResponse(['error' => 'Missing required fields: email, password, firstName, lastName'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         // Check if email already exists
@@ -50,8 +50,8 @@ class UserController extends AbstractController
         }
 
         $user = new User();
-        $user->setName($data['name']);
-        $user->setSurnames($data['surnames']);
+        $user->setName($data['firstName']);
+        $user->setSurnames($data['lastName']);
         $user->setEmail($data['email']);
         $user->setPassword($this->passwordHasher->hashPassword($user, $data['password']));
         $user->setRole('ROLE_USER'); // Default role for clients

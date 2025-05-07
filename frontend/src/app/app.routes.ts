@@ -25,6 +25,10 @@ import { UserDetailComponent } from './pages/users/user-detail/user-detail.compo
 import { LogListComponent } from './pages/logs/log-list/log-list.component';
 import { LogDashboardComponent } from './pages/logs/log-dashboard/log-dashboard.component';
 import { AdminGuard } from './guards/admin.guard';
+import { PublicRoomsComponent } from './pages/public-rooms/public-rooms.component';
+import { PublicServicesComponent } from './pages/public-services/public-services.component';
+import { ContactComponent } from './pages/contact/contact.component';
+import { PublicReservationFormComponent } from './pages/public-reservation-form/public-reservation-form.component';
 
 export const routes: Routes = [
   {
@@ -32,6 +36,11 @@ export const routes: Routes = [
     component: PublicComponent,
     children: [
       { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'habitaciones', component: PublicRoomsComponent },
+      { path: 'servicios', component: PublicServicesComponent },
+      { path: 'contacto', component: ContactComponent },
+      { path: 'reservar', component: PublicReservationFormComponent, canActivate: [AuthGuard] },
+      { path: 'solicitar-servicio', component: PublicReservationFormComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent }
     ]

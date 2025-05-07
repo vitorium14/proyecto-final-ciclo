@@ -48,4 +48,9 @@ export class ServiceService {
   updateServiceStatus(id: number, status: string): Observable<Service> {
     return this.http.patch<Service>(`${this.baseUrl}/${id}/status`, { status });
   }
+  
+  // Public service request method
+  requestService(serviceRequestData: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/request`, serviceRequestData);
+  }
 } 
