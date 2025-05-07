@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Repository\ReservationRepository;
+use DateTime;
 
 #[Route('/api/rooms')]
 final class RoomController extends AbstractController
@@ -344,5 +346,59 @@ final class RoomController extends AbstractController
         );
         
         return $this->json($room, Response::HTTP_OK, [], ['groups' => ['room:read']]);
+    }
+
+    #[Route('/{id}/reservations', name: 'get_room_reservations', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function getRoomReservations(
+        int $id,
+        Request $request,
+        ReservationRepository $reservationRepository
+    ): JsonResponse {
+        $room = $this->roomRepository->find($id);
+        
+        if (!$room) {
+            return $this->json(['error' => 'Room not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $page = max(1, (int)$request->query->get('page', 1));
+        $limit = max(1, min(50, (int)$request->query->get('limit', 10)));
+        $status = $request->query->get('status');
+        $startDate = $request->query->get('startDate');
+        $endDate = $request->query->get('endDate');
+
+        $qb = $reservationRepository->createQueryBuilder('r')
+            ->andWhere('r.room = :roomId')
+            ->setParameter('roomId', $id)
+            ->orderBy('r.checkIn', 'DESC');
+
+        if ($status) {
+            $qb->andWhere('r.status = :status')
+                ->setParameter('status', $status);
+        }
+
+        if ($startDate) {
+            $qb->andWhere('r.checkIn >= :startDate')
+                ->setParameter('startDate', new DateTime($startDate));
+        }
+
+        if ($endDate) {
+            $qb->andWhere('r.checkOut <= :endDate')
+                ->setParameter('endDate', new DateTime($endDate));
+        }
+
+        $total = count($qb->getQuery()->getResult());
+        $reservations = $qb->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        return $this->json([
+            'reservations' => $reservations,
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($total / $limit)
+        ], Response::HTTP_OK, [], ['groups' => ['reservation:read']]);
     }
 }

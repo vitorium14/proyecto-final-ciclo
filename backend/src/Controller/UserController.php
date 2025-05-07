@@ -224,11 +224,17 @@ class UserController extends AbstractController
         }
         
         if (isset($data['email'])) {
-            // Check if email already exists for another user
+            // Validar formato de email
+            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                return new JsonResponse(['error' => 'Formato de email inválido'], JsonResponse::HTTP_BAD_REQUEST);
+            }
+
+            // Verificar si el nuevo email ya está en uso
             $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
             if ($existingUser && $existingUser->getId() !== $id) {
-                return new JsonResponse(['error' => 'Email already exists'], JsonResponse::HTTP_CONFLICT);
+                return new JsonResponse(['error' => 'El email ya está en uso'], JsonResponse::HTTP_CONFLICT);
             }
+            $oldEmail = $user->getEmail();
             $user->setEmail($data['email']);
         }
         
@@ -263,7 +269,7 @@ class UserController extends AbstractController
             implode(', ', array_filter([
                 isset($data['name']) ? "Nombre: {$user->getName()} -> {$data['name']}" : null,
                 isset($data['surnames']) ? "Apellidos: {$user->getSurnames()} -> {$data['surnames']}" : null,
-                isset($data['email']) ? "Email: {$user->getEmail()} -> {$data['email']}" : null,
+                isset($data['email']) ? "Email: {$oldEmail} -> {$data['email']}" : null,
                 isset($data['password']) ? "Contraseña actualizada" : null,
                 isset($data['role']) ? "Rol: {$user->getRole()} -> {$data['role']}" : null
             ]))

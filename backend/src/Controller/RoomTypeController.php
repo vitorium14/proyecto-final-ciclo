@@ -16,6 +16,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Service\LogService;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Repository\ReservationRepository;
+use DateTime;
 
 #[Route('/api/room-types')]
 final class RoomTypeController extends AbstractController
@@ -95,6 +97,11 @@ final class RoomTypeController extends AbstractController
         if (!isset($data['name']) || !isset($data['price'])) {
             return $this->json(['error' => 'Name and price are required'], Response::HTTP_BAD_REQUEST);
         }
+
+        // Validar precio positivo
+        if (!is_numeric($data['price']) || $data['price'] <= 0) {
+            return $this->json(['error' => 'Price must be a positive number'], Response::HTTP_BAD_REQUEST);
+        }
         
         $roomType = new RoomType();
         $roomType->setName($data['name']);
@@ -167,6 +174,10 @@ final class RoomTypeController extends AbstractController
         }
         
         if (isset($data['price'])) {
+            // Validar precio positivo
+            if (!is_numeric($data['price']) || $data['price'] <= 0) {
+                return $this->json(['error' => 'Price must be a positive number'], Response::HTTP_BAD_REQUEST);
+            }
             $oldPrice = $roomType->getPrice();
             $roomType->setPrice($data['price']);
         }
@@ -283,5 +294,86 @@ final class RoomTypeController extends AbstractController
         );
         
         return $this->json(null, Response::HTTP_NO_CONTENT);
+    }
+
+    #[Route('/{id}/stats', name: 'get_room_type_stats', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function getRoomTypeStats(
+        int $id,
+        Request $request,
+        ReservationRepository $reservationRepository
+    ): JsonResponse {
+        $roomType = $this->roomTypeRepository->find($id);
+        
+        if (!$roomType) {
+            return $this->json(['error' => 'Room type not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $startDate = $request->query->get('startDate');
+        $endDate = $request->query->get('endDate');
+
+        if (!$startDate || !$endDate) {
+            return $this->json(['error' => 'Start date and end date are required'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $start = new DateTime($startDate);
+            $end = new DateTime($endDate);
+        } catch (\Exception $e) {
+            return $this->json(['error' => 'Invalid date format'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Obtener todas las habitaciones de este tipo
+        $roomIds = array_map(function($room) {
+            return $room->getId();
+        }, $roomType->getRooms()->toArray());
+
+        if (empty($roomIds)) {
+            return $this->json([
+                'total_reservations' => 0,
+                'total_revenue' => 0,
+                'occupation_rate' => 0,
+                'average_stay' => 0
+            ]);
+        }
+
+        // Obtener reservas en el período
+        $qb = $reservationRepository->createQueryBuilder('r')
+            ->andWhere('r.room IN (:roomIds)')
+            ->andWhere('r.checkIn >= :startDate')
+            ->andWhere('r.checkOut <= :endDate')
+            ->andWhere('r.status != :cancelled')
+            ->setParameter('roomIds', $roomIds)
+            ->setParameter('startDate', $start)
+            ->setParameter('endDate', $end)
+            ->setParameter('cancelled', 'cancelled');
+
+        $reservations = $qb->getQuery()->getResult();
+
+        // Calcular estadísticas
+        $totalReservations = count($reservations);
+        $totalRevenue = 0;
+        $totalNights = 0;
+
+        foreach ($reservations as $reservation) {
+            $totalRevenue += $reservation->getTotalPrice();
+            $nights = $reservation->getCheckIn()->diff($reservation->getCheckOut())->days;
+            $totalNights += $nights;
+        }
+
+        // Calcular tasa de ocupación
+        $totalDays = $start->diff($end)->days;
+        $totalPossibleNights = count($roomIds) * $totalDays;
+        $occupationRate = $totalPossibleNights > 0 ? ($totalNights / $totalPossibleNights) * 100 : 0;
+
+        // Calcular estancia promedio
+        $averageStay = $totalReservations > 0 ? $totalNights / $totalReservations : 0;
+
+        return $this->json([
+            'total_reservations' => $totalReservations,
+            'total_revenue' => $totalRevenue,
+            'occupation_rate' => round($occupationRate, 2),
+            'average_stay' => round($averageStay, 1)
+        ]);
     }
 }

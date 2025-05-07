@@ -196,9 +196,25 @@ class ReservationController extends AbstractController
             ], 400);
         }
 
+        // Validar que las fechas sean futuras
+        $now = new DateTime();
+        if ($checkIn < $now) {
+            return $this->json([
+                'error' => 'La fecha de check-in debe ser futura'
+            ], 400);
+        }
+
         if ($checkIn >= $checkOut) {
             return $this->json([
                 'error' => 'La fecha de check-in debe ser anterior a la fecha de check-out'
+            ], 400);
+        }
+
+        // Validar límite de días de reserva (máximo 30 días)
+        $interval = $checkIn->diff($checkOut);
+        if ($interval->days > 30) {
+            return $this->json([
+                'error' => 'La reserva no puede exceder los 30 días'
             ], 400);
         }
 
@@ -207,6 +223,13 @@ class ReservationController extends AbstractController
             return $this->json([
                 'error' => 'Habitación no encontrada'
             ], 404);
+        }
+
+        // Validar estado de la habitación
+        if ($room->getStatus() !== 'available') {
+            return $this->json([
+                'error' => 'La habitación no está disponible para reservas'
+            ], 400);
         }
 
         if (!$reservationRepository->isRoomAvailable($room->getId(), $checkIn, $checkOut)) {

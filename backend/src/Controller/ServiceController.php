@@ -126,6 +126,21 @@ final class ServiceController extends AbstractController
         
         $this->entityManager->persist($service);
         $this->entityManager->flush();
+
+        // Crear log de la acción
+        $details = sprintf(
+            'Servicio creado. Nombre: %s, Precio: %s, Categoría: %s',
+            $service->getName(),
+            $service->getPrice(),
+            $service->getCategory()
+        );
+        $this->logService->createLog(
+            $this->getUser(),
+            'create',
+            'service',
+            $service->getId(),
+            $details
+        );
         
         return $this->json($service, Response::HTTP_CREATED, [], ['groups' => ['service:read']]);
     }
@@ -141,25 +156,36 @@ final class ServiceController extends AbstractController
         }
         
         $data = json_decode($request->getContent(), true);
+        $changes = [];
         
         if (isset($data['name'])) {
+            $oldName = $service->getName();
             $service->setName($data['name']);
+            $changes[] = "Nombre: $oldName -> {$data['name']}";
         }
         
         if (isset($data['price'])) {
+            $oldPrice = $service->getPrice();
             $service->setPrice($data['price']);
+            $changes[] = "Precio: $oldPrice -> {$data['price']}";
         }
         
         if (isset($data['category'])) {
+            $oldCategory = $service->getCategory();
             $service->setCategory($data['category']);
+            $changes[] = "Categoría: $oldCategory -> {$data['category']}";
         }
         
         if (isset($data['description'])) {
+            $oldDescription = $service->getDescription();
             $service->setDescription($data['description']);
+            $changes[] = "Descripción actualizada";
         }
         
         if (isset($data['status'])) {
+            $oldStatus = $service->getStatus();
             $service->setStatus($data['status']);
+            $changes[] = "Estado: $oldStatus -> {$data['status']}";
         }
         
         $errors = $this->validator->validate($service);
@@ -172,6 +198,22 @@ final class ServiceController extends AbstractController
         }
         
         $this->entityManager->flush();
+
+        // Crear log de la acción si hay cambios
+        if (!empty($changes)) {
+            $details = sprintf(
+                'Servicio %d actualizado. Cambios: %s',
+                $service->getId(),
+                implode(', ', $changes)
+            );
+            $this->logService->createLog(
+                $this->getUser(),
+                'update',
+                'service',
+                $service->getId(),
+                $details
+            );
+        }
         
         return $this->json($service, Response::HTTP_OK, [], ['groups' => ['service:read']]);
     }
@@ -186,11 +228,29 @@ final class ServiceController extends AbstractController
             return $this->json(['error' => 'Service not found'], Response::HTTP_NOT_FOUND);
         }
         
-        // Check if the service is in use (you might want to add this check based on your business logic)
-        // For example, if services are linked to bookings or reservations
+        // Guardar información para el log antes de eliminar
+        $serviceInfo = sprintf(
+            'Nombre: %s, Precio: %s, Categoría: %s',
+            $service->getName(),
+            $service->getPrice(),
+            $service->getCategory()
+        );
         
         $this->entityManager->remove($service);
         $this->entityManager->flush();
+
+        // Crear log de la acción
+        $details = sprintf(
+            'Servicio eliminado. %s',
+            $serviceInfo
+        );
+        $this->logService->createLog(
+            $this->getUser(),
+            'delete',
+            'service',
+            $id,
+            $details
+        );
         
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
@@ -211,6 +271,7 @@ final class ServiceController extends AbstractController
             return $this->json(['error' => 'Status is required'], Response::HTTP_BAD_REQUEST);
         }
         
+        $oldStatus = $service->getStatus();
         $service->setStatus($data['status']);
         
         $errors = $this->validator->validate($service);
@@ -223,6 +284,21 @@ final class ServiceController extends AbstractController
         }
         
         $this->entityManager->flush();
+
+        // Crear log de la acción
+        $details = sprintf(
+            'Estado de servicio %d actualizado: %s -> %s',
+            $service->getId(),
+            $oldStatus,
+            $data['status']
+        );
+        $this->logService->createLog(
+            $this->getUser(),
+            'update',
+            'service',
+            $service->getId(),
+            $details
+        );
         
         return $this->json($service, Response::HTTP_OK, [], ['groups' => ['service:read']]);
     }
