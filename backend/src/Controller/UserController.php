@@ -187,7 +187,7 @@ class UserController extends AbstractController
 
     #[Route('/{id}', name: 'api_user_get', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function getUser(int $id): JsonResponse
+    public function get_User(int $id): JsonResponse
     {
         $user = $this->entityManager->getRepository(User::class)->find($id);
         
