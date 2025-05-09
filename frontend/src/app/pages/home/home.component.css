@@ -1,165 +1,182 @@
+/* General Section Styling */
+section {
+    padding: 60px 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-orange-dark);
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-color-dark);
+    margin-bottom: 40px;
+}
+
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, var(--primary-orange-light), var(--primary-orange));
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://source.unsplash.com/random/1600x900/?hostel,travel') no-repeat center center;
+    background-size: cover;
     color: var(--text-color-light);
     padding: 100px 0;
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
-    /* Angled bottom edge */
 }
 
 .hero-title {
-    font-weight: 700;
-    margin-bottom: 20px;
+    font-size: 3.5rem;
+    /* Made title bigger */
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    /* Reduced margin */
 }
 
 .hero-title .highlight {
-    color: #fff;
-    /* Or a lighter shade of orange */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    color: var(--primary-orange-light);
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
-    margin-bottom: 40px;
-    opacity: 0.9;
+    font-size: 1.3rem;
+    /* Made subtitle bigger */
+    margin-bottom: 30px;
+    font-weight: 300;
 }
 
 .hero-cta-button {
     padding: 12px 30px;
+    /* Larger buttons */
     font-size: 1.1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-radius: 50px;
-    /* Pill-shaped buttons */
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    margin-top: 10px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .hero-cta-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary.hero-cta-button {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+}
+
+.btn-primary.hero-cta-button:hover {
+    background-color: var(--primary-orange-dark);
+    border-color: var(--primary-orange-dark);
 }
 
 .btn-outline-secondary.hero-cta-button {
-    border-color: var(--text-color-light);
     color: var(--text-color-light);
+    border-color: var(--text-color-light);
 }
 
 .btn-outline-secondary.hero-cta-button:hover {
     background-color: var(--text-color-light);
-    color: var(--primary-orange-dark);
+    color: var(--background-dark);
 }
 
 /* Features Overview Section */
 .features-overview-section {
-    padding: 80px 0;
     background-color: var(--background-light);
-    /* Or keep it white #fff */
-}
-
-.section-title {
-    color: var(--primary-orange-dark);
-    margin-bottom: 15px;
-    font-weight: 700;
-}
-
-.section-subtitle {
-    color: var(--text-color-dark);
-    opacity: 0.8;
-    margin-bottom: 50px;
 }
 
 .feature-card {
     background-color: #fff;
-    padding: 30px;
+    border: none;
+    /* Removed border */
     border-radius: 10px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    /* Softer corners */
+    padding: 30px;
     text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    /* Subtle shadow */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
-    /* For equal height cards */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    /* Ensure cards are same height */
 }
 
 .feature-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
 .feature-icon {
     font-size: 3rem;
-    /* Adjust as needed based on icon library */
+    /* Larger icons */
     color: var(--primary-orange);
     margin-bottom: 20px;
+    display: inline-block;
     background-color: var(--primary-orange-light);
+    color: var(--text-color-light);
     width: 80px;
+    /* Circle background */
     height: 80px;
+    /* Circle background */
+    line-height: 80px;
+    /* Center icon in circle */
     border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
+    /* Make it a circle */
 }
 
 .feature-title {
     font-size: 1.5rem;
     color: var(--primary-orange-dark);
     margin-bottom: 10px;
-    font-weight: 600;
 }
 
 .feature-description {
     font-size: 0.95rem;
-    color: var(--text-color-dark);
-    opacity: 0.7;
-    line-height: 1.6;
+    color: #555;
+}
+
+/* Gallery Teaser Section */
+.gallery-teaser-section {
+    background-color: #fff;
+    /* White background */
+}
+
+.gallery-teaser-section img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 3px solid var(--background-light);
+    /* Light border for images */
+}
+
+.gallery-teaser-section img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Call to Action Section */
 .cta-section {
-    background-color: var(--primary-orange-dark);
-    /* Darker orange or accent color */
+    background-color: var(--accent-color);
     color: var(--text-color-light);
-    padding: 80px 0;
-    margin-top: 40px;
-    /* Space before CTA */
 }
 
 .cta-title {
-    font-weight: 700;
-    margin-bottom: 15px;
+    font-size: 2.5rem;
+    font-weight: bold;
     color: var(--text-color-light);
+    margin-bottom: 1rem;
 }
 
 .cta-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-bottom: 30px;
-    opacity: 0.9;
 }
 
 .cta-button {
-    padding: 15px 40px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-radius: 50px;
-    background-color: var(--primary-orange-light);
-    /* Lighter orange for contrast */
-    border-color: var(--primary-orange-light);
-    color: var(--background-dark);
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s ease-out;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    background-color: var(--primary-orange) !important;
+    border-color: var(--primary-orange) !important;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
 
 .cta-button:hover {
+    background-color: var(--primary-orange-dark) !important;
+    border-color: var(--primary-orange-dark) !important;
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    background-color: #fff;
-    /* White on hover */
-    border-color: #fff;
-    color: var(--primary-orange-dark);
 }
 
 /* Ensure Bootstrap icons are available or use alternatives */

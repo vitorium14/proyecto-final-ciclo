@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from '../../components/header/header.component';
-import { FooterComponent } from '../../components/footer/footer.component';
+import { FooterComponent } from "../../shared/footer/footer.component";
+import { HeaderComponent } from "../../shared/header/header.component";
 
 @Component({
     selector: 'app-main-layout',
-    standalone: true, // Assuming you are using standalone components
     imports: [
-        RouterOutlet,
-        HeaderComponent,
-        FooterComponent
-    ],
+    RouterOutlet,
+    FooterComponent,
+    HeaderComponent
+],
     templateUrl: './main-layout.component.html',
     styleUrls: ['./main-layout.component.css']
 })

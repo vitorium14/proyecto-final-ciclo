@@ -1,0 +1,36 @@
+.footer {
+    background-color: var(--background-dark) !important;
+    color: var(--text-color-light) !important;
+    font-size: 0.9rem;
+}
+
+.footer h5,
+.footer h6 {
+    color: var(--primary-orange-light);
+    margin-bottom: 1rem;
+}
+
+.footer-link {
+    color: var(--text-color-light) !important;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+    color: var(--primary-orange) !important;
+    text-decoration: underline;
+}
+
+.social-icon i {
+    font-size: 1.5rem;
+    color: var(--text-color-light);
+    transition: color 0.2s ease-in-out;
+}
+
+.social-icon:hover i {
+    color: var(--primary-orange) !important;
+}
+
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.1);
+}

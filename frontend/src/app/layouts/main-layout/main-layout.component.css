@@ -7,8 +7,6 @@
 .main-content {
     flex: 1;
     /* Add padding or other styles as needed */
-    padding: 20px 0;
-    /* Example padding */
 }
 
 /* Ensure app-header and app-footer are styled within their own component CSS */

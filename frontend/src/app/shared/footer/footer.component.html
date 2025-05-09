@@ -1,1 +1,52 @@
-<p>footer works!</p>
+<footer class="footer bg-dark text-light py-4 mt-auto">
+    <div class="container">
+        <div class="row">
+            <!-- Hostel Info -->
+            <div class="col-md-4 mb-3 mb-md-0">
+                <h5>The Wanderer's Rest</h5>
+                <p class="small">
+                    Your home away from home. Offering cozy stays and unforgettable experiences for travelers from
+                    around the globe.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-2 col-6 mb-3 mb-md-0">
+                <h6>Quick Links</h6>
+                <ul class="list-unstyled small">
+                    <li><a routerLink="/" class="footer-link">Home</a></li>
+                    <li><a routerLink="/rooms" class="footer-link">Rooms</a></li>
+                    <li><a routerLink="/amenities" class="footer-link">Amenities</a></li>
+                    <li><a routerLink="/contact" class="footer-link">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal & Info -->
+            <div class="col-md-3 col-6 mb-3 mb-md-0">
+                <h6>Information</h6>
+                <ul class="list-unstyled small">
+                    <li><a routerLink="/about" class="footer-link">About Us</a></li>
+                    <li><a routerLink="/faq" class="footer-link">FAQ</a></li>
+                    <li><a routerLink="/terms" class="footer-link">Terms & Conditions</a></li>
+                    <li><a routerLink="/privacy" class="footer-link">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Social Media -->
+            <div class="col-md-3 text-md-end">
+                <h6>Connect With Us</h6>
+                <a href="#" class="social-icon me-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="social-icon me-2"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="social-icon me-2"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="social-icon"><i class="bi bi-tiktok"></i></a>
+                <p class="small mt-3 mb-0">123 Adventure Lane, Travel City, World</p>
+            </div>
+        </div>
+        <hr class="footer-divider my-3">
+        <div class="row">
+            <div class="col text-center">
+                <p class="small mb-0">&copy; {{currentYear}} The Wanderer's Rest. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
