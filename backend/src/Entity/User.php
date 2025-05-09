@@ -8,6 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * Represents a user in the application.
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
@@ -25,10 +28,13 @@ class User
     #[Groups(['user'])]
     private ?string $surnames = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Groups(['user'])]
     private ?string $email = null;
 
+    /**
+     * The hashed password.
+     */
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
@@ -89,6 +95,9 @@ class User
         return $this;
     }
 
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -101,7 +110,11 @@ class User
         return $this;
     }
 
-    public function getRole(): ?string
+    /**
+     * Returns the role of the user.
+     * @return string|null
+     */
+    public function getRole(): ?string // Changed to nullable to match property
     {
         return $this->role;
     }

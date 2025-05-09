@@ -6,6 +6,9 @@ use App\Repository\TokenRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Represents a JWT token that can be stored and revoked.
+ */
 #[ORM\Entity(repositoryClass: TokenRepository::class)]
 class Token
 {

@@ -7,6 +7,9 @@ use Firebase\JWT\JWT;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Service for creating and managing JSON Web Tokens (JWT).
+ */
 class JwtService
 {
     private string $secretKey;
@@ -18,6 +21,12 @@ class JwtService
         $this->secretKey = $_ENV['API_KEY'];
     }
 
+    /**
+     * Creates a new JWT for a given user.
+     *
+     * @param User $user The user entity for whom the token is generated.
+     * @return string The generated JWT string.
+     */
     public function createToken(User $user): string
     {
         $issuedAt = new DateTimeImmutable();
@@ -59,7 +68,4 @@ class JwtService
         $payload = JWT::decode($token, $this->secretKey);
         return $payload->userId;
     }
-    
-    
-    
 }
