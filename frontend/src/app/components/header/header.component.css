@@ -1,0 +1,59 @@
+.app-header {
+    background-color: var(--background-dark);
+    /* Or a slightly lighter/darker shade */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-orange-light);
+    /* Orange logo text */
+    letter-spacing: -1px;
+}
+
+.navbar-brand:hover .logo-text {
+    color: var(--primary-orange);
+}
+
+.nav-link {
+    color: var(--text-color-light) !important;
+    /* Ensure text is light on dark background */
+    font-weight: 500;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0.5rem 1rem !important;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-orange-light) !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Subtle hover effect */
+}
+
+/* Special styling for the outlined button if you have one */
+.nav-link.btn-outline-primary {
+    border-color: var(--primary-orange-light) !important;
+    color: var(--primary-orange-light) !important;
+}
+
+.nav-link.btn-outline-primary:hover {
+    background-color: var(--primary-orange-light) !important;
+    color: var(--background-dark) !important;
+    /* Text color changes on hover */
+}
+
+/* Styling for the navbar toggler icon (hamburger menu) */
+.navbar-toggler {
+    border-color: rgba(255, 165, 0, 0.5);
+    /* Orange-ish border */
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23FFA500' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}

@@ -1,0 +1,167 @@
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-orange-light), var(--primary-orange));
+    color: var(--text-color-light);
+    padding: 100px 0;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+    /* Angled bottom edge */
+}
+
+.hero-title {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero-title .highlight {
+    color: #fff;
+    /* Or a lighter shade of orange */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.hero-cta-button {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 50px;
+    /* Pill-shaped buttons */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.hero-cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-outline-secondary.hero-cta-button {
+    border-color: var(--text-color-light);
+    color: var(--text-color-light);
+}
+
+.btn-outline-secondary.hero-cta-button:hover {
+    background-color: var(--text-color-light);
+    color: var(--primary-orange-dark);
+}
+
+/* Features Overview Section */
+.features-overview-section {
+    padding: 80px 0;
+    background-color: var(--background-light);
+    /* Or keep it white #fff */
+}
+
+.section-title {
+    color: var(--primary-orange-dark);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.section-subtitle {
+    color: var(--text-color-dark);
+    opacity: 0.8;
+    margin-bottom: 50px;
+}
+
+.feature-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    /* For equal height cards */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    /* Adjust as needed based on icon library */
+    color: var(--primary-orange);
+    margin-bottom: 20px;
+    background-color: var(--primary-orange-light);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    color: var(--primary-orange-dark);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.feature-description {
+    font-size: 0.95rem;
+    color: var(--text-color-dark);
+    opacity: 0.7;
+    line-height: 1.6;
+}
+
+/* Call to Action Section */
+.cta-section {
+    background-color: var(--primary-orange-dark);
+    /* Darker orange or accent color */
+    color: var(--text-color-light);
+    padding: 80px 0;
+    margin-top: 40px;
+    /* Space before CTA */
+}
+
+.cta-title {
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-color-light);
+}
+
+.cta-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.cta-button {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    background-color: var(--primary-orange-light);
+    /* Lighter orange for contrast */
+    border-color: var(--primary-orange-light);
+    color: var(--background-dark);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s ease-out;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    /* White on hover */
+    border-color: #fff;
+    color: var(--primary-orange-dark);
+}
+
+/* Ensure Bootstrap icons are available or use alternatives */
+/* Example: npm install bootstrap-icons */
+/* And import in styles.css or angular.json: "node_modules/bootstrap-icons/font/bootstrap-icons.css" */

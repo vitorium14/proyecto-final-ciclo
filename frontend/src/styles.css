@@ -1,1 +1,60 @@
 /* You can add global styles to this file, and also import other style files */
+@import "bootstrap-icons/font/bootstrap-icons.css";
+:root {
+    --primary-orange: #FF8C00;
+    /* DarkOrange */
+    --primary-orange-light: #FFA500;
+    /* Orange */
+    --primary-orange-dark: #CC7000;
+    --accent-color: #4682B4;
+    /* SteelBlue */
+
+    --text-color-dark: #333333;
+    --text-color-light: #FFFFFF;
+    --background-light: #F4F4F4;
+    --background-dark: #212529;
+    /* Bootstrap's dark */
+
+    /* Bootstrap semantic colors (optional override if you want to theme Bootstrap components) */
+    --bs-primary: var(--primary-orange);
+    --bs-secondary: var(--accent-color);
+    /* You can also override other Bootstrap colors like --bs-success, --bs-info, etc. */
+}
+
+body {
+    font-family: sans-serif;
+    /* Or your preferred font stack */
+    color: var(--text-color-dark);
+    background-color: var(--background-light);
+    margin: 0;
+    padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--primary-orange-dark);
+}
+
+/* Example of using the primary color for Bootstrap buttons */
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-orange-dark);
+    border-color: var(--primary-orange-dark);
+}
+
+/* You might want to adjust Bootstrap's default link color too */
+a {
+    color: var(--primary-orange);
+}
+
+a:hover {
+    color: var(--primary-orange-dark);
+}
