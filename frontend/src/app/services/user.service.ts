@@ -18,8 +18,8 @@ export class UserService {
     // Assuming a global proxy is configured to point to the backend base URL
     // If /api is a global prefix, these paths are correct.
     // If not, /login, /register, /logout should be at the root.
-    private authApiUrl = '/api'; // For /login, /register, /logout
-    private usersApiUrl = '/api/users'; // For user management CRUD
+    private authApiUrl = 'http://localhost:8000/api'; // For /login, /register, /logout
+    private usersApiUrl = 'http://localhost:8000/api/users'; // For user management CRUD
 
     constructor(private http: HttpClient) { }
 

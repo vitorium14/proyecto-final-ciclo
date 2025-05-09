@@ -1,0 +1,22 @@
+/* Add any specific styles for the users component here */
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+    /* Lighter hover for better readability */
+}
+
+.btn-primary {
+    /* Ensuring primary button stands out, if not already themed globally */
+}
+
+.btn-danger {
+    /* Ensuring danger button stands out */
+}
+
+.btn-success {
+    /* Ensuring success button stands out */
+}
+
+.align-middle td,
+.align-middle th {
+    vertical-align: middle;
+}

@@ -1,0 +1,51 @@
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+    <div class="bg-light border-end" id="sidebar-wrapper">
+        <div class="sidebar-heading border-bottom bg-light">Dashboard</div>
+        <div class="list-group list-group-flush">
+            <a routerLink="users" class="list-group-item list-group-item-action list-group-item-light p-3"
+                routerLinkActive="active">
+                <i class="bi bi-people-fill me-2"></i>Users
+            </a>
+            <a routerLink="services" class="list-group-item list-group-item-action list-group-item-light p-3"
+                routerLinkActive="active">
+                <i class="bi bi-gear-fill me-2"></i>Services
+            </a>
+            <a routerLink="room-types" class="list-group-item list-group-item-action list-group-item-light p-3"
+                routerLinkActive="active">
+                <i class="bi bi-door-closed-fill me-2"></i>Room Types
+            </a>
+            <a routerLink="rooms" class="list-group-item list-group-item-action list-group-item-light p-3"
+                routerLinkActive="active">
+                <i class="bi bi-key-fill me-2"></i>Rooms
+            </a>
+            <a routerLink="bookings" class="list-group-item list-group-item-action list-group-item-light p-3"
+                routerLinkActive="active">
+                <i class="bi bi-calendar-check-fill me-2"></i>Bookings
+            </a>
+            <a routerLink="/" class="list-group-item list-group-item-action list-group-item-danger p-3 mt-auto">
+                <i class="bi bi-box-arrow-left me-2"></i>Exit Dashboard
+            </a>
+        </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content Wrapper -->
+    <div id="page-content-wrapper">
+        <!-- Top navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div class="container-fluid">
+                <button class="btn btn-primary" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                <h5 class="ms-3 mb-0">Management</h5>
+            </div>
+        </nav>
+        <!-- /Top navigation-->
+
+        <!-- Page content-->
+        <div class="container-fluid p-4">
+            <router-outlet></router-outlet>
+        </div>
+        <!-- /Page content-->
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>

@@ -1,0 +1,18 @@
+/* Add any specific styles for the user form component here */
+.card-header {
+    /* Ensuring contrast and visibility, adjust if your global theme is very light */
+}
+
+.invalid-feedback {
+    display: block;
+    /* Make sure feedback is shown */
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+    /* Bootstrap default invalid color */
+}
+
+.form-label {
+    font-weight: 500;
+}

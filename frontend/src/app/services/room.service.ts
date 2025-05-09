@@ -7,7 +7,7 @@ import { Room, RoomCreationPayload, RoomUpdatePayload } from '../models/api.mode
     providedIn: 'root'
 })
 export class RoomService {
-    private apiUrl = '/api/rooms'; // Assuming a global proxy is configured
+    private apiUrl = 'http://localhost:8000/api/rooms'; // Assuming a global proxy is configured
 
     constructor(private http: HttpClient) { }
 

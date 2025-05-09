@@ -11,7 +11,7 @@ import {
     providedIn: 'root'
 })
 export class BookingService {
-    private apiUrl = '/api/bookings'; // Assuming a global proxy is configured
+    private apiUrl = 'http://localhost:8000/api/bookings'; // Assuming a global proxy is configured
 
     constructor(private http: HttpClient) { }
 

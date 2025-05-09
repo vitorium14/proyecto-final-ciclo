@@ -1,0 +1,39 @@
+.login-container {
+    background-color: var(--background-light, #f4f4f4);
+    /* Using CSS variable from global styles */
+}
+
+.card {
+    border: none;
+    /* Removing default card border for a cleaner look with shadow */
+}
+
+.form-control-lg {
+    min-height: calc(1.5em + 1rem + 2px);
+    /* Bootstrap's default, ensure it's applied */
+}
+
+.invalid-feedback {
+    display: block;
+    /* Ensure error messages are always displayed when invalid */
+}
+
+/* You can add more specific styles for your login page theme */
+.btn-primary {
+    /* Ensure it uses your theme's primary color, e.g., from global styles */
+    background-color: var(--primary-orange, #FF8C00);
+    border-color: var(--primary-orange-dark, #CC7000);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-orange-dark, #CC7000);
+    border-color: var(--primary-orange-dark, #CC7000);
+}
+
+a {
+    color: var(--primary-orange, #FF8C00);
+}
+
+a:hover {
+    color: var(--primary-orange-dark, #CC7000);
+}

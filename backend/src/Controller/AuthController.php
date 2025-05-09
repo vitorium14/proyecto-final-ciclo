@@ -29,6 +29,12 @@ final class AuthController extends AbstractController
         $this->jwtService = $jwtService;
     }
 
+    #[Route('/', name: 'ping', methods: ['GET'])]
+    public function ping(): JsonResponse
+    {
+        return $this->json(['message' => 'Ping successful']);
+    }
+
     /**
      * Handles user login.
      * Expects 'email' and 'password' in JSON request body.
@@ -53,9 +59,9 @@ final class AuthController extends AbstractController
             return $this->json(['message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
         }
 
-        // CHECK IF TOKEN EXISTS
-        $token = $entityManager->getRepository(Token::class)->findOneBy(['user' => $user]);
-        if ($token) {
+        // REVOKE ALL TOKENS FOR THE USER
+        $tokens = $entityManager->getRepository(Token::class)->findBy(['user' => $user, 'revoked' => false]);
+        foreach ($tokens as $token) {
             $token->setRevoked(true);
             $token->setRevokedAt(new \DateTimeImmutable());
             $entityManager->flush();
