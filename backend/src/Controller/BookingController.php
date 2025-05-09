@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\JwtService;
 
+#[Route('/api')]
 final class BookingController extends AbstractController
 {
     private JwtService $jwtService;

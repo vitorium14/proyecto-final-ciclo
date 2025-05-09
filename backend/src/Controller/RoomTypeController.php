@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Image;
 use App\Service\JwtService;
 
+#[Route('/api')]
 final class RoomTypeController extends AbstractController
 {
     private JwtService $jwtService;

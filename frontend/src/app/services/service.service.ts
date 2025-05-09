@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Service as ApiService, Image } from '../models/api.model'; // Renamed Service to ApiService to avoid name collision
+import {
+    Service as ApiService, // Renamed Service to ApiService to avoid name collision
+    ServiceCreationPayload,  // Added
+    ServiceUpdatePayload,     // Added
+    Image
+} from '../models/api.model';
 
 @Injectable({
     providedIn: 'root'
@@ -19,12 +24,12 @@ export class ServiceService {
         return this.http.get<ApiService>(`${this.apiUrl}/${id}`);
     }
 
-    createService(service: Omit<ApiService, 'id' | 'images'> & { images?: Omit<Image, 'id'>[] }): Observable<ApiService> {
-        return this.http.post<ApiService>(this.apiUrl, service);
+    createService(payload: ServiceCreationPayload): Observable<ApiService> {
+        return this.http.post<ApiService>(this.apiUrl, payload);
     }
 
-    updateService(id: number, service: Partial<Omit<ApiService, 'id' | 'images'> & { images?: Omit<Image, 'id'>[] }>): Observable<ApiService> {
-        return this.http.put<ApiService>(`${this.apiUrl}/${id}`, service);
+    updateService(id: number, payload: ServiceUpdatePayload): Observable<ApiService> {
+        return this.http.put<ApiService>(`${this.apiUrl}/${id}`, payload);
     }
 
     deleteService(id: number): Observable<void> {

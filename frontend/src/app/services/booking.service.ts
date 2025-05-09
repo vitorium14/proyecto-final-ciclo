@@ -1,19 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Booking } from '../models/api.model';
-
-// Payload type for creating/updating bookings, using IDs for relations
-export interface BookingPayload {
-    user: number; // User ID
-    services: number[]; // Array of Service IDs
-    checkIn: string; // Format: YYYY-MM-DD HH:MM:SS
-    checkOut: string; // Format: YYYY-MM-DD HH:MM:SS
-    checkedIn?: boolean;
-    checkedOut?: boolean;
-    room: number; // Room ID
-    duration?: number; // This was in the example, but price is backend calculated. Verify if needed.
-}
+import {
+    Booking,
+    BookingCreationPayload,
+    BookingUpdatePayload
+} from '../models/api.model';
 
 @Injectable({
     providedIn: 'root'
@@ -31,12 +23,16 @@ export class BookingService {
         return this.http.get<Booking>(`${this.apiUrl}/${id}`);
     }
 
-    createBooking(bookingData: BookingPayload): Observable<Booking> {
-        return this.http.post<Booking>(this.apiUrl, bookingData);
+    getBookingsByUserId(userId: number): Observable<Booking[]> {
+        return this.http.get<Booking[]>(`${this.apiUrl}/user/${userId}`);
     }
 
-    updateBooking(id: number, bookingData: Partial<BookingPayload>): Observable<Booking> {
-        return this.http.put<Booking>(`${this.apiUrl}/${id}`, bookingData);
+    createBooking(payload: BookingCreationPayload): Observable<Booking> {
+        return this.http.post<Booking>(this.apiUrl, payload);
+    }
+
+    updateBooking(id: number, payload: BookingUpdatePayload): Observable<Booking> {
+        return this.http.put<Booking>(`${this.apiUrl}/${id}`, payload);
     }
 
     deleteBooking(id: number): Observable<void> {

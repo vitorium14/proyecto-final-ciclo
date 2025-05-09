@@ -15,6 +15,7 @@ use App\Entity\Token;
 /**
  * Controller for handling user authentication: login, logout, and registration.
  */
+#[Route('/api')]
 final class AuthController extends AbstractController
 {
     private JwtService $jwtService;

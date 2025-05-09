@@ -1,33 +1,57 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User, UserCreationPayload, UserUpdatePayload } from '../models/api.model';
+import {
+    User,
+    UserCreationPayload,
+    UserUpdatePayload,
+    LoginPayload,
+    LoginResponse,
+    LogoutPayload,
+    LogoutResponse
+} from '../models/api.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
-    private apiUrl = '/api/users'; // Assuming a global proxy is configured to point to the backend base URL
+    // Assuming a global proxy is configured to point to the backend base URL
+    // If /api is a global prefix, these paths are correct.
+    // If not, /login, /register, /logout should be at the root.
+    private authApiUrl = '/api'; // For /login, /register, /logout
+    private usersApiUrl = '/api/users'; // For user management CRUD
 
     constructor(private http: HttpClient) { }
 
+    // Auth Endpoints
+    login(credentials: LoginPayload): Observable<LoginResponse> {
+        return this.http.post<LoginResponse>(`${this.authApiUrl}/login`, credentials);
+    }
+
+    register(userData: UserCreationPayload): Observable<User> { // Renamed from createUser
+        // API doc says POST /register returns the user object with 201 Created
+        return this.http.post<User>(`${this.authApiUrl}/register`, userData);
+    }
+
+    logout(payload: LogoutPayload): Observable<LogoutResponse> {
+        // API doc says POST /logout, expects token in body
+        return this.http.post<LogoutResponse>(`${this.authApiUrl}/logout`, payload);
+    }
+
+    // User Management Endpoints
     getAllUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.apiUrl);
+        return this.http.get<User[]>(this.usersApiUrl);
     }
 
     getUserById(id: number): Observable<User> {
-        return this.http.get<User>(`${this.apiUrl}/${id}`);
+        return this.http.get<User>(`${this.usersApiUrl}/${id}`);
     }
 
-    createUser(user: UserCreationPayload): Observable<User> {
-        return this.http.post<User>(this.apiUrl, user);
-    }
-
-    updateUser(id: number, user: UserUpdatePayload): Observable<User> {
-        return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+    updateUser(id: number, userData: UserUpdatePayload): Observable<User> {
+        return this.http.put<User>(`${this.usersApiUrl}/${id}`, userData);
     }
 
     deleteUser(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${id}`);
+        return this.http.delete<void>(`${this.usersApiUrl}/${id}`);
     }
 } 

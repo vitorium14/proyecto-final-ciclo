@@ -11,6 +11,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\JwtService;
+
+#[Route('/api')]
 final class ServiceController extends AbstractController
 {
     private JwtService $jwtService;

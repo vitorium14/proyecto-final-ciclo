@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Room } from '../models/api.model';
+import { Room, RoomCreationPayload, RoomUpdatePayload } from '../models/api.model';
 
 @Injectable({
     providedIn: 'root'
@@ -19,12 +19,12 @@ export class RoomService {
         return this.http.get<Room>(`${this.apiUrl}/${id}`);
     }
 
-    createRoom(room: Omit<Room, 'id' | 'bookings' | 'type'> & { type: number }): Observable<Room> {
-        return this.http.post<Room>(this.apiUrl, room);
+    createRoom(payload: RoomCreationPayload): Observable<Room> {
+        return this.http.post<Room>(this.apiUrl, payload);
     }
 
-    updateRoom(id: number, room: Partial<Omit<Room, 'id' | 'bookings' | 'type'> & { type: number }>): Observable<Room> {
-        return this.http.put<Room>(`${this.apiUrl}/${id}`, room);
+    updateRoom(id: number, payload: RoomUpdatePayload): Observable<Room> {
+        return this.http.put<Room>(`${this.apiUrl}/${id}`, payload);
     }
 
     deleteRoom(id: number): Observable<void> {
