@@ -10,9 +10,17 @@ use App\Entity\RoomType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\JwtService;
 
 final class RoomController extends AbstractController
 {
+    private JwtService $jwtService;
+
+    public function __construct(JwtService $jwtService)
+    {
+        $this->jwtService = $jwtService;
+    }
+
     // GET ALL ROOMS
     #[Route('/rooms', name: 'get_rooms', methods: ['GET'])]
     public function getRooms(EntityManagerInterface $entityManager): JsonResponse
@@ -34,6 +42,13 @@ final class RoomController extends AbstractController
     public function createRoom(EntityManagerInterface $entityManager, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+
+        // CHECK IF USER IS ADMIN OR EMPLOYEE
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $room = new Room();
         $room->setName($data['name']);
         $room->setType($entityManager->getRepository(RoomType::class)->find($data['type']));
@@ -51,6 +66,13 @@ final class RoomController extends AbstractController
     public function updateRoom(EntityManagerInterface $entityManager, Request $request, int $id): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+
+        // CHECK IF USER IS ADMIN OR EMPLOYEE
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $room = $entityManager->getRepository(Room::class)->find($id);
         $room->setName($data['name']);
         $room->setType($entityManager->getRepository(RoomType::class)->find($data['type']));
@@ -64,8 +86,14 @@ final class RoomController extends AbstractController
 
     // DELETE ROOM
     #[Route('/rooms/{id}', name: 'delete_room', methods: ['DELETE'])]
-    public function deleteRoom(EntityManagerInterface $entityManager, int $id): JsonResponse
+    public function deleteRoom(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
     {
+        // CHECK IF USER IS ADMIN OR EMPLOYEE
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $room = $entityManager->getRepository(Room::class)->find($id);
         $entityManager->remove($room);
         $entityManager->flush();

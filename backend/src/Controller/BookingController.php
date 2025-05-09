@@ -12,23 +12,63 @@ use App\Entity\Room;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\JwtService;
 
 final class BookingController extends AbstractController
 {
+    private JwtService $jwtService;
+
+    public function __construct(JwtService $jwtService)
+    {
+        $this->jwtService = $jwtService;
+    }
     // GET ALL BOOKINGS
     #[Route('/bookings', name: 'get_bookings', methods: ['GET'])]
-    public function getBookings(EntityManagerInterface $entityManager): JsonResponse
+    public function getBookings(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
+        // CHECK IF USER IS ADMIN OR EMPLOYEE
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $bookings = $entityManager->getRepository(Booking::class)->findAll();
         return $this->json($bookings, Response::HTTP_OK, [], ['groups' => ['booking']]);
     }
 
     // GET BOOKING BY ID
     #[Route('/bookings/{id}', name: 'get_booking_by_id', methods: ['GET'])]
-    public function getBookingById(EntityManagerInterface $entityManager, int $id): JsonResponse
+    public function getBookingById(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $booking = $entityManager->getRepository(Booking::class)->find($id);
+
+        // CHECK IF USER IS ADMIN OR EMPLOYEE OR USER BOOKING
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin && $booking->getUser()->getId() !== $this->jwtService->getUserId($request->headers->get('Authorization'), $entityManager)) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
         return $this->json($booking, Response::HTTP_OK, [], ['groups' => ['booking']]);
+    }
+
+    // GET BOOKINGS BY USER ID
+    #[Route('/bookings/user/{id}', name: 'get_bookings_by_user_id', methods: ['GET'])]
+    public function getBookingsByUserId(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
+    {
+
+        $bookings = $entityManager->getRepository(Booking::class)->findBy(['user' => $id]);
+
+        if (!$bookings) {
+            return $this->json([], Response::HTTP_OK);
+        }
+
+        // CHECK IF USER IS ADMIN OR EMPLOYEE OR USER BOOKING
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin && $bookings[0]->getUser()->getId() !== $this->jwtService->getUserId($request->headers->get('Authorization'), $entityManager)) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return $this->json($bookings, Response::HTTP_OK, [], ['groups' => ['booking']]);
     }
 
     // CREATE BOOKING

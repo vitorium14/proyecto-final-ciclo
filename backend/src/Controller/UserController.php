@@ -9,47 +9,42 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Service\JwtService;
 
 final class UserController extends AbstractController
 {
+    private JwtService $jwtService;
+
+    public function __construct(JwtService $jwtService)
+    {
+        $this->jwtService = $jwtService;
+    }
     // GET ALL USERS
     #[Route('/users', name: 'get_users', methods: ['GET'])]
-    public function getUsers(EntityManagerInterface $entityManager): JsonResponse
+    public function getUsers(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
+        // CHECK IF USER IS ADMIN
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $users = $entityManager->getRepository(User::class)->findAll();
         return $this->json($users, Response::HTTP_OK, [], ['groups' => ['user']]);
     }
 
     // GET USER BY ID
     #[Route('/users/{id}', name: 'get_user_by_id', methods: ['GET'])]
-    public function getUserById(EntityManagerInterface $entityManager, int $id): JsonResponse
+    public function getUserById(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $user = $entityManager->getRepository(User::class)->find($id);
-        return $this->json($user, Response::HTTP_OK, [], ['groups' => ['user']]);
-    }
-
-    // CREATE USER
-    #[Route('/users', name: 'create_user', methods: ['POST'])]
-    public function createUser(EntityManagerInterface $entityManager, Request $request): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-        $user = new User();
-
-        $user->setName($data['name']);
-        $user->setSurnames($data['surnames']);
-        $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
-
-        // ROLE MUST BE (ADMIN,EMPLOYEE,CLIENT)
-        if (!in_array($data['role'], ['ADMIN', 'EMPLOYEE', 'CLIENT'])) {
-            return $this->json(['error' => 'Invalid role. Must be ADMIN, EMPLOYEE or CLIENT.'], Response::HTTP_BAD_REQUEST);
+        // CHECK IF USER IS ADMIN OR USER
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin && $user->getId() !== $this->jwtService->getUserId($request->headers->get('Authorization'), $entityManager)) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
-        $user->setRole($data['role']);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        return $this->json($user, Response::HTTP_CREATED, [], ['groups' => ['user']]);
+        return $this->json($user, Response::HTTP_OK, [], ['groups' => ['user']]);
     }
 
     // UPDATE USER
@@ -59,16 +54,26 @@ final class UserController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $user = $entityManager->getRepository(User::class)->find($id);
 
+        // CHECK IF USER IS ADMIN OR USER
+        $isAdmin = $this->jwtService->checkAdmin($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin && $user->getId() !== $this->jwtService->getUserId($request->headers->get('Authorization'), $entityManager)) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $user->setName($data['name']);
         $user->setSurnames($data['surnames']);
         $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
+        $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
         
         // ROLE MUST BE (ADMIN,EMPLOYEE,CLIENT)
         if (!in_array($data['role'], ['ADMIN', 'EMPLOYEE', 'CLIENT'])) {
             return $this->json(['error' => 'Invalid role. Must be ADMIN, EMPLOYEE or CLIENT.'], Response::HTTP_BAD_REQUEST);
         }
         $user->setRole($data['role']);
+
+        if ($data['role'] != 'CLIENT' && !$isAdmin) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
 
         $entityManager->flush();
 
@@ -77,8 +82,14 @@ final class UserController extends AbstractController
 
     // DELETE USER
     #[Route('/users/{id}', name: 'delete_user', methods: ['DELETE'])]
-    public function deleteUser(EntityManagerInterface $entityManager, int $id): JsonResponse
+    public function deleteUser(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
     {
+        // CHECK IF USER IS ADMIN
+        $isAdmin = $this->jwtService->checkEmployee($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $user = $entityManager->getRepository(User::class)->find($id);
         $entityManager->remove($user);
         $entityManager->flush();
