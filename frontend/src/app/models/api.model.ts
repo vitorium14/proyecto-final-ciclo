@@ -6,9 +6,26 @@ export interface User {
     name: string;
     surnames: string;
     email: string;
-    password: string;
     role: string;
     bookings: Booking[];
+}
+
+// Payload for creating a User
+export interface UserCreationPayload {
+    name: string;
+    surnames: string;
+    email: string;
+    password: string;
+    role: string;
+}
+
+// Payload for updating a User
+export interface UserUpdatePayload {
+    name?: string;
+    surnames?: string;
+    email?: string;
+    password?: string;
+    role?: string;
 }
 
 // Image Model
@@ -22,7 +39,7 @@ export interface Service {
     id: number;
     name: string;
     description?: string;
-    price?: number;
+    price?: string;
     duration?: number;
     images: Image[];
 }
@@ -32,9 +49,9 @@ export interface RoomType {
     id: number;
     name: string;
     description: string;
-    price: number;
+    price: string;
     capacity: number;
-    amenities: string;
+    amenities: string[];
     images: Image[];
     rooms: Room[];
 }
@@ -54,9 +71,9 @@ export interface Booking {
     id: number;
     user: User;
     services: Service[];
-    price: number;
-    checkIn: Date;
-    checkOut: Date;
+    price: string;
+    checkIn: string;
+    checkOut: string;
     checkedIn: boolean;
     checkedOut: boolean;
     room: Room;

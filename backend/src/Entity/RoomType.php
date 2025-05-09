@@ -34,7 +34,7 @@ class RoomType
     #[Groups(['room_type'])]
     private ?int $capacity = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['room_type'])]
     private ?string $amenities = null;
 
@@ -111,14 +111,36 @@ class RoomType
         return $this;
     }
 
-    public function getAmenities(): ?string
+    /**
+     * @return string[]
+     */
+    public function getAmenities(): array
     {
-        return $this->amenities;
+        if (empty($this->amenities)) {
+            return [];
+        }
+        // Split by comma, trim whitespace from each item, and filter out empty strings if any result from multiple commas
+        return array_filter(array_map('trim', explode(',', $this->amenities)), function ($value) {
+            return $value !== '';
+        });
     }
 
-    public function setAmenities(string $amenities): static
+    /**
+     * @param string[]|null $amenities
+     */
+    public function setAmenities(?array $amenities): static
     {
-        $this->amenities = $amenities;
+        if (empty($amenities)) {
+            $this->amenities = null;
+        } else {
+            // Join by comma and a space for readability in the DB, ensure no empty strings are joined if array was filtered
+            $this->amenities = implode(', ', array_filter($amenities, function ($value) {
+                return !empty(trim($value));
+            }));
+            if (empty($this->amenities)) { // If implode results in an empty string (e.g. array of empty strings)
+                $this->amenities = null;
+            }
+        }
 
         return $this;
     }

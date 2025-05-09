@@ -73,23 +73,71 @@ final class RoomController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
-    // AVAIABLE ROOMS BY DATE RANGE
+    // AVAILABLE ROOMS BY DATE RANGE
     #[Route('/rooms/available', name: 'get_available_rooms', methods: ['GET'])]
     public function getAvailableRooms(EntityManagerInterface $entityManager, Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $startDate = $data['startDate'];
-        $endDate = $data['endDate'];
+        $startDateStr = $request->query->get('startDate');
+        $endDateStr = $request->query->get('endDate');
+
+        if (!$startDateStr || !$endDateStr) {
+            return $this->json([
+                'status_code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'Los parámetros query startDate y endDate son requeridos.'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Basic validation for date format (YYYY-MM-DD). More robust validation could be added.
+        $dateFormat = 'Y-m-d';
+        $startDateObj = \DateTime::createFromFormat($dateFormat, $startDateStr);
+        $endDateObj = \DateTime::createFromFormat($dateFormat, $endDateStr);
+
+        if (
+            !$startDateObj || $startDateObj->format($dateFormat) !== $startDateStr ||
+            !$endDateObj || $endDateObj->format($dateFormat) !== $endDateStr
+        ) {
+            return $this->json([
+                'status_code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'Formato de fecha inválido para startDate o endDate. Use YYYY-MM-DD.'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if ($startDateObj > $endDateObj) {
+            return $this->json([
+                'status_code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'startDate no puede ser posterior a endDate.'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // It's better to work with DateTime objects for comparison
+        // Assuming $booking->getCheckIn() and $booking->getCheckOut() return DateTime objects or strings that can be reliably converted.
 
         $rooms = $entityManager->getRepository(Room::class)->findAll();
         $availableRooms = [];
 
         foreach ($rooms as $room) {
-            $bookings = $room->getBookings();
             $isAvailable = true;
-            foreach ($bookings as $booking) {
-                if ($booking->getCheckIn() <= $endDate && $booking->getCheckOut() >= $startDate) {
+            foreach ($room->getBookings() as $booking) {
+                // Ensure booking dates are also DateTime objects for accurate comparison
+                $bookingCheckIn = $booking->getCheckIn(); // Assuming this is already DateTime or YYYY-MM-DD string
+                $bookingCheckOut = $booking->getCheckOut(); // Assuming this is already DateTime or YYYY-MM-DD string
+
+                // If they are strings, convert them. For this example, let's assume they are strings and convert.
+                // In a real scenario, entities should consistently return DateTime objects for date fields.
+                $_bookingCheckInDate = ($bookingCheckIn instanceof \DateTimeInterface) ? $bookingCheckIn : \DateTime::createFromFormat($dateFormat, (string) $bookingCheckIn);
+                $_bookingCheckOutDate = ($bookingCheckOut instanceof \DateTimeInterface) ? $bookingCheckOut : \DateTime::createFromFormat($dateFormat, (string) $bookingCheckOut);
+
+                if (!$_bookingCheckInDate || !$_bookingCheckOutDate) {
+                    // Handle error or skip this booking if dates are invalid
+                    // Potentially log this issue
+                    continue;
+                }
+
+                // The room is unavailable if a booking overlaps with the requested range.
+                // Overlap condition: (BookingStart < RequestedEnd) and (BookingEnd > RequestedStart)
+                if ($_bookingCheckInDate < $endDateObj && $_bookingCheckOutDate > $startDateObj) {
                     $isAvailable = false;
+                    break; // Room is not available, no need to check other bookings for this room
                 }
             }
             if ($isAvailable) {

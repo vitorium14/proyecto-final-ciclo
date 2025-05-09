@@ -41,7 +41,11 @@ final class BookingController extends AbstractController
 
         foreach ($data['services'] as $service) {
             $serviceEntity = $entityManager->getRepository(Service::class)->find($service);
-            $booking->addService($serviceEntity);
+            if ($serviceEntity) {
+                $booking->addService($serviceEntity);
+            }else{
+                return $this->json(['error' => 'Service not found'], Response::HTTP_BAD_REQUEST);
+            }
         }
 
         $booking->setCheckIn($data['checkIn']);
@@ -52,8 +56,8 @@ final class BookingController extends AbstractController
 
         // Calculate price based on services & stay duration * room type price
         $price = 0;
-        foreach ($data['services'] as $service) {
-            $price += $service['price'];
+        foreach ($booking->getServices() as $service) {
+            $price += $service->getPrice();
         }
 
         $room = $entityManager->getRepository(Room::class)->find($data['room']);
@@ -76,9 +80,15 @@ final class BookingController extends AbstractController
 
         $booking->setUser($entityManager->getRepository(User::class)->find($data['user']));
 
+        $booking->getServices()->clear();
+        
         foreach ($data['services'] as $service) {
             $serviceEntity = $entityManager->getRepository(Service::class)->find($service);
-            $booking->addService($serviceEntity);
+            if ($serviceEntity) {
+                $booking->addService($serviceEntity);
+            }else{
+                return $this->json(['error' => 'Service not found'], Response::HTTP_BAD_REQUEST);
+            }
         }
 
         $booking->setCheckIn($data['checkIn']);
@@ -89,8 +99,8 @@ final class BookingController extends AbstractController
 
         // Calculate price based on services & stay duration * room type price
         $price = 0;
-        foreach ($data['services'] as $service) {
-            $price += $service['price'];
+        foreach ($booking->getServices() as $service) {
+            $price += $service->getPrice();
         }
 
         $room = $entityManager->getRepository(Room::class)->find($data['room']);
