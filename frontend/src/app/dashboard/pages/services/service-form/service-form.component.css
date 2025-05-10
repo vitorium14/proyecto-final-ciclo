@@ -1,0 +1,36 @@
+.card {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #007bff !important;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Custom styling for file input */
+.input-group-text {
+    cursor: pointer;
+}
+
+/* Image preview container */
+.img-thumbnail {
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.img-thumbnail:hover {
+    transform: scale(1.05);
+} 

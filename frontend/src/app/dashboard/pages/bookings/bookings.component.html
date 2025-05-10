@@ -1,0 +1,78 @@
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Booking Management</h2>
+        <button class="btn btn-success" routerLink="./create">
+            <i class="bi bi-plus-circle-fill me-2"></i>Create Booking
+        </button>
+    </div>
+
+    <div *ngIf="bookings.length === 0; else bookingsTable" class="alert alert-info">
+        No bookings found. Please create a new booking.
+    </div>
+
+    <ng-template #bookingsTable>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Guest</th>
+                        <th scope="col">Room</th>
+                        <th scope="col">Check In</th>
+                        <th scope="col">Check Out</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Services</th>
+                        <th scope="col">Price</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let booking of bookings; let i = index">
+                        <th scope="row">{{ booking.id }}</th>
+                        <td>{{ booking.user.name }} {{ booking.user.surnames }}</td>
+                        <td>{{ booking.room.name }} ({{ booking.room.type.name }})</td>
+                        <td>{{ formatDate(booking.checkIn) }}</td>
+                        <td>{{ formatDate(booking.checkOut) }}</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" 
+                                        [id]="'checkedIn' + booking.id" 
+                                        [checked]="booking.checkedIn"
+                                        (change)="toggleCheckedIn(booking)">
+                                    <label class="form-check-label" [for]="'checkedIn' + booking.id">Checked In</label>
+                                </div>
+                                <div class="form-check form-switch ms-2">
+                                    <input class="form-check-input" type="checkbox" 
+                                        [id]="'checkedOut' + booking.id" 
+                                        [checked]="booking.checkedOut"
+                                        (change)="toggleCheckedOut(booking)">
+                                    <label class="form-check-label" [for]="'checkedOut' + booking.id">Checked Out</label>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-info me-1" *ngFor="let service of booking.services">
+                                {{ service.name }}
+                            </span>
+                            <span *ngIf="booking.services.length === 0">No services</span>
+                        </td>
+                        <td>{{ booking.price }}€</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-primary me-2" [routerLink]="['./edit', booking.id]">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" (click)="deleteBooking(booking.id)">
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-template>
+
+    <!-- TODO: Add pagination if the booking list can be long -->
+    <!-- TODO: Add modals for create/edit/delete confirmation -->
+
+</div> 

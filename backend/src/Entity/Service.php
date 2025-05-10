@@ -15,30 +15,30 @@ class Service
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['service'])]
+    #[Groups(['service', 'booking'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['service'])]
+    #[Groups(['service', 'booking'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['service'])]
+    #[Groups(['service', 'booking'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    #[Groups(['service'])]
+    #[Groups(['service', 'booking'])]
     private ?string $price = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['service'])]
+    #[Groups(['service', 'booking'])]
     private ?int $duration = null;
 
     /**
      * @var Collection<int, Image>
      */
     #[ORM\ManyToMany(targetEntity: Image::class, cascade: ['persist'])]
-    #[Groups(['service'])]
+    #[Groups(['service', 'booking'])]
     private Collection $images;
 
     public function __construct()

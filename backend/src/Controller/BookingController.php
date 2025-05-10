@@ -89,8 +89,8 @@ final class BookingController extends AbstractController
             }
         }
 
-        $booking->setCheckIn($data['checkIn']);
-        $booking->setCheckOut($data['checkOut']);
+        $booking->setCheckIn(new \DateTime($data['checkIn']));
+        $booking->setCheckOut(new \DateTime($data['checkOut']));
         $booking->setCheckedIn($data['checkedIn']);
         $booking->setCheckedOut($data['checkedOut']);
         $booking->setRoom($entityManager->getRepository(Room::class)->find($data['room']));
@@ -132,8 +132,8 @@ final class BookingController extends AbstractController
             }
         }
 
-        $booking->setCheckIn($data['checkIn']);
-        $booking->setCheckOut($data['checkOut']);
+        $booking->setCheckIn(new \DateTime($data['checkIn']));
+        $booking->setCheckOut(new \DateTime($data['checkOut']));
         $booking->setCheckedIn($data['checkedIn']);
         $booking->setCheckedOut($data['checkedOut']);
         $booking->setRoom($entityManager->getRepository(Room::class)->find($data['room']));

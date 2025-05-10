@@ -15,34 +15,34 @@ class RoomType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['room_type', 'room'])]
+    #[Groups(['room_type', 'room', 'booking'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['room_type', 'room'])]
+    #[Groups(['room_type', 'room', 'booking'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['room_type', 'room'])]
+    #[Groups(['room_type', 'room', 'booking'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    #[Groups(['room_type', 'room'])]
+    #[Groups(['room_type', 'room', 'booking'])]
     private ?string $price = null;
 
     #[ORM\Column]
-    #[Groups(['room_type', 'room'])]
+    #[Groups(['room_type', 'room', 'booking'])]
     private ?int $capacity = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['room_type', 'room'])]
+    #[Groups(['room_type', 'room', 'booking'])]
     private ?string $amenities = null;
 
     /**
      * @var Collection<int, Image>
      */
     #[ORM\ManyToMany(targetEntity: Image::class, cascade: ['persist'])]
-    #[Groups(['room_type', 'room'])]
+    #[Groups(['room_type', 'room', 'booking'])]
     private Collection $images;
 
     /**

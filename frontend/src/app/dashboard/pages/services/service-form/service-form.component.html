@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Service</h4>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+                <!-- Service Name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Service Name</label>
+                    <input type="text" class="form-control" id="name" formControlName="name" placeholder="Enter service name">
+                    <div *ngIf="serviceForm.get('name')?.invalid && (serviceForm.get('name')?.dirty || serviceForm.get('name')?.touched)" class="text-danger mt-1">
+                        <small *ngIf="serviceForm.get('name')?.errors?.['required']">Name is required</small>
+                        <small *ngIf="serviceForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters</small>
+                        <small *ngIf="serviceForm.get('name')?.errors?.['maxlength']">Name cannot exceed 100 characters</small>
+                    </div>
+                </div>
+
+                <!-- Service Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" formControlName="description" rows="4" placeholder="Enter service description"></textarea>
+                    <div *ngIf="serviceForm.get('description')?.invalid && (serviceForm.get('description')?.dirty || serviceForm.get('description')?.touched)" class="text-danger mt-1">
+                        <small *ngIf="serviceForm.get('description')?.errors?.['required']">Description is required</small>
+                        <small *ngIf="serviceForm.get('description')?.errors?.['minlength']">Description must be at least 10 characters</small>
+                    </div>
+                </div>
+
+                <!-- Service Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price (€)</label>
+                    <input type="text" class="form-control" id="price" formControlName="price" placeholder="Enter price (e.g. 99.99)">
+                    <div *ngIf="serviceForm.get('price')?.invalid && (serviceForm.get('price')?.dirty || serviceForm.get('price')?.touched)" class="text-danger mt-1">
+                        <small *ngIf="serviceForm.get('price')?.errors?.['required']">Price is required</small>
+                        <small *ngIf="serviceForm.get('price')?.errors?.['pattern']">Please enter a valid price (e.g. 99.99)</small>
+                    </div>
+                </div>
+
+                <!-- Service Duration -->
+                <div class="mb-3">
+                    <label for="duration" class="form-label">Duration (minutes, optional)</label>
+                    <input type="number" class="form-control" id="duration" formControlName="duration" placeholder="Enter duration in minutes (optional)">
+                </div>
+
+                <!-- Service Images -->
+                <div class="mb-4">
+                    <label class="form-label">Service Images</label>
+                    <div class="input-group mb-3">
+                        <input type="file" class="form-control" id="images" accept="image/*" (change)="onFileChange($event)">
+                        <label class="input-group-text" for="images">Upload</label>
+                    </div>
+                    
+                    <!-- Preview Images -->
+                    <div class="d-flex flex-wrap gap-3 mt-3" *ngIf="selectedImages.length > 0">
+                        <div *ngFor="let image of selectedImages; let i = index" class="position-relative" style="width: 150px;">
+                            <img [src]="image" class="img-thumbnail" alt="Service Image">
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" 
+                                (click)="removeImage(i)" title="Remove image">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Buttons -->
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" routerLink="/dashboard/services">
+                        <i class="bi bi-arrow-left me-1"></i> Back
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="serviceForm.invalid">
+                        <i class="bi bi-save me-1"></i> {{ isEditMode ? 'Update' : 'Create' }} Service
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

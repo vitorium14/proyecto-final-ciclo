@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Booking</h4>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+                <!-- Guest Selection -->
+                <div class="mb-3">
+                    <label for="user" class="form-label">Guest</label>
+                    <select class="form-select" id="user" formControlName="user">
+                        <option value="" disabled>Select a guest</option>
+                        <option *ngFor="let user of users" [value]="user.id">
+                            {{ user.name }} {{ user.surnames }} ({{ user.email }})
+                        </option>
+                    </select>
+                    <div *ngIf="bookingForm.get('user')?.invalid && (bookingForm.get('user')?.dirty || bookingForm.get('user')?.touched)" class="text-danger mt-1">
+                        <small *ngIf="bookingForm.get('user')?.errors?.['required']">Guest is required</small>
+                    </div>
+                </div>
+
+                <!-- Check-in and Check-out Dates -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="checkIn" class="form-label">Check-in Date/Time</label>
+                            <input type="datetime-local" class="form-control" id="checkIn" formControlName="checkIn">
+                            <div *ngIf="bookingForm.get('checkIn')?.invalid && (bookingForm.get('checkIn')?.dirty || bookingForm.get('checkIn')?.touched)" class="text-danger mt-1">
+                                <small *ngIf="bookingForm.get('checkIn')?.errors?.['required']">Check-in date/time is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="checkOut" class="form-label">Check-out Date/Time</label>
+                            <input type="datetime-local" class="form-control" id="checkOut" formControlName="checkOut">
+                            <div *ngIf="bookingForm.get('checkOut')?.invalid && (bookingForm.get('checkOut')?.dirty || bookingForm.get('checkOut')?.touched)" class="text-danger mt-1">
+                                <small *ngIf="bookingForm.get('checkOut')?.errors?.['required']">Check-out date/time is required</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Selection -->
+                <div class="mb-3">
+                    <label for="room" class="form-label">Room</label>
+                    <select class="form-select" id="room" formControlName="room">
+                        <option value="" disabled>Select a room</option>
+                        <option *ngFor="let room of availableRooms" [value]="room.id">
+                            {{ room.name }} ({{ room.type.name }}) - {{ room.type.price }}€ per night
+                        </option>
+                    </select>
+                    <div *ngIf="bookingForm.get('room')?.invalid && (bookingForm.get('room')?.dirty || bookingForm.get('room')?.touched)" class="text-danger mt-1">
+                        <small *ngIf="bookingForm.get('room')?.errors?.['required']">Room is required</small>
+                    </div>
+                    <small class="form-text text-muted">Only available rooms for the selected dates are shown.</small>
+                </div>
+
+                <!-- Services Selection -->
+                <div class="mb-4">
+                    <label class="form-label">Additional Services</label>
+                    <div class="services-container border rounded p-3 bg-light">
+                        <div *ngIf="services.length === 0" class="text-muted">No services available</div>
+                        <div class="row g-3" *ngIf="services.length > 0">
+                            <div class="col-md-4" *ngFor="let service of services">
+                                <div class="card h-100" 
+                                    [class.bg-primary]="isServiceSelected(service.id)" 
+                                    [class.text-white]="isServiceSelected(service.id)"
+                                    (click)="toggleService(service)">
+                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <h6 class="card-title mb-1">{{ service.name }}</h6>
+                                            <p class="card-text small mb-0">{{ service.price }}€</p>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" 
+                                                [id]="'service-' + service.id" 
+                                                [checked]="isServiceSelected(service.id)"
+                                                (click)="$event.stopPropagation()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="selectedServices.length > 0" class="mt-3">
+                            <p class="mb-1">Selected Services:</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span *ngFor="let service of selectedServices" class="badge bg-secondary p-2">
+                                    {{ service.name }} ({{ service.price }}€)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Check-in and Check-out Status -->
+                <div class="mb-4 p-3 border rounded bg-light">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="checkedIn" formControlName="checkedIn">
+                                <label class="form-check-label" for="checkedIn">Guest has checked in</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="checkedOut" formControlName="checkedOut">
+                                <label class="form-check-label" for="checkedOut">Guest has checked out</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Buttons -->
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" routerLink="/dashboard/bookings">
+                        <i class="bi bi-arrow-left me-1"></i> Back
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="bookingForm.invalid">
+                        <i class="bi bi-save me-1"></i> {{ isEditMode ? 'Update' : 'Create' }} Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

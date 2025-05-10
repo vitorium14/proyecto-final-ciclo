@@ -15,24 +15,24 @@ class Room
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['room'])]
+    #[Groups(['room', 'booking'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['room'])]
+    #[Groups(['room', 'booking'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'rooms')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['room'])]
+    #[Groups(['room', 'booking'])]
     private ?RoomType $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['room'])]
+    #[Groups(['room', 'booking'])]
     private ?string $status = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['room'])]
+    #[Groups(['room', 'booking'])]
     private ?string $observations = null;
 
     /**

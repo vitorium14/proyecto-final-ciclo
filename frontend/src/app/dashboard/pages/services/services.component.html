@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Service Management</h2>
+        <button class="btn btn-success" routerLink="./create">
+            <i class="bi bi-plus-circle-fill me-2"></i>Create Service
+        </button>
+    </div>
+
+    <div *ngIf="services.length === 0; else servicesTable" class="alert alert-info">
+        No services found. Please create a new service.
+    </div>
+
+    <ng-template #servicesTable>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Images</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let service of services; let i = index">
+                        <th scope="row">{{ service.id }}</th>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.description }}</td>
+                        <td>{{ service.price }}</td>
+                        <td>{{ service.duration || 'N/A' }}</td>
+                        <td>{{ service.images?.length || 0 }} images</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-primary me-2" [routerLink]="['./edit', service.id]">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" (click)="deleteService(service.id)">
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-template>
+
+    <!-- TODO: Add pagination if the service list can be long -->
+    <!-- TODO: Add modals for create/edit/delete confirmation -->
+
+</div> 
