@@ -1,0 +1,146 @@
+<p>services works!</p>
+
+<!-- Hero Section -->
+<section class="services-hero-section text-center text-white">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 animate__animated animate__fadeIn">
+                <h1 class="page-title">Nuestros Servicios</h1>
+                <p class="page-subtitle lead">Descubre todas las experiencias exclusivas que hemos preparado para ti</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Loading Indicator -->
+<div *ngIf="loading" class="container mt-5 mb-5 text-center">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Cargando servicios...</p>
+</div>
+
+<!-- Error Message -->
+<div *ngIf="error" class="container mt-5 mb-5">
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+</div>
+
+<!-- Service Categories Section -->
+<section *ngIf="!loading && !error" class="service-categories py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">CATEGORÍAS</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Experiencias a tu Alcance</h2>
+                <p class="section-subtitle lead animate__animated animate__fadeIn">Navega por nuestras categorías de servicios para encontrar lo que buscas</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="category-pills animate__animated animate__fadeIn">
+                    <button class="category-pill active" data-target="all">Todos</button>
+                    <button class="category-pill" data-target="wellness">Bienestar</button>
+                    <button class="category-pill" data-target="gastronomy">Gastronomía</button>
+                    <button class="category-pill" data-target="entertainment">Entretenimiento</button>
+                    <button class="category-pill" data-target="business">Negocios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Services Section -->
+<section *ngIf="!loading && !error" class="main-services py-5">
+    <div class="container">
+        <!-- No Services Message -->
+        <div *ngIf="services.length === 0" class="row">
+            <div class="col-12 text-center">
+                <p>No hay servicios disponibles en este momento.</p>
+            </div>
+        </div>
+
+        <!-- Dynamic Services -->
+        <div *ngIf="services.length > 0" class="row">
+            <div class="col-md-12">
+                <h3 class="service-group-title animate__animated animate__fadeIn">Todos los Servicios</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div *ngFor="let service of services" class="col-lg-4 col-md-6 mb-4">
+                <div class="service-card animate__animated animate__fadeInUp">
+                    <div class="service-image">
+                        <img [src]="service.images && service.images.length > 0 ? service.images[0].image : 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'" [alt]="service.name" class="img-fluid">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-icon">
+                            <i class="bi bi-star"></i>
+                        </div>
+                        <h4>{{ service.name }}</h4>
+                        <p>{{ service.description }}</p>
+                        <div class="service-details">
+                            <span *ngIf="service.duration"><i class="bi bi-clock"></i> {{ service.duration }} minutos</span>
+                            <span><i class="bi bi-tag"></i> {{ service.price | currency:'EUR' }}</span>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary">Reservar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">TESTIMONIOS</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Experiencias de Nuestros Huéspedes</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="testimonial-carousel animate__animated animate__fadeIn">
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">"El spa es simplemente maravilloso. Los tratamientos son de primera categoría y el personal es increíblemente atento. Fue la parte más relajante de mis vacaciones."</p>
+                            <div class="testimonial-author">
+                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Laura García" class="testimonial-avatar">
+                                <div>
+                                    <h4>Laura García</h4>
+                                    <div class="testimonial-rating">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section text-center text-white py-5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 animate__animated animate__fadeIn">
+                <h2 class="cta-title">¿Listo para disfrutar de una experiencia única?</h2>
+                <p class="cta-subtitle lead">
+                    Reserva tu estancia ahora y añade nuestros servicios premium para hacer de tu visita algo inolvidable.
+                </p>
+                <a href="#" class="btn btn-primary btn-lg cta-button">Reservar Ahora</a>
+                <a href="#" class="btn btn-outline-light btn-lg cta-button ms-3">Contactar</a>
+            </div>
+        </div>
+    </div>
+</section>

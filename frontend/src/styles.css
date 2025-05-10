@@ -5,6 +5,17 @@
 
 :root {
     /* Primary colors */
+    --primary-color: #FF8C00;
+    --secondary-color: #4682B4;
+    --dark-color: #333333;
+    --gray-700: #6c757d;
+    --gray-600: #6c757d;
+    
+    /* RGB versions for opacity */
+    --primary-rgb: 255, 140, 0;
+    --secondary-rgb: 70, 130, 180;
+    
+    /* Primary colors with old names (for compatibility) */
     --primary-orange: #FF8C00;
     --primary-orange-light: #FFA500;
     --primary-orange-dark: #CC7000;
@@ -62,8 +73,8 @@
     --transition-slow: 0.5s ease;
     
     /* Bootstrap semantic colors override */
-    --bs-primary: var(--primary-orange);
-    --bs-secondary: var(--accent-color);
+    --bs-primary: var(--primary-color);
+    --bs-secondary: var(--secondary-color);
     --bs-success: var(--success-color);
     --bs-info: var(--info-color);
     --bs-warning: var(--warning-color);

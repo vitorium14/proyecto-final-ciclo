@@ -6,93 +6,214 @@
     </div>
 </div>
 
-<!-- Hero Section -->
-<section class="hero-section text-center">
+<!-- Hero Section with fullscreen background image and overlay -->
+<section class="hero-section text-white text-center">
+    <div class="overlay"></div>
     <div class="container">
-        <h1 class="hero-title display-3">Welcome to <span class="highlight">The Wanderer's Rest</span></h1>
-        <p class="hero-subtitle lead">
-            Your adventure starts here. Discover comfortable stays, vibrant social spaces, and an unbeatable location.
-        </p>
-        <a routerLink="/rooms" class="btn btn-primary btn-lg hero-cta-button">View Our Rooms</a>
-        <a routerLink="/booking" class="btn btn-outline-secondary btn-lg hero-cta-button ms-2">Book Your Stay</a>
+        <div class="row align-items-center vh-100">
+            <div class="col-md-10 mx-auto">
+                <h1 class="hero-title display-2 animate__animated animate__fadeIn">Bienvenido a <span class="highlight">Hotel Paraíso</span></h1>
+                <p class="hero-subtitle lead animate__animated animate__fadeIn animate__delay-1s">
+                    Descubre la combinación perfecta de lujo, confort y naturaleza
+                </p>
+                <div class="animate__animated animate__fadeIn animate__delay-2s">
+                    <a routerLink="/rooms" class="btn btn-primary btn-lg hero-cta-button">Ver Habitaciones</a>
+                    <a routerLink="/services" class="btn btn-outline-light btn-lg hero-cta-button ms-3">Explorar Servicios</a>
+                </div>
+                <div class="scroll-indicator animate__animated animate__fadeIn animate__delay-3s">
+                    <span>Descubre más</span>
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 <!-- Features Overview Section -->
-<section class="features-overview-section">
+<section class="features-overview-section py-5">
     <div class="container">
-        <div class="row text-center">
+        <div class="row text-center mb-5">
             <div class="col-md-12">
-                <h2 class="section-title">Experience Our Hostel</h2>
-                <p class="section-subtitle lead">More than just a bed, it's a community.</p>
+                <span class="section-badge animate__animated animate__fadeIn">NUESTRO HOTEL</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Experiencia Inolvidable</h2>
+                <p class="section-subtitle lead animate__animated animate__fadeIn">Lujo y confort en cada detalle.</p>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card">
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-1s">
                     <div class="feature-icon">
-                        <i class="bi bi-moon-stars-fill"></i> <!-- Icon for Comfortable Rooms -->
+                        <i class="bi bi-star-fill"></i>
                     </div>
-                    <h3 class="feature-title">Comfortable & Affordable</h3>
-                    <p class="feature-description">Relax in our clean and cozy rooms, designed for the modern traveler
-                        on a budget.</p>
+                    <h3 class="feature-title">Servicio de Excelencia</h3>
+                    <p class="feature-description">Disfruta de una atención personalizada las 24 horas para hacer tu estancia perfecta.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card">
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-2s">
                     <div class="feature-icon">
-                        <i class="bi bi-people-fill"></i> <!-- Icon for Vibrant Common Areas -->
+                        <i class="bi bi-geo-alt-fill"></i>
                     </div>
-                    <h3 class="feature-title">Vibrant Common Areas</h3>
-                    <p class="feature-description">Connect with fellow travelers in our lively lounge, kitchen, and
-                        outdoor spaces.</p>
+                    <h3 class="feature-title">Ubicación Privilegiada</h3>
+                    <p class="feature-description">A pocos minutos de las principales atracciones y con vistas espectaculares.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-card">
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-3s">
                     <div class="feature-icon">
-                        <i class="bi bi-geo-alt-fill"></i> <!-- Icon for Central Location -->
+                        <i class="bi bi-cup-hot-fill"></i>
                     </div>
-                    <h3 class="feature-title">Prime Location</h3>
-                    <p class="feature-description">Explore the city with ease. We're steps away from top attractions and
-                        transport links.</p>
+                    <h3 class="feature-title">Gastronomía Exclusiva</h3>
+                    <p class="feature-description">Restaurante gourmet con los mejores chefs y menús para todos los gustos.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Gallery Teaser Section (Optional - Add if you have a gallery page) -->
-<section class="gallery-teaser-section bg-light">
-    <div class="container text-center">
-        <h2 class="section-title">Glimpse Into Our World</h2>
-        <p class="lead mb-4">See what awaits you at The Wanderer's Rest.</p>
-        <!-- Placeholder for a few gallery images -->
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <img src="https://picsum.photos/400/300?random=1" class="img-fluid rounded shadow-sm"
-                    alt="Hostel common area">
-            </div>
-            <div class="col-md-4 mb-3">
-                <img src="https://picsum.photos/400/300?random=2" class="img-fluid rounded shadow-sm"
-                    alt="Hostel bunk bed">
-            </div>
-            <div class="col-md-4 mb-3">
-                <img src="https://picsum.photos/400/300?random=3" class="img-fluid rounded shadow-sm"
-                    alt="View from hostel">
+<!-- Room Preview Section -->
+<section class="room-preview-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">HABITACIONES</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Nuestros Espacios</h2>
+                <p class="section-subtitle lead animate__animated animate__fadeIn">Confort y elegancia para tu descanso.</p>
             </div>
         </div>
-        <a routerLink="/gallery" class="btn btn-secondary mt-3">View Full Gallery</a>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="room-card animate__animated animate__fadeInLeft">
+                    <div class="room-image">
+                        <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Habitación de Lujo" class="img-fluid">
+                        <div class="room-tag">POPULAR</div>
+                    </div>
+                    <div class="room-details">
+                        <h3>Suite de Lujo</h3>
+                        <div class="room-features">
+                            <span><i class="bi bi-rulers"></i> 45m²</span>
+                            <span><i class="bi bi-people-fill"></i> 2 Personas</span>
+                            <span><i class="bi bi-eye-fill"></i> Vista al Mar</span>
+                        </div>
+                        <p>Experimenta el máximo lujo con nuestra suite premium, equipada con todas las comodidades.</p>
+                        <a routerLink="/rooms" class="btn btn-outline-primary">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="room-card animate__animated animate__fadeInRight">
+                    <div class="room-image">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Suite Familiar" class="img-fluid">
+                    </div>
+                    <div class="room-details">
+                        <h3>Suite Familiar</h3>
+                        <div class="room-features">
+                            <span><i class="bi bi-rulers"></i> 65m²</span>
+                            <span><i class="bi bi-people-fill"></i> 4 Personas</span>
+                            <span><i class="bi bi-eye-fill"></i> Vista a la Montaña</span>
+                        </div>
+                        <p>Espaciosa suite ideal para familias, con habitaciones separadas y todos los servicios premium.</p>
+                        <a routerLink="/rooms" class="btn btn-outline-primary">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4 animate__animated animate__fadeIn">
+            <a routerLink="/rooms" class="btn btn-primary btn-lg">Ver Todas las Habitaciones</a>
+        </div>
+    </div>
+</section>
+
+<!-- Services Preview -->
+<section class="services-preview-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">SERVICIOS</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Experiencias Exclusivas</h2>
+                <p class="section-subtitle lead animate__animated animate__fadeIn">Disfruta de nuestras instalaciones y servicios premium.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="service-card animate__animated animate__zoomIn">
+                    <div class="service-icon">
+                        <i class="bi bi-water"></i>
+                    </div>
+                    <h3>Spa & Wellness</h3>
+                    <p>Relájate con nuestros tratamientos exclusivos, sauna, jacuzzi y piscina climatizada.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="service-card animate__animated animate__zoomIn animate__delay-1s">
+                    <div class="service-icon">
+                        <i class="bi bi-cup-straw"></i>
+                    </div>
+                    <h3>Bar & Restaurante</h3>
+                    <p>Degusta nuestra exquisita gastronomía local e internacional con los mejores vinos.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="service-card animate__animated animate__zoomIn animate__delay-2s">
+                    <div class="service-icon">
+                        <i class="bi bi-bicycle"></i>
+                    </div>
+                    <h3>Actividades</h3>
+                    <p>Excursiones, deportes acuáticos, senderismo y muchas más actividades para disfrutar.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4 animate__animated animate__fadeIn">
+            <a routerLink="/services" class="btn btn-primary btn-lg">Explorar Todos los Servicios</a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">TESTIMONIOS</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Lo Que Dicen Nuestros Huéspedes</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="testimonial-carousel animate__animated animate__fadeIn">
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">"Una experiencia inolvidable. Las habitaciones son espectaculares, el personal muy atento y la ubicación perfecta. Definitivamente volveremos."</p>
+                            <div class="testimonial-author">
+                                <h4>María Rodríguez</h4>
+                                <div class="testimonial-rating">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 <!-- Call to Action Section -->
-<section class="cta-section text-center">
+<section class="cta-section text-center text-white py-5">
+    <div class="overlay"></div>
     <div class="container">
-        <h2 class="cta-title">Ready for an Unforgettable Stay?</h2>
-        <p class="cta-subtitle lead">
-            Your next adventure is just a click away. Book your bed at The Wanderer's Rest today!
-        </p>
-        <a routerLink="/booking" class="btn btn-primary btn-lg cta-button">Check Availability & Book</a>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 animate__animated animate__fadeIn">
+                <h2 class="cta-title">¿Listo para vivir una experiencia única?</h2>
+                <p class="cta-subtitle lead">
+                    Reserva ahora tu estancia en Hotel Paraíso y disfruta de momentos inolvidables.
+                </p>
+                <a href="#" class="btn btn-primary btn-lg cta-button">Reservar Ahora</a>
+            </div>
+        </div>
     </div>
 </section>

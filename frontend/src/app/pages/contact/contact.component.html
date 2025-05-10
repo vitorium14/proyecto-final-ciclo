@@ -1,0 +1,214 @@
+<!-- Hero Section -->
+<section class="contact-hero-section text-center text-white">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 animate__animated animate__fadeIn">
+                <h1 class="page-title">Contáctanos</h1>
+                <p class="page-subtitle lead">Estamos aquí para responder tus preguntas y ayudarte a planificar tu estancia perfecta</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Information Section -->
+<section class="contact-info-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">INFORMACIÓN</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Cómo Puedes Encontrarnos</h2>
+                <p class="section-subtitle lead animate__animated animate__fadeIn">Disponibles 24/7 para ofrecerte la mejor atención</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="contact-card animate__animated animate__fadeInUp">
+                    <div class="contact-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <h3 class="contact-title">Dirección</h3>
+                    <p>Avenida del Mar 123<br>29001 Málaga, España</p>
+                    <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary btn-sm">Ver en Mapa</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="contact-card animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="contact-icon">
+                        <i class="bi bi-telephone"></i>
+                    </div>
+                    <h3 class="contact-title">Teléfono</h3>
+                    <p>Reservas: +34 952 123 456<br>Recepción: +34 952 123 457</p>
+                    <a href="tel:+34952123456" class="btn btn-outline-primary btn-sm">Llamar Ahora</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="contact-card animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="contact-icon">
+                        <i class="bi bi-envelope"></i>
+                    </div>
+                    <h3 class="contact-title">Email</h3>
+                    <p>info&#64;hotelparaiso.com<br>reservas&#64;hotelparaiso.com</p>
+                    <a href="mailto:info&#64;hotelparaiso.com" class="btn btn-outline-primary btn-sm">Enviar Email</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section">
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12793.165285968178!2d-4.4225858302246!3d36.71997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f7eb5bf872b1%3A0x19b4f8290db0fdf8!2zTcOhbGFnYQ!5e0!3m2!1ses!2ses!4v1620654862051!5m2!1ses!2ses" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="contact-form-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">ESCRÍBENOS</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Envíanos un Mensaje</h2>
+                <p class="section-subtitle lead animate__animated animate__fadeIn">Cuéntanos tus dudas o solicita información para tu reserva</p>
+            </div>
+        </div>
+        
+        <!-- Success Message -->
+        <div *ngIf="formSuccess" class="row justify-content-center mb-4">
+            <div class="col-lg-8">
+                <div class="alert alert-success" role="alert">
+                    <i class="bi bi-check-circle me-2"></i> ¡Gracias por tu mensaje! Te responderemos lo antes posible.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Error Message -->
+        <div *ngIf="formError && formSubmitted" class="row justify-content-center mb-4">
+            <div class="col-lg-8">
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Por favor, completa todos los campos requeridos.
+                </div>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-container animate__animated animate__fadeIn">
+                    <form (ngSubmit)="submitForm()">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="name" placeholder="Tu nombre" [(ngModel)]="contactForm.name" name="name" [ngClass]="{'is-invalid': formSubmitted && !contactForm.name}">
+                                    <label for="name">Nombre completo *</label>
+                                    <div class="invalid-feedback">Por favor, introduce tu nombre.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="email" placeholder="Tu email" [(ngModel)]="contactForm.email" name="email" [ngClass]="{'is-invalid': formSubmitted && !contactForm.email}">
+                                    <label for="email">Correo electrónico *</label>
+                                    <div class="invalid-feedback">Por favor, introduce un email válido.</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="subject" placeholder="Asunto" [(ngModel)]="contactForm.subject" name="subject">
+                                    <label for="subject">Asunto</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="message" placeholder="Tu mensaje" style="height: 150px" [(ngModel)]="contactForm.message" name="message" [ngClass]="{'is-invalid': formSubmitted && !contactForm.message}"></textarea>
+                                    <label for="message">Mensaje *</label>
+                                    <div class="invalid-feedback">Por favor, escribe tu mensaje.</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="privacyPolicy">
+                                    <label class="form-check-label" for="privacyPolicy">
+                                        Acepto la <a href="#">política de privacidad</a> y el tratamiento de mis datos.
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Enviar Mensaje</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQs Section -->
+<section class="faq-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">PREGUNTAS FRECUENTES</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Respuestas Rápidas</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion animate__animated animate__fadeIn" id="accordionFaq">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                ¿Cómo puedo hacer una reserva?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionFaq">
+                            <div class="accordion-body">
+                                Puedes hacer una reserva a través de nuestra página web, llamando por teléfono al +34 952 123 456, o enviando un email a reservas&#64;hotelparaiso.com. Te recomendamos reservar con antelación, especialmente durante temporada alta.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                ¿Cuál es la política de cancelación?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFaq">
+                            <div class="accordion-body">
+                                Las cancelaciones realizadas con más de 48 horas de antelación no tienen penalización. Las cancelaciones entre 24 y 48 horas antes tienen un cargo del 50% del valor de la primera noche. Cancelaciones con menos de 24 horas o no-shows conllevan el cargo completo de la primera noche.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                ¿Hay servicio de traslado desde el aeropuerto?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFaq">
+                            <div class="accordion-body">
+                                Sí, ofrecemos servicio de traslado desde y hacia el aeropuerto con cargo adicional. Puedes solicitarlo al momento de hacer tu reserva o contactando directamente con nuestro departamento de concierge.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section text-center text-white py-5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 animate__animated animate__fadeIn">
+                <h2 class="cta-title">¿Listo para reservar tu estancia soñada?</h2>
+                <p class="cta-subtitle lead">
+                    Haz tu reserva ahora y disfruta de nuestra atención personalizada y servicios exclusivos.
+                </p>
+                <a href="#" class="btn btn-primary btn-lg cta-button">Reservar Ahora</a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -3,12 +3,17 @@ import { HomeComponent } from './pages/home/home.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { authGuard } from './guards/auth.guard';
 import { LoginComponent } from './pages/login/login.component';
+import { RoomsComponent } from './pages/rooms/rooms.component';
+import { ServicesComponent } from './pages/services/services.component';
+import { ContactComponent } from './pages/contact/contact.component';
 
 export const routes: Routes = [
     {
         path: '', component: MainLayoutComponent, children: [
             { path: '', component: HomeComponent },
-            // Consider adding other public pages here if any
+            { path: 'rooms', component: RoomsComponent },
+            { path: 'services', component: ServicesComponent },
+            { path: 'contact', component: ContactComponent },
         ]
     },
     { path: 'login', component: LoginComponent },

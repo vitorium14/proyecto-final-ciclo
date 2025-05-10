@@ -1,0 +1,200 @@
+<!-- Hero Section -->
+<section class="room-hero-section text-center text-white">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 animate__animated animate__fadeIn">
+                <h1 class="page-title">Nuestras Habitaciones</h1>
+                <p class="page-subtitle lead">Descubre espacios de lujo diseñados para tu descanso y confort</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Loading Indicator -->
+<div *ngIf="loading" class="container mt-5 mb-5 text-center">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Cargando habitaciones...</p>
+</div>
+
+<!-- Error Message -->
+<div *ngIf="error" class="container mt-5 mb-5">
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+</div>
+
+<!-- Rooms Filter Section (Optional) -->
+<section *ngIf="!loading && !error" class="rooms-filter py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="filter-container animate__animated animate__fadeIn">
+                    <div class="filter-buttons">
+                        <button class="filter-button active" data-filter="all">Todos</button>
+                        <button class="filter-button" data-filter="1">Individual</button>
+                        <button class="filter-button" data-filter="2">Doble</button>
+                        <button class="filter-button" data-filter="3">Familiar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Rooms Listing Section -->
+<section *ngIf="!loading && !error" class="rooms-listing py-5">
+    <div class="container">
+        <div class="row">
+            <!-- No Room Types Message -->
+            <div *ngIf="roomTypes.length === 0" class="col-12 text-center">
+                <p>No hay tipos de habitaciones disponibles en este momento.</p>
+            </div>
+
+            <!-- Dynamic Room Cards -->
+            <div *ngFor="let roomType of roomTypes" class="col-lg-6 mb-4 room-item" [attr.data-capacity]="roomType.capacity">
+                <div class="room-card animate__animated animate__fadeInUp">
+                    <div class="room-image">
+                        <img [src]="roomType.images && roomType.images.length > 0 ? roomType.images[0].image : 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'" [alt]="roomType.name" class="img-fluid">
+                        <div *ngIf="roomType.name.toLowerCase().includes('premium') || roomType.name.toLowerCase().includes('suite')" class="room-tag">PREMIUM</div>
+                    </div>
+                    <div class="room-details">
+                        <h3>{{ roomType.name }}</h3>
+                        <div class="room-pricing">
+                            <span class="price">{{ roomType.price | currency:'EUR' }}</span>
+                            <span class="per-night">/ noche</span>
+                        </div>
+                        <div class="room-features">
+                            <span><i class="bi bi-people-fill"></i> {{ roomType.capacity }} Personas</span>
+                            <span *ngFor="let amenity of roomType.amenities.slice(0, 2)"><i class="bi bi-check-circle"></i> {{ amenity }}</span>
+                        </div>
+                        <p>{{ roomType.description }}</p>
+                        <div class="room-amenities">
+                            <span><i class="bi bi-wifi"></i></span>
+                            <span><i class="bi bi-tv"></i></span>
+                            <span><i class="bi bi-snow"></i></span>
+                            <span><i class="bi bi-cup-hot"></i></span>
+                            <span><i class="bi bi-safe"></i></span>
+                        </div>
+                        <a href="#" class="btn btn-primary">Ver Detalles</a>
+                        <a href="#" class="btn btn-outline-primary ms-2">Reservar Ahora</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Room Features Section -->
+<section class="room-features-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">CARACTERÍSTICAS</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Comodidades en Todas las Habitaciones</h2>
+                <p class="section-subtitle lead animate__animated animate__fadeIn">Disfruta de estos servicios estándar en cualquier habitación que elijas</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card animate__animated animate__fadeInUp">
+                    <div class="feature-icon">
+                        <i class="bi bi-wifi"></i>
+                    </div>
+                    <h3 class="feature-title">Wi-Fi de Alta Velocidad</h3>
+                    <p class="feature-description">Conexión a internet gratuita en todas las habitaciones y áreas comunes.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="feature-icon">
+                        <i class="bi bi-cup-hot"></i>
+                    </div>
+                    <h3 class="feature-title">Desayuno Incluido</h3>
+                    <p class="feature-description">Delicioso desayuno buffet con opciones locales e internacionales.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="feature-icon">
+                        <i class="bi bi-tv"></i>
+                    </div>
+                    <h3 class="feature-title">Smart TV</h3>
+                    <p class="feature-description">Televisores de última generación con acceso a plataformas de streaming.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section text-center text-white py-5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 animate__animated animate__fadeIn">
+                <h2 class="cta-title">¿Listo para reservar tu habitación ideal?</h2>
+                <p class="cta-subtitle lead">
+                    Haz tu reserva ahora y disfruta de nuestra oferta especial: 15% de descuento en estancias de 3 noches o más.
+                </p>
+                <a href="#" class="btn btn-primary btn-lg cta-button">Reservar Ahora</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-md-12">
+                <span class="section-badge animate__animated animate__fadeIn">PREGUNTAS FRECUENTES</span>
+                <h2 class="section-title animate__animated animate__fadeIn">Información de Interés</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion animate__animated animate__fadeIn" id="accordionFaq">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                ¿A qué hora es el check-in y el check-out?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionFaq">
+                            <div class="accordion-body">
+                                El check-in está disponible a partir de las 15:00h y el check-out debe realizarse antes de las 12:00h. Si necesitas horarios especiales, contáctanos previamente y haremos lo posible por adaptarnos a tus necesidades.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                ¿Se admiten mascotas en las habitaciones?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFaq">
+                            <div class="accordion-body">
+                                Sí, somos un hotel pet-friendly. Aceptamos mascotas en habitaciones seleccionadas con un suplemento adicional. Por favor, infórmanos al momento de realizar tu reserva para asignarte una habitación adecuada.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                ¿Ofrecen servicio de traslado desde el aeropuerto?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFaq">
+                            <div class="accordion-body">
+                                Sí, ofrecemos servicio de traslado desde y hacia el aeropuerto con cargo adicional. Puedes solicitarlo al momento de hacer tu reserva o contactando directamente con nuestro departamento de concierge.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
