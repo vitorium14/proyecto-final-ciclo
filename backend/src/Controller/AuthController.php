@@ -148,6 +148,8 @@ final class AuthController extends AbstractController
             }
         }
 
+        $user->setRole($data['role']);
+
         // SAVE USER
         $entityManager->persist($user);
         $entityManager->flush();

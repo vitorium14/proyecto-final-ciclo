@@ -6,6 +6,7 @@ use App\Entity\User;
 use Firebase\JWT\JWT;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Firebase\JWT\Key;
 
 /**
  * Service for creating and managing JSON Web Tokens (JWT).
@@ -46,7 +47,9 @@ class JwtService
 
     public function getUserFromToken(string $token, EntityManagerInterface $entityManager): User
     {
-        $payload = JWT::decode($token, $this->secretKey);
+        // Remove Bearer from token
+        $token = str_replace('Bearer ', '', $token);
+        $payload = JWT::decode($token, new Key($this->secretKey, $this->algorithm));
         $user = $entityManager->getRepository(User::class)->find($payload->userId);
         return $user;
     }
@@ -65,7 +68,7 @@ class JwtService
 
     public function getUserId(string $token, EntityManagerInterface $entityManager): int
     {
-        $payload = JWT::decode($token, $this->secretKey);
+        $payload = JWT::decode($token, new Key($this->secretKey, $this->algorithm));
         return $payload->userId;
     }
 }

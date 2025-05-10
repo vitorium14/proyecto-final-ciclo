@@ -4,7 +4,7 @@
             <h4 class="mb-0">{{ isEditMode ? 'Edit' : 'Create' }} User</h4>
         </div>
         <div class="card-body">
-            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()" [autocomplete]="false">
 
                 <!-- Name Field -->
                 <div class="mb-3">
@@ -18,11 +18,11 @@
 
                 <!-- Surname Field -->
                 <div class="mb-3">
-                    <label for="surname" class="form-label">Surname</label>
-                    <input type="text" id="surname" formControlName="surname" class="form-control"
-                        [ngClass]="{ 'is-invalid': surname?.invalid && (surname?.dirty || surname?.touched) }">
-                    <div *ngIf="surname?.invalid && (surname?.dirty || surname?.touched)" class="invalid-feedback">
-                        <div *ngIf="surname?.errors?.['required']">Surname is required.</div>
+                    <label for="surnames" class="form-label">Surnames</label>
+                    <input type="text" id="surnames" formControlName="surnames" class="form-control"
+                        [ngClass]="{ 'is-invalid': surnames?.invalid && (surnames?.dirty || surnames?.touched) }">
+                    <div *ngIf="surnames?.invalid && (surnames?.dirty || surnames?.touched)" class="invalid-feedback">
+                        <div *ngIf="surnames?.errors?.['required']">Surnames is required.</div>
                     </div>
                 </div>
 
@@ -59,6 +59,7 @@
                         [ngClass]="{ 'is-invalid': role?.invalid && (role?.dirty || role?.touched) }">
                         <option value="USER">User</option>
                         <option value="ADMIN">Admin</option>
+                        <option value="EMPLOYEE">Employee</option>
                         <!-- Add other roles as needed -->
                     </select>
                     <div *ngIf="role?.invalid && (role?.dirty || role?.touched)" class="invalid-feedback">

@@ -25,7 +25,7 @@ export class UserFormComponent implements OnInit {
   constructor() {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
-      surname: ['', Validators.required],
+      surnames: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.minLength(6)], // Required only for new users
       role: ['USER', Validators.required] // Default role
@@ -88,7 +88,7 @@ export class UserFormComponent implements OnInit {
 
   // Helper getters for template validation
   get name() { return this.userForm.get('name'); }
-  get surname() { return this.userForm.get('surname'); }
+  get surnames() { return this.userForm.get('surnames'); }
   get email() { return this.userForm.get('email'); }
   get password() { return this.userForm.get('password'); }
   get role() { return this.userForm.get('role'); }
