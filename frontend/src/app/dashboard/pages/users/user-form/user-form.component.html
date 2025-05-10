@@ -1,33 +1,44 @@
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">{{ isEditMode ? 'Edit' : 'Create' }} User</h4>
+<div class="container-fluid fade-in">
+    <div class="page-header">
+        <h1>
+            <i class="bi bi-person-fill me-2"></i>
+            {{ isEditMode ? 'Edit' : 'Create' }} User
+        </h1>
+        <div class="page-actions">
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+                <i class="bi bi-arrow-left"></i>
+                <span>Back to Users</span>
+            </button>
         </div>
+    </div>
+
+    <div class="card">
         <div class="card-body">
-            <form [formGroup]="userForm" (ngSubmit)="onSubmit()" [autocomplete]="false">
-
-                <!-- Name Field -->
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" id="name" formControlName="name" class="form-control"
-                        [ngClass]="{ 'is-invalid': name?.invalid && (name?.dirty || name?.touched) }">
-                    <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback">
-                        <div *ngIf="name?.errors?.['required']">Name is required.</div>
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()" autocomplete="off">
+                <div class="row">
+                    <!-- Name Field -->
+                    <div class="col-md-6 form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" formControlName="name" class="form-control"
+                            [ngClass]="{ 'is-invalid': name?.invalid && (name?.dirty || name?.touched) }">
+                        <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback">
+                            <div *ngIf="name?.errors?.['required']">Name is required.</div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Surname Field -->
-                <div class="mb-3">
-                    <label for="surnames" class="form-label">Surnames</label>
-                    <input type="text" id="surnames" formControlName="surnames" class="form-control"
-                        [ngClass]="{ 'is-invalid': surnames?.invalid && (surnames?.dirty || surnames?.touched) }">
-                    <div *ngIf="surnames?.invalid && (surnames?.dirty || surnames?.touched)" class="invalid-feedback">
-                        <div *ngIf="surnames?.errors?.['required']">Surnames is required.</div>
+                    <!-- Surname Field -->
+                    <div class="col-md-6 form-group">
+                        <label for="surnames" class="form-label">Surnames</label>
+                        <input type="text" id="surnames" formControlName="surnames" class="form-control"
+                            [ngClass]="{ 'is-invalid': surnames?.invalid && (surnames?.dirty || surnames?.touched) }">
+                        <div *ngIf="surnames?.invalid && (surnames?.dirty || surnames?.touched)" class="invalid-feedback">
+                            <div *ngIf="surnames?.errors?.['required']">Surnames is required.</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Email Field -->
-                <div class="mb-3">
+                <div class="form-group">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" id="email" formControlName="email" class="form-control"
                         [ngClass]="{ 'is-invalid': email?.invalid && (email?.dirty || email?.touched) }">
@@ -37,30 +48,28 @@
                     </div>
                 </div>
 
-                <!-- Password Field -->
-                <div class="mb-3">
+                <!-- Password Field (Not shown when editing) -->
+                <div class="form-group" *ngIf="!isEditMode">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" formControlName="password" class="form-control"
-                        [ngClass]="{ 'is-invalid': password?.invalid && (password?.dirty || password?.touched) }"
-                        [placeholder]="isEditMode ? 'Leave blank to keep current password' : ''">
+                        [ngClass]="{ 'is-invalid': password?.invalid && (password?.dirty || password?.touched) }">
                     <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="invalid-feedback">
-                        <div *ngIf="password?.errors?.['required']">Password is required for new users.</div>
+                        <div *ngIf="password?.errors?.['required']">Password is required.</div>
                         <div *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters long.</div>
                     </div>
-                    <small *ngIf="isEditMode && !password?.dirty" class="form-text text-muted">
-                        Leave blank to keep the current password.
-                    </small>
+                    <div class="form-text">
+                        <i class="bi bi-info-circle me-1"></i>Password must be at least 6 characters long.
+                    </div>
                 </div>
 
                 <!-- Role Field -->
-                <div class="mb-3">
+                <div class="form-group">
                     <label for="role" class="form-label">Role</label>
                     <select id="role" formControlName="role" class="form-select"
                         [ngClass]="{ 'is-invalid': role?.invalid && (role?.dirty || role?.touched) }">
                         <option value="USER">User</option>
                         <option value="ADMIN">Admin</option>
                         <option value="EMPLOYEE">Employee</option>
-                        <!-- Add other roles as needed -->
                     </select>
                     <div *ngIf="role?.invalid && (role?.dirty || role?.touched)" class="invalid-feedback">
                         <div *ngIf="role?.errors?.['required']">Role is required.</div>
@@ -69,14 +78,15 @@
 
                 <!-- Action Buttons -->
                 <div class="d-flex justify-content-end mt-4">
-                    <button type="button" class="btn btn-secondary me-2" (click)="goBack()">
-                        <i class="bi bi-x-circle me-1"></i>Cancel
+                    <button type="button" class="btn btn-outline-secondary me-2" (click)="goBack()">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancel</span>
                     </button>
                     <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
-                        <i class="bi bi-check-circle-fill me-1"></i>{{ isEditMode ? 'Update' : 'Create' }} User
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>{{ isEditMode ? 'Update' : 'Create' }} User</span>
                     </button>
                 </div>
-
             </form>
         </div>
     </div>

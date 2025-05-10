@@ -1,36 +1,66 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ToastComponent } from '../../shared/toast/toast.component';
 
 @Component({
     selector: 'app-dashboard-layout',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, ToastComponent],
     templateUrl: './dashboard-layout.component.html',
     styleUrls: ['./dashboard-layout.component.css']
 })
 export class DashboardLayoutComponent implements OnInit {
     isSidebarToggled = false;
+    pageTitle = 'Management Dashboard';
+    currentYear = new Date().getFullYear();
 
     ngOnInit(): void {
-        // Optional: Add event listener for sidebar toggle if not handled by Bootstrap's JS
-        // For a pure Angular solution, we can manage the toggle state here.
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', () => {
-                document.getElementById('wrapper')?.classList.toggle('toggled');
-                this.isSidebarToggled = !this.isSidebarToggled;
-            });
-        }
+        // Check screen size on init to set initial sidebar state
+        this.checkScreenSize();
+        
+        // Listen for window resize to adjust sidebar
+        this.addEventListeners();
+        
+        // Apply animations with a slight delay
+        setTimeout(() => {
+            this.initAnimations();
+        }, 100);
     }
 
-    // Or, a method to be called from the template directly
+    @HostListener('window:resize')
+    onResize(): void {
+        this.checkScreenSize();
+    }
+
     toggleSidebar(): void {
-        document.getElementById('wrapper')?.classList.toggle('toggled');
         this.isSidebarToggled = !this.isSidebarToggled;
-        // If you prefer to bind to a class on the wrapper directly in the template:
-        // [class.toggled]="isSidebarToggled" on #wrapper
-        // And call this method from (click) on the button, then this method
-        // would just be: this.isSidebarToggled = !this.isSidebarToggled;
+        localStorage.setItem('sidebarState', this.isSidebarToggled.toString());
+    }
+    
+    private checkScreenSize(): void {
+        // On mobile devices (< 992px) the sidebar should be collapsed by default
+        if (window.innerWidth < 992 && !this.isSidebarToggled) {
+            this.isSidebarToggled = true;
+        } else if (window.innerWidth >= 992) {
+            // On larger screens, restore user preference if available
+            const savedState = localStorage.getItem('sidebarState');
+            if (savedState !== null) {
+                this.isSidebarToggled = savedState === 'true';
+            }
+        }
+    }
+    
+    private addEventListeners(): void {
+        // Listen for route changes to update page title if needed
+        // This would require Router service if implemented
+    }
+    
+    private initAnimations(): void {
+        // Add animation classes to elements
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach((item, index) => {
+            (item as HTMLElement).style.setProperty('--index', `${index + 1}`);
+        });
     }
 } 
