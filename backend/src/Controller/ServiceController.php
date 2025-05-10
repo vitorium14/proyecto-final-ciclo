@@ -35,7 +35,7 @@ final class ServiceController extends AbstractController
     public function getServiceById(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $service = $entityManager->getRepository(Service::class)->find($id);
-        return $this->json($service, Response::HTTP_OK, [], ['groups' => ['service']]);
+        return $this->json($service, Response::HTTP_OK, [], ['groups' => ['service', 'image']]);
     }
 
     // CREATE SERVICE

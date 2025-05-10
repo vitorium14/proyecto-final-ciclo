@@ -1,0 +1,50 @@
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Room Type Management</h2>
+        <button class="btn btn-success" routerLink="./create">
+            <i class="bi bi-plus-circle-fill me-2"></i>Create Room Type
+        </button>
+    </div>
+
+    <div *ngIf="roomTypes.length === 0; else roomTypesTable" class="alert alert-info">
+        No room types found. Please create a new room type.
+    </div>
+
+    <ng-template #roomTypesTable>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Capacity</th>
+                        <th scope="col">Amenities</th>
+                        <th scope="col">Images</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let roomType of roomTypes; let i = index">
+                        <th scope="row">{{ roomType.id }}</th>
+                        <td>{{ roomType.name }}</td>
+                        <td>{{ roomType.price | currency:'USD':'symbol':'1.2-2' }}</td> <!-- Assuming price is a number -->
+                        <td>{{ roomType.capacity }}</td>
+                        <td>{{ getAmenitiesList(roomType.amenities) }}</td>
+                        <td>{{ roomType.images ? roomType.images.length : 0 }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-primary me-2" [routerLink]="['./edit', roomType.id]">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" (click)="deleteRoomType(roomType.id!)">
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-template>
+
+    <!-- TODO: Add pagination if the list can be long -->
+</div> 

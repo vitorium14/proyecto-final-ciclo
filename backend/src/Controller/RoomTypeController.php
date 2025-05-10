@@ -27,7 +27,7 @@ final class RoomTypeController extends AbstractController
     public function getRoomTypes(EntityManagerInterface $entityManager): JsonResponse
     {
         $roomTypes = $entityManager->getRepository(RoomType::class)->findAll(); 
-        return $this->json($roomTypes, Response::HTTP_OK, [], ['groups' => ['room_type']]);
+        return $this->json($roomTypes, Response::HTTP_OK, [], ['groups' => ['room_type', 'image']]);
     }
 
     // GET ROOM TYPE BY ID
@@ -35,7 +35,7 @@ final class RoomTypeController extends AbstractController
     public function getRoomTypeById(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $roomType = $entityManager->getRepository(RoomType::class)->find($id);
-        return $this->json($roomType, Response::HTTP_OK, [], ['groups' => ['room_type']]);
+        return $this->json($roomType, Response::HTTP_OK, [], ['groups' => ['room_type', 'image']]);
     }
 
     // CREATE ROOM TYPE

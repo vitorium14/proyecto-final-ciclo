@@ -1,0 +1,89 @@
+<div class="container-fluid"><br>
+    <h2>{{ isEditMode ? 'Edit' : 'Create' }} Room Type</h2>
+    <form [formGroup]="roomTypeForm" (ngSubmit)="onSubmit()">
+
+        <!-- Name -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" formControlName="name" class="form-control"
+                [ngClass]="{ 'is-invalid': name?.invalid && (name?.dirty || name?.touched) }">
+            <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback">
+                <div *ngIf="name?.errors?.['required']">Name is required.</div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" formControlName="description" class="form-control" rows="3"
+                [ngClass]="{ 'is-invalid': description?.invalid && (description?.dirty || description?.touched) }"></textarea>
+            <div *ngIf="description?.invalid && (description?.dirty || description?.touched)" class="invalid-feedback">
+                <div *ngIf="description?.errors?.['required']">Description is required.</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Price -->
+            <div class="col-md-6 mb-3">
+                <label for="price" class="form-label">Price (per night)</label>
+                <input type="text" id="price" formControlName="price" class="form-control" placeholder="e.g., 99.99"
+                    [ngClass]="{ 'is-invalid': price?.invalid && (price?.dirty || price?.touched) }">
+                <div *ngIf="price?.invalid && (price?.dirty || price?.touched)" class="invalid-feedback">
+                    <div *ngIf="price?.errors?.['required']">Price is required.</div>
+                    <div *ngIf="price?.errors?.['pattern']">Price must be a valid number (e.g., 99 or 99.99).</div>
+                </div>
+            </div>
+
+            <!-- Capacity -->
+            <div class="col-md-6 mb-3">
+                <label for="capacity" class="form-label">Capacity</label>
+                <input type="number" id="capacity" formControlName="capacity" class="form-control" min="1"
+                    [ngClass]="{ 'is-invalid': capacity?.invalid && (capacity?.dirty || capacity?.touched) }">
+                <div *ngIf="capacity?.invalid && (capacity?.dirty || capacity?.touched)" class="invalid-feedback">
+                    <div *ngIf="capacity?.errors?.['required']">Capacity is required.</div>
+                    <div *ngIf="capacity?.errors?.['min']">Capacity must be at least 1.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Amenities -->
+        <div class="mb-3">
+            <label for="amenities" class="form-label">Amenities</label>
+            <input type="text" id="amenities" formControlName="amenities" class="form-control"
+                placeholder="e.g., Wi-Fi, TV, Air Conditioning">
+            <div class="form-text">Enter amenities separated by commas.</div>
+        </div>
+
+        <!-- Images File Input -->
+        <div class="mb-3">
+            <label for="images" class="form-label">Add Images</label>
+            <input type="file" id="images" class="form-control" multiple (change)="onFilesSelected($event)" accept="image/*">
+            <div class="form-text">You can select multiple image files. These will be added to the list of images for this room type.</div>
+        </div>
+
+        <!-- Display Selected/Existing Images -->
+        <div class="mb-3" *ngIf="imagesForPayload.length > 0">
+            <h5>Current Images:</h5>
+            <ul class="list-group">
+                <li *ngFor="let img of imagesForPayload; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        Image {{ i + 1 }}
+                        <!-- Optional: Basic image preview -->
+                        <img [src]="img.image" alt="Preview {{ i + 1 }}" style="max-height: 50px; max-width: 100px; margin-left: 10px;">
+                    </span>
+                    <button type="button" class="btn btn-danger btn-sm" (click)="removeImage(i)">
+                        <i class="bi bi-trash-fill"></i> Remove
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="d-flex justify-content-end mb-3">
+            <button type="button" class="btn btn-secondary me-2" (click)="goBack()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="roomTypeForm.invalid">
+                {{ isEditMode ? 'Update' : 'Create' }} Room Type
+            </button>
+        </div>
+
+    </form>
+</div>

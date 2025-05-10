@@ -37,7 +37,7 @@ class Service
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\ManyToMany(targetEntity: Image::class)]
+    #[ORM\ManyToMany(targetEntity: Image::class, cascade: ['persist'])]
     #[Groups(['service'])]
     private Collection $images;
 
