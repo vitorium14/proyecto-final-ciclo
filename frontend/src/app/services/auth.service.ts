@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
-import { LoginPayload, LoginResponse } from '../models/api.model'; // Assuming these models exist
+import { LoginPayload, LoginResponse, User, UserCreationPayload } from '../models/api.model';
 
 @Injectable({
     providedIn: 'root'
@@ -17,10 +17,34 @@ export class AuthService {
     private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
     public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-    constructor() { }
+    constructor() { 
+        // Verificar token al iniciar el servicio
+        if (this.hasToken()) {
+            this.validateToken().subscribe(
+                isValid => {
+                    this.isAuthenticatedSubject.next(isValid);
+                    if (!isValid) {
+                        this.clearLocalStorage();
+                    }
+                }
+            );
+        }
+    }
 
     private hasToken(): boolean {
         return !!localStorage.getItem('authToken');
+    }
+
+    // Validar el token actual llamando a un endpoint de verificación
+    private validateToken(): Observable<boolean> {
+        const token = this.getToken();
+        if (!token) {
+            return of(false);
+        }
+
+        // Aquí idealmente llamarías a un endpoint para validar el token
+        // Por ahora simplemente verificamos que exista
+        return of(true);
     }
 
     login(credentials: LoginPayload): Observable<LoginResponse> {
@@ -28,39 +52,45 @@ export class AuthService {
             .pipe(
                 tap(response => {
                     if (response && response.token) {
+                        // Guardar token y datos del usuario
                         localStorage.setItem('authToken', response.token);
-                        // Optionally store user details if needed
-                        // localStorage.setItem('currentUser', JSON.stringify(response.user)); 
+                        localStorage.setItem('currentUser', JSON.stringify(response.user));
                         this.isAuthenticatedSubject.next(true);
                     } else {
-                        // Handle cases where token is not in response
                         this.isAuthenticatedSubject.next(false);
                         throw new Error('Login failed: No token received');
                     }
                 }),
                 catchError(error => {
                     this.isAuthenticatedSubject.next(false);
-                    // TODO: Implement more specific error handling (e.g., display error message to user)
                     console.error('Login error:', error);
                     return throwError(() => new Error('Login failed'));
                 })
             );
     }
 
+    // Registro de usuarios
+    register(userData: UserCreationPayload): Observable<User> {
+        return this.httpClient.post<User>(`${this.apiUrl}/register`, userData);
+    }
+
     logout(): void {
-        localStorage.removeItem('authToken');
-        // localStorage.removeItem('currentUser'); // Also remove user details if stored
+        this.clearLocalStorage();
         this.isAuthenticatedSubject.next(false);
-        this.router.navigate(['/login']); // Or your desired logout redirect path
+        this.router.navigate(['/']);
+    }
+
+    private clearLocalStorage(): void {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('currentUser');
     }
 
     getToken(): string | null {
         return localStorage.getItem('authToken');
     }
 
-    // Optional: Method to get current user details if stored
-    // getCurrentUser(): User | null {
-    //   const user = localStorage.getItem('currentUser');
-    //   return user ? JSON.parse(user) : null;
-    // }
+    getCurrentUser(): User | null {
+        const userStr = localStorage.getItem('currentUser');
+        return userStr ? JSON.parse(userStr) : null;
+    }
 } 

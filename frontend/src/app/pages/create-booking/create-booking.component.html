@@ -1,0 +1,181 @@
+<div class="create-booking-container">
+    <div class="container py-5">
+        <!-- Cabecera -->
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="booking-title">Reservar Habitación</h1>
+                <p class="booking-subtitle">Completa los detalles para finalizar tu reserva</p>
+            </div>
+        </div>
+
+        <!-- Spinner de carga -->
+        <div *ngIf="loading && !roomType" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3">Cargando información de la habitación...</p>
+        </div>
+
+        <!-- Mensaje de error general -->
+        <div *ngIf="error" class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="alert alert-danger mb-4">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje de éxito -->
+        <div *ngIf="success" class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="alert alert-success mb-4">
+                    <i class="bi bi-check-circle-fill me-2"></i> ¡Reserva creada con éxito! Redirigiendo a tus reservas...
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="roomType && !success" class="row">
+            <!-- Detalles del tipo de habitación -->
+            <div class="col-lg-4 mb-4">
+                <div class="room-card">
+                    <div class="room-image">
+                        <img [src]="roomType.images && roomType.images.length > 0 ? roomType.images[0].image : 'https://images.unsplash.com/photo-1611892440504-42a792e24d32'" 
+                             [alt]="roomType.name" class="img-fluid">
+                    </div>
+                    <div class="room-details p-4">
+                        <h2 class="room-name">{{ roomType.name }}</h2>
+                        <div class="room-price mb-3">{{ roomType.price | currency:'EUR' }} / noche</div>
+                        
+                        <div class="room-features">
+                            <div class="feature-item">
+                                <i class="bi bi-people-fill"></i>
+                                <span>{{ roomType.capacity }} Personas</span>
+                            </div>
+                        </div>
+                        
+                        <p class="room-description mt-3">{{ roomType.description }}</p>
+                        
+                        <div class="amenities-title">Comodidades</div>
+                        <div class="amenities-list">
+                            <span *ngFor="let amenity of roomType.amenities" class="amenity-badge">
+                                {{ amenity }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Formulario de reserva -->
+            <div class="col-lg-8">
+                <div class="booking-form-card">
+                    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <!-- Fechas de estancia -->
+                            <div class="col-md-6 mb-3">
+                                <label for="checkIn" class="form-label">Fecha de entrada</label>
+                                <input type="date" id="checkIn" formControlName="checkIn" 
+                                       class="form-control" 
+                                       [min]="minDate.toISOString().split('T')[0]"
+                                       [max]="maxDate.toISOString().split('T')[0]"
+                                       [ngClass]="{ 'is-invalid': submitted && bookingForm.get('checkIn')?.errors }">
+                                <div *ngIf="submitted && bookingForm.get('checkIn')?.errors" class="invalid-feedback">
+                                    <div *ngIf="bookingForm.get('checkIn')?.errors?.['required']">La fecha de entrada es obligatoria</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="checkOut" class="form-label">Fecha de salida</label>
+                                <input type="date" id="checkOut" formControlName="checkOut" 
+                                       class="form-control" 
+                                       [min]="bookingForm.get('checkIn')?.value || minDate.toISOString().split('T')[0]"
+                                       [max]="maxDate.toISOString().split('T')[0]"
+                                       [ngClass]="{ 'is-invalid': submitted && bookingForm.get('checkOut')?.errors }">
+                                <div *ngIf="submitted && bookingForm.get('checkOut')?.errors" class="invalid-feedback">
+                                    <div *ngIf="bookingForm.get('checkOut')?.errors?.['required']">La fecha de salida es obligatoria</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Habitaciones disponibles -->
+                            <div class="col-12 mb-4">
+                                <label for="room" class="form-label">Habitación</label>
+                                <div *ngIf="roomsLoading" class="text-center py-2">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <span class="ms-2">Buscando habitaciones disponibles...</span>
+                                </div>
+                                <select id="room" formControlName="room" 
+                                        class="form-select" 
+                                        [ngClass]="{ 'is-invalid': submitted && bookingForm.get('room')?.errors }">
+                                    <option value="">Selecciona una habitación</option>
+                                    <option *ngFor="let room of availableRooms" [value]="room.id">
+                                        {{ room.name }} 
+                                    </option>
+                                </select>
+                                <div *ngIf="submitted && bookingForm.get('room')?.errors" class="invalid-feedback">
+                                    <div *ngIf="bookingForm.get('room')?.errors?.['required']">Debes seleccionar una habitación</div>
+                                </div>
+                                <div *ngIf="!roomsLoading && availableRooms.length === 0 && bookingForm.get('checkIn')?.value && bookingForm.get('checkOut')?.value" class="text-danger mt-2">
+                                    <i class="bi bi-exclamation-circle me-1"></i> No hay habitaciones disponibles para las fechas seleccionadas.
+                                </div>
+                            </div>
+                            
+                            <!-- Servicios adicionales -->
+                            <div class="col-12 mb-4">
+                                <label class="form-label d-block">Servicios adicionales</label>
+                                <div class="services-grid">
+                                    <div *ngFor="let service of services" class="service-item">
+                                        <div class="form-check custom-checkbox">
+                                            <input 
+                                                class="form-check-input" 
+                                                type="checkbox" 
+                                                [id]="'service-' + service.id"
+                                                [value]="service.id"
+                                                (change)="onServiceChange(service.id, $event)">
+                                            <label class="form-check-label" [for]="'service-' + service.id">
+                                                {{ service.name }} 
+                                                <span class="service-price">{{ service.price | currency:'EUR' }}</span>
+                                            </label>
+                                            <div class="service-description">{{ service.description }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Resumen de la reserva -->
+                            <div class="col-12 mb-4">
+                                <div class="booking-summary">
+                                    <h3 class="summary-title">Resumen de la reserva</h3>
+                                    
+                                    <div class="summary-item">
+                                        <span class="item-label">Tipo de habitación:</span>
+                                        <span class="item-value">{{ roomType.name }}</span>
+                                    </div>
+                                    
+                                    <div class="summary-item" *ngIf="bookingForm.get('checkIn')?.value && bookingForm.get('checkOut')?.value">
+                                        <span class="item-label">Duración de la estancia:</span>
+                                        <span class="item-value">{{ bookingForm.get('duration')?.value }} noches</span>
+                                    </div>
+                                    
+                                    <div class="summary-item">
+                                        <span class="item-label">Precio total:</span>
+                                        <span class="item-value price">{{ bookingForm.get('price')?.value | currency:'EUR' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Botones de acción -->
+                            <div class="col-12 text-end mt-3">
+                                <a routerLink="/rooms" class="btn btn-outline-secondary me-2">Cancelar</a>
+                                <button type="submit" class="btn btn-primary" [disabled]="loading || availableRooms.length === 0">
+                                    <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Completar Reserva
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

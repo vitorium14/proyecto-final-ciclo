@@ -69,7 +69,7 @@ final class BookingController extends AbstractController
             return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $this->json($bookings, Response::HTTP_OK, [], ['groups' => ['booking']]);
+        return $this->json($bookings, Response::HTTP_OK, [], ['groups' => ['booking','image']]);
     }
 
     // CREATE BOOKING

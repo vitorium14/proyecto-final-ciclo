@@ -1,0 +1,138 @@
+<div class="my-bookings-container">
+    <div class="container py-5">
+        <!-- Cabecera de la página -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="bookings-title">Mis Reservas</h1>
+                <p class="bookings-subtitle">Gestiona tus estancias pasadas y futuras</p>
+            </div>
+        </div>
+
+        <!-- Pestañas de filtro -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="booking-tabs">
+                    <button class="booking-tab-btn" [class.active]="activeTab === 'upcoming'" 
+                            (click)="setActiveTab('upcoming')">
+                        <i class="bi bi-calendar-check me-2"></i> Próximas
+                    </button>
+                    <button class="booking-tab-btn" [class.active]="activeTab === 'past'" 
+                            (click)="setActiveTab('past')">
+                        <i class="bi bi-calendar-minus me-2"></i> Pasadas
+                    </button>
+                    <button class="booking-tab-btn" [class.active]="activeTab === 'all'" 
+                            (click)="setActiveTab('all')">
+                        <i class="bi bi-calendar3 me-2"></i> Todas
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spinner de carga -->
+        <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3">Cargando tus reservas...</p>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div *ngIf="error && !loading" class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+        </div>
+
+        <!-- Sin reservas -->
+        <div *ngIf="!loading && !error && getFilteredBookings().length === 0" class="no-bookings-card text-center p-5">
+            <div class="no-bookings-icon">
+                <i class="bi bi-calendar-x"></i>
+            </div>
+            <h3 class="mt-4 mb-3">No tienes reservas {{ activeTab === 'upcoming' ? 'próximas' : activeTab === 'past' ? 'pasadas' : '' }}</h3>
+            <p class="text-muted mb-4">¿Listo para planificar tu próxima estancia con nosotros?</p>
+            <a routerLink="/rooms" class="btn btn-primary">
+                <i class="bi bi-search me-2"></i> Explorar habitaciones
+            </a>
+        </div>
+
+        <!-- Lista de reservas -->
+        <div *ngIf="!loading && !error && getFilteredBookings().length > 0" class="row">
+            <div class="col-12">
+                <div class="booking-cards">
+                    <!-- Tarjeta de reserva (repetir por cada reserva) -->
+                    <div *ngFor="let booking of getFilteredBookings()" class="booking-card">
+                        <div class="row g-0">
+                            <!-- Imagen de la habitación -->
+                            <div class="col-md-3">
+                                <div class="booking-image">
+                                    <img [src]="booking.room.type.images[0].image" alt="Room Image" class="img-fluid">
+                                    <div class="booking-status" [ngClass]="{
+                                        'status-completed': isCompleted(booking),
+                                        'status-active': isActive(booking),
+                                        'status-upcoming': isUpcoming(booking)
+                                    }">
+                                        {{ isCompleted(booking) ? 'Completada' : 
+                                           isActive(booking) ? 'Activa' : 'Próxima' }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Detalles de la reserva -->
+                            <div class="col-md-9">
+                                <div class="booking-details">
+                                    <div class="booking-header">
+                                        <h3 class="booking-room-name">{{ booking.room.type.name }}</h3>
+                                        <div class="booking-price">{{ booking.price | currency:'EUR' }}</div>
+                                    </div>
+                                    
+                                    <div class="booking-info">
+                                        <div class="info-item">
+                                            <i class="bi bi-calendar2-week"></i>
+                                            <div>
+                                                <span class="info-label">Fechas</span>
+                                                <span class="info-value">{{ booking.checkIn | date:'dd MMM, yyyy' }} - {{ booking.checkOut | date:'dd MMM, yyyy' }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-item">
+                                            <i class="bi bi-moon-stars"></i>
+                                            <div>
+                                                <span class="info-label">Estancia</span>
+                                                <span class="info-value">{{ getStayDuration(booking) }} noches</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-item">
+                                            <i class="bi bi-people"></i>
+                                            <div>
+                                                <span class="info-label">Capacidad</span>
+                                                <span class="info-value">{{ booking.room.type.capacity }} personas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Servicios incluidos -->
+                                    <div class="booking-amenities">
+                                        <span *ngFor="let amenity of booking.room.type.amenities.slice(0, 4)" class="amenity-badge">
+                                            {{ amenity }}
+                                        </span>
+                                    </div>
+                                    
+                                    <!-- Acciones -->
+                                    <div class="booking-actions">
+                                        <a routerLink="/booking/{{ booking.id }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-info-circle me-1"></i> Detalles
+                                        </a>
+                                        
+                                        <!-- Solo mostrar botón de cancelar para reservas futuras -->
+                                        <button *ngIf="isUpcoming(booking)" 
+                                                class="btn btn-outline-danger btn-sm"
+                                                (click)="cancelBooking(booking.id)">
+                                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

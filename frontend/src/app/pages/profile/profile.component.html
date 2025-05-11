@@ -1,0 +1,181 @@
+<div class="profile-container">
+    <div class="container py-5">
+        <!-- Cabecera de la página -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="profile-title">Mi Perfil</h1>
+                <p class="profile-subtitle">Administra tu información personal y seguridad de la cuenta</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta principal con pestañas -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-lg">
+                    <!-- Navegación en pestañas -->
+                    <div class="card-header bg-white">
+                        <ul class="nav nav-tabs card-header-tabs border-0">
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="activeTab === 'profile'" 
+                                   (click)="setActiveTab('profile')" href="javascript:void(0)">
+                                    <i class="bi bi-person me-2"></i> Información Personal
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" [class.active]="activeTab === 'password'" 
+                                   (click)="setActiveTab('password')" href="javascript:void(0)">
+                                    <i class="bi bi-lock me-2"></i> Seguridad
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contenido de la pestaña: Información Personal -->
+                    <div class="card-body p-4" *ngIf="activeTab === 'profile'">
+                        <!-- Alerta de éxito -->
+                        <div *ngIf="success" class="alert alert-success mb-4">
+                            <i class="bi bi-check-circle-fill me-2"></i> Perfil actualizado con éxito
+                        </div>
+
+                        <!-- Alerta de error -->
+                        <div *ngIf="error" class="alert alert-danger mb-4">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+                        </div>
+
+                        <div class="row">
+                            <!-- Información de usuario -->
+                            <div class="col-md-4 mb-4 mb-md-0">
+                                <div class="profile-info-card text-center p-4">
+                                    <div class="profile-avatar">
+                                        <i class="bi bi-person-circle"></i>
+                                    </div>
+                                    <h4 class="mt-3">{{ currentUser?.name }} {{ currentUser?.surnames }}</h4>
+                                    <p class="text-muted">{{ currentUser?.email }}</p>
+                                    <div class="badge role-badge">{{ currentUser?.role }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Formulario de edición -->
+                            <div class="col-md-8">
+                                <form [formGroup]="profileForm" (ngSubmit)="onSubmitProfile()">
+                                    <div class="row">
+                                        <!-- Nombre -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="name" class="form-label">Nombre</label>
+                                            <input type="text" id="name" formControlName="name" 
+                                                class="form-control" 
+                                                [ngClass]="{ 'is-invalid': pf['name'].errors && pf['name'].touched }">
+                                            <div *ngIf="pf['name'].errors && pf['name'].touched" class="invalid-feedback">
+                                                <div *ngIf="pf['name'].errors?.['required']">El nombre es obligatorio</div>
+                                                <div *ngIf="pf['name'].errors?.['minlength']">El nombre debe tener al menos 2 caracteres</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Apellidos -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="surnames" class="form-label">Apellidos</label>
+                                            <input type="text" id="surnames" formControlName="surnames" 
+                                                class="form-control" 
+                                                [ngClass]="{ 'is-invalid': pf['surnames'].errors && pf['surnames'].touched }">
+                                            <div *ngIf="pf['surnames'].errors && pf['surnames'].touched" class="invalid-feedback">
+                                                <div *ngIf="pf['surnames'].errors?.['required']">Los apellidos son obligatorios</div>
+                                                <div *ngIf="pf['surnames'].errors?.['minlength']">Los apellidos deben tener al menos 2 caracteres</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="col-12 mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" id="email" formControlName="email" 
+                                                class="form-control" 
+                                                [ngClass]="{ 'is-invalid': pf['email'].errors && pf['email'].touched }">
+                                            <div *ngIf="pf['email'].errors && pf['email'].touched" class="invalid-feedback">
+                                                <div *ngIf="pf['email'].errors?.['required']">El email es obligatorio</div>
+                                                <div *ngIf="pf['email'].errors?.['email']">Introduce un email válido</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Botones -->
+                                        <div class="col-12 mt-3 text-end">
+                                            <button type="reset" class="btn btn-outline-secondary me-2">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || submitting">
+                                                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                Guardar Cambios
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenido de la pestaña: Seguridad -->
+                    <div class="card-body p-4" *ngIf="activeTab === 'password'">
+                        <!-- Alerta de éxito -->
+                        <div *ngIf="passwordSuccess" class="alert alert-success mb-4">
+                            <i class="bi bi-check-circle-fill me-2"></i> Contraseña actualizada correctamente
+                        </div>
+
+                        <!-- Alerta de error -->
+                        <div *ngIf="passwordError" class="alert alert-danger mb-4">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ passwordError }}
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="password-form-card p-4">
+                                    <h4 class="mb-4">Cambiar Contraseña</h4>
+                                    <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPassword()">
+                                        <!-- Contraseña actual -->
+                                        <div class="mb-3">
+                                            <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                                            <input type="password" id="currentPassword" formControlName="currentPassword" 
+                                                class="form-control" 
+                                                [ngClass]="{ 'is-invalid': pwf['currentPassword'].errors && pwf['currentPassword'].touched }">
+                                            <div *ngIf="pwf['currentPassword'].errors && pwf['currentPassword'].touched" class="invalid-feedback">
+                                                <div *ngIf="pwf['currentPassword'].errors?.['required']">La contraseña actual es obligatoria</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Nueva contraseña -->
+                                        <div class="mb-3">
+                                            <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                                            <input type="password" id="newPassword" formControlName="newPassword" 
+                                                class="form-control" 
+                                                [ngClass]="{ 'is-invalid': pwf['newPassword'].errors && pwf['newPassword'].touched }">
+                                            <div *ngIf="pwf['newPassword'].errors && pwf['newPassword'].touched" class="invalid-feedback">
+                                                <div *ngIf="pwf['newPassword'].errors?.['required']">La nueva contraseña es obligatoria</div>
+                                                <div *ngIf="pwf['newPassword'].errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Confirmar nueva contraseña -->
+                                        <div class="mb-3">
+                                            <label for="confirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                                            <input type="password" id="confirmPassword" formControlName="confirmPassword" 
+                                                class="form-control" 
+                                                [ngClass]="{ 'is-invalid': pwf['confirmPassword'].errors && pwf['confirmPassword'].touched }">
+                                            <div *ngIf="pwf['confirmPassword'].errors && pwf['confirmPassword'].touched" class="invalid-feedback">
+                                                <div *ngIf="pwf['confirmPassword'].errors?.['required']">Por favor, confirma tu nueva contraseña</div>
+                                                <div *ngIf="pwf['confirmPassword'].errors?.['mustMatch']">Las contraseñas no coinciden</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Botones -->
+                                        <div class="text-end mt-4">
+                                            <button type="reset" class="btn btn-outline-secondary me-2">Cancelar</button>
+                                            <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid || submitting">
+                                                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                Cambiar Contraseña
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

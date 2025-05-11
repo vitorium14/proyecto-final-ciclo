@@ -1,0 +1,282 @@
+.create-booking-container {
+    padding-top: 70px;
+    min-height: 100vh;
+    background-color: var(--neutral-100);
+}
+
+.booking-title {
+    font-weight: 700;
+    color: var(--neutral-800);
+    margin-bottom: 0.5rem;
+}
+
+.booking-subtitle {
+    color: var(--neutral-600);
+    margin-bottom: 0;
+}
+
+/* Estilos para la tarjeta de habitación */
+.room-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    height: 100%;
+}
+
+.room-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.room-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.room-details {
+    padding: 1.5rem;
+}
+
+.room-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--neutral-800);
+    margin-bottom: 0.5rem;
+}
+
+.room-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.room-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--neutral-700);
+}
+
+.feature-item i {
+    color: var(--primary-color);
+}
+
+.room-description {
+    color: var(--neutral-600);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.amenities-title {
+    font-weight: 600;
+    color: var(--neutral-700);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.amenities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.amenity-badge {
+    background-color: var(--neutral-100);
+    color: var(--neutral-600);
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--border-radius-full);
+    font-size: 0.8rem;
+}
+
+/* Estilos para el formulario de reserva */
+.booking-form-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--neutral-700);
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+    padding: 0.8rem 1rem;
+    border-radius: var(--border-radius);
+    border-color: var(--neutral-300);
+    background-color: var(--neutral-50);
+    transition: all var(--transition-fast);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.15);
+    background-color: white;
+}
+
+/* Servicios adicionales */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.service-item {
+    background-color: var(--neutral-50);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.service-item:hover {
+    background-color: var(--neutral-100);
+}
+
+.custom-checkbox .form-check-input {
+    margin-top: 0.3rem;
+}
+
+.form-check-label {
+    font-weight: 500;
+    color: var(--neutral-800);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.service-price {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.service-description {
+    font-size: 0.85rem;
+    color: var(--neutral-600);
+    margin-top: 0.5rem;
+}
+
+/* Resumen de reserva */
+.booking-summary {
+    background-color: var(--neutral-50);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    border-left: 4px solid var(--primary-color);
+}
+
+.summary-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--neutral-800);
+    margin-bottom: 1rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--neutral-200);
+}
+
+.summary-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.item-label {
+    color: var(--neutral-600);
+}
+
+.item-value {
+    font-weight: 500;
+    color: var(--neutral-800);
+}
+
+.item-value.price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Botones */
+.btn {
+    padding: 0.6rem 1.25rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: all var(--transition-normal);
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    box-shadow: var(--shadow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline-secondary {
+    border-color: var(--neutral-300);
+    color: var(--neutral-700);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--neutral-200);
+    border-color: var(--neutral-400);
+    color: var(--neutral-800);
+}
+
+/* Alertas */
+.alert {
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.alert-success {
+    background-color: rgba(var(--success-color), 0.1);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.alert-danger {
+    background-color: rgba(var(--error-color), 0.1);
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .booking-form-card {
+        padding: 1.5rem;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .create-booking-container {
+        padding-top: 60px;
+    }
+    
+    .room-image {
+        height: 180px;
+    }
+} 

@@ -76,7 +76,7 @@ final class AuthController extends AbstractController
         $entityManager->persist($token);
         $entityManager->flush();
 
-        return $this->json(['token' => $token->getToken(), 'user' => $user]);
+        return $this->json(['token' => $token->getToken(), 'user' => $user], Response::HTTP_OK, [], ['groups' => ['user:login']]);
     }
 
     /**

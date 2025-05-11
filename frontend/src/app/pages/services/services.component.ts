@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServiceService } from '../../services/service.service';
 import { Service as ApiService } from '../../models/api.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './services.component.html',
   styleUrl: './services.component.css'
 })
@@ -27,10 +28,9 @@ export class ServicesComponent implements OnInit {
   loadServices(): void {
     this.loading = true;
     this.serviceService.getAllServices().subscribe({
-      next: (data) => {
-        this.services = data;
+      next: (services) => {
+        this.services = services;
         this.loading = false;
-        console.log('Services loaded:', this.services);
       },
       error: (err) => {
         this.error = 'Error loading services: ' + err.message;

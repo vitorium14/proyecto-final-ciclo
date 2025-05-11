@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         // Get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
         // Redirect to home if already logged in
         if (this.authService.getToken()) {
@@ -53,8 +53,9 @@ export class LoginComponent implements OnInit {
         this.loading = true;
         this.authService.login({ email: this.f['email'].value, password: this.f['password'].value })
             .subscribe({
-                next: () => {
-                    this.router.navigate([this.returnUrl || '/dashboard']);
+                next: (response) => {
+                    this.loading = false;
+                    this.router.navigateByUrl(this.returnUrl || '/');
                 },
                 error: error => {
                     this.error = error.message || 'Login failed. Please check your credentials.';

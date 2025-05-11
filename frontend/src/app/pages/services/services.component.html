@@ -1,5 +1,3 @@
-<p>services works!</p>
-
 <!-- Hero Section -->
 <section class="services-hero-section text-center text-white">
     <div class="overlay"></div>
@@ -84,7 +82,7 @@
                             <span *ngIf="service.duration"><i class="bi bi-clock"></i> {{ service.duration }} minutos</span>
                             <span><i class="bi bi-tag"></i> {{ service.price | currency:'EUR' }}</span>
                         </div>
-                        <a href="#" class="btn btn-outline-primary">Reservar</a>
+                        <a routerLink="/rooms" class="btn btn-outline-primary">Reservar</a>
                     </div>
                 </div>
             </div>
@@ -138,8 +136,8 @@
                 <p class="cta-subtitle lead">
                     Reserva tu estancia ahora y añade nuestros servicios premium para hacer de tu visita algo inolvidable.
                 </p>
-                <a href="#" class="btn btn-primary btn-lg cta-button">Reservar Ahora</a>
-                <a href="#" class="btn btn-outline-light btn-lg cta-button ms-3">Contactar</a>
+                <a routerLink="/rooms" class="btn btn-primary btn-lg cta-button">Reservar Ahora</a>
+                <a routerLink="/contact" class="btn btn-outline-light btn-lg cta-button ms-3">Contactar</a>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" routerLink="/">
             <i class="bi bi-house-heart-fill me-2"></i> <!-- Hotel Icon -->
             Hotel Paraíso
         </a>
@@ -19,8 +19,67 @@
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contacto</a>
                 </li>
+                
+                <!-- Botón de reserva siempre visible -->
                 <li class="nav-item">
-                    <a class="btn btn-primary ms-lg-2" routerLink="/booking" routerLinkActive="active">Reservar</a>
+                    <a class="btn btn-primary ms-lg-2" routerLink="/rooms">
+                        <i class="bi bi-calendar-plus me-1"></i> Reservar
+                    </a>
+                </li>
+                
+                <!-- Usuario no autenticado: Mostrar Login/Registro -->
+                <ng-container *ngIf="!isAuthenticated">
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light ms-lg-2" routerLink="/login">
+                            <i class="bi bi-person me-1"></i> Iniciar sesión
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light ms-lg-2" routerLink="/register">
+                            <i class="bi bi-person-plus me-1"></i> Registrarse
+                        </a>
+                    </li>
+                </ng-container>
+                
+                <!-- Usuario autenticado: Menú desplegable de usuario -->
+                <li class="nav-item dropdown" *ngIf="isAuthenticated">
+                    <a class="nav-link dropdown-toggle user-dropdown" href="javascript:void(0)" id="userDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-1"></i>
+                        {{ currentUser?.name }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li>
+                            <span class="dropdown-item-text user-role">
+                                <small>{{ currentUser?.role }}</small>
+                            </span>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" routerLink="/profile">
+                                <i class="bi bi-person me-2"></i> Mi perfil
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" routerLink="/my-bookings">
+                                <i class="bi bi-calendar-check me-2"></i> Mis reservas
+                            </a>
+                        </li>
+                        
+                        <!-- Opción de Dashboard solo para roles EMPLOYEE y ADMIN -->
+                        <li *ngIf="isStaff()">
+                            <a class="dropdown-item" routerLink="/dashboard">
+                                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                            </a>
+                        </li>
+                        
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="javascript:void(0)" (click)="logout()">
+                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

@@ -17,19 +17,19 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user', 'booking'])]
+    #[Groups(['user', 'booking','user:login'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user', 'booking'])]
+    #[Groups(['user', 'booking','user:login'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user', 'booking'])]
+    #[Groups(['user', 'booking','user:login'])]
     private ?string $surnames = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['user', 'booking'])]
+    #[Groups(['user', 'booking','user:login'])]
     private ?string $email = null;
 
     /**
@@ -39,7 +39,7 @@ class User
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user', 'booking'])]
+    #[Groups(['user', 'booking','user:login'])]
     private ?string $role = null;
 
     /**

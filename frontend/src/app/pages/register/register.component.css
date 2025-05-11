@@ -1,0 +1,87 @@
+.register-container {
+    min-height: 100vh;
+    padding-top: 70px;
+    background-color: var(--neutral-100);
+}
+
+.card {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+}
+
+.card-title {
+    color: var(--neutral-800);
+    font-weight: 700;
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--neutral-700);
+}
+
+.form-control {
+    padding: 0.8rem 1rem;
+    border-radius: var(--border-radius);
+    border-color: var(--neutral-300);
+    background-color: var(--neutral-50);
+    transition: all var(--transition-fast);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.15);
+    background-color: white;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label a {
+    color: var(--primary-color);
+}
+
+.form-check-label a:hover {
+    text-decoration: underline !important;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.alert {
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.alert-success {
+    background-color: rgba(var(--success-color), 0.1);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.alert-danger {
+    background-color: rgba(var(--error-color), 0.1);
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1.5rem !important;
+    }
+} 

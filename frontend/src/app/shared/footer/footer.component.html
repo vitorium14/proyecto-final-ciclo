@@ -1,51 +1,97 @@
-<footer class="footer bg-dark text-light py-4 mt-auto">
+<footer class="footer py-5 mt-auto">
     <div class="container">
-        <div class="row">
-            <!-- Hostel Info -->
-            <div class="col-md-4 mb-3 mb-md-0">
-                <h5>The Wanderer's Rest</h5>
-                <p class="small">
-                    Your home away from home. Offering cozy stays and unforgettable experiences for travelers from
-                    around the globe.
+        <div class="row mb-4 g-4">
+            <!-- Hotel Info & Newsletter -->
+            <div class="col-lg-4 mb-4 mb-lg-0 animate__animated animate__fadeIn">
+                <div class="footer-brand mb-4">
+                    <h4 class="footer-logo">Hotel Paraíso</h4>
+                    <p class="footer-tagline">Tu destino de paz y confort</p>
+                </div>
+                <p class="footer-description mb-4">
+                    Ofrecemos experiencias inolvidables y un servicio excepcional para hacer de tu estancia un recuerdo perfecto.
                 </p>
+                <div class="newsletter-form">
+                    <h6 class="newsletter-title">Recibe nuestras ofertas</h6>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Tu email" aria-label="Tu email">
+                        <button class="btn btn-primary" type="button">
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Quick Links -->
-            <div class="col-md-2 col-6 mb-3 mb-md-0">
-                <h6>Quick Links</h6>
-                <ul class="list-unstyled small">
-                    <li><a routerLink="/" class="footer-link">Home</a></li>
-                    <li><a routerLink="/rooms" class="footer-link">Rooms</a></li>
-                    <li><a routerLink="/amenities" class="footer-link">Amenities</a></li>
-                    <li><a routerLink="/contact" class="footer-link">Contact Us</a></li>
+            <div class="col-6 col-md-4 col-lg-2 animate__animated animate__fadeIn animate__delay-1s">
+                <h6 class="footer-heading">Enlaces rápidos</h6>
+                <ul class="footer-links">
+                    <li><a routerLink="/" class="footer-link">Inicio</a></li>
+                    <li><a routerLink="/rooms" class="footer-link">Habitaciones</a></li>
+                    <li><a routerLink="/services" class="footer-link">Servicios</a></li>
+                    <li><a routerLink="/about" class="footer-link">Nosotros</a></li>
+                    <li><a routerLink="/contact" class="footer-link">Contacto</a></li>
                 </ul>
             </div>
 
             <!-- Legal & Info -->
-            <div class="col-md-3 col-6 mb-3 mb-md-0">
-                <h6>Information</h6>
-                <ul class="list-unstyled small">
-                    <li><a routerLink="/about" class="footer-link">About Us</a></li>
+            <div class="col-6 col-md-4 col-lg-2 animate__animated animate__fadeIn animate__delay-1s">
+                <h6 class="footer-heading">Información</h6>
+                <ul class="footer-links">
                     <li><a routerLink="/faq" class="footer-link">FAQ</a></li>
-                    <li><a routerLink="/terms" class="footer-link">Terms & Conditions</a></li>
-                    <li><a routerLink="/privacy" class="footer-link">Privacy Policy</a></li>
+                    <li><a routerLink="/terms" class="footer-link">Términos y condiciones</a></li>
+                    <li><a routerLink="/privacy" class="footer-link">Política de privacidad</a></li>
+                    <li><a routerLink="/sitemap" class="footer-link">Mapa del sitio</a></li>
                 </ul>
             </div>
 
-            <!-- Social Media -->
-            <div class="col-md-3 text-md-end">
-                <h6>Connect With Us</h6>
-                <a href="#" class="social-icon me-2"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="social-icon me-2"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="social-icon me-2"><i class="bi bi-twitter-x"></i></a>
-                <a href="#" class="social-icon"><i class="bi bi-tiktok"></i></a>
-                <p class="small mt-3 mb-0">123 Adventure Lane, Travel City, World</p>
+            <!-- Contact -->
+            <div class="col-md-4 col-lg-4 animate__animated animate__fadeIn animate__delay-2s">
+                <h6 class="footer-heading">Contacto</h6>
+                <ul class="footer-contact-info">
+                    <li>
+                        <i class="bi bi-geo-alt"></i>
+                        <span>Avenida del Mar 123, 29001 Málaga, España</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-telephone"></i>
+                        <span>+34 952 123 456</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-envelope"></i>
+                        <span>info&#64;hotelparaiso.com</span>
+                    </li>
+                </ul>
+                
+                <div class="social-links mt-4">
+                    <a href="https://facebook.com" target="_blank" class="social-link" aria-label="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="social-link" aria-label="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="https://twitter.com" target="_blank" class="social-link" aria-label="Twitter">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" class="social-link" aria-label="TikTok">
+                        <i class="bi bi-tiktok"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <hr class="footer-divider my-3">
-        <div class="row">
-            <div class="col text-center">
-                <p class="small mb-0">&copy; {{currentYear}} The Wanderer's Rest. All Rights Reserved.</p>
+        
+        <div class="footer-divider"></div>
+        
+        <div class="row footer-bottom align-items-center py-4">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="copyright mb-0">&copy; {{currentYear}} Hotel Paraíso. Todos los derechos reservados.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <div class="payment-methods">
+                    <i class="bi bi-credit-card payment-icon" title="Tarjeta de crédito"></i>
+                    <i class="bi bi-paypal payment-icon" title="PayPal"></i>
+                    <i class="bi bi-bank payment-icon" title="Transferencia bancaria"></i>
+                    <i class="bi bi-wallet2 payment-icon" title="Monedero digital"></i>
+                </div>
             </div>
         </div>
     </div>

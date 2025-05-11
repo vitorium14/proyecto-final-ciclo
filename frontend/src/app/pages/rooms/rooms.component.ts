@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { RoomTypeService } from '../../services/room-type.service';
 import { RoomType } from '../../models/api.model';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.css'
 })
@@ -15,7 +18,11 @@ export class RoomsComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
 
-  constructor(private roomTypeService: RoomTypeService) { }
+  constructor(
+    private roomTypeService: RoomTypeService,
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loadRoomTypes();
@@ -27,10 +34,9 @@ export class RoomsComponent implements OnInit {
   loadRoomTypes(): void {
     this.loading = true;
     this.roomTypeService.getAllRoomTypes().subscribe({
-      next: (data) => {
-        this.roomTypes = data;
+      next: (roomTypes) => {
+        this.roomTypes = roomTypes;
         this.loading = false;
-        console.log('Room types loaded:', this.roomTypes);
       },
       error: (err) => {
         this.error = 'Error loading room types: ' + err.message;
@@ -73,5 +79,19 @@ export class RoomsComponent implements OnInit {
         });
       });
     }, 500);
+  }
+
+  // Abrir modal de reserva o redirigir a login si no está autenticado
+  openBookingModal(roomType: RoomType): void {
+    if (!this.authService.getToken()) {
+      // Si no está autenticado, redirigir a login con parámetro de retorno
+      this.router.navigate(['/login'], { 
+        queryParams: { returnUrl: `/rooms?book=${roomType.id}` } 
+      });
+      return;
+    }
+
+    // Si está autenticado, crear una nueva ruta para un componente de reserva
+    this.router.navigate(['/create-booking', roomType.id]);
   }
 }

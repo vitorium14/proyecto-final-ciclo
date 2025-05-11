@@ -64,16 +64,29 @@ final class UserController extends AbstractController
         $user->setName($data['name']);
         $user->setSurnames($data['surnames']);
         $user->setEmail($data['email']);
-        $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
+        //$user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
         
-        // ROLE MUST BE (ADMIN,EMPLOYEE,CLIENT)
-        if (!in_array($data['role'], ['ADMIN', 'EMPLOYEE', 'CLIENT'])) {
-            return $this->json(['error' => 'Invalid role. Must be ADMIN, EMPLOYEE or CLIENT.'], Response::HTTP_BAD_REQUEST);
+        // CHECK IF THERE IS A PASSWORD IN THE REQUEST IF NOT KEEP THE SAME
+        if (isset($data['password'])) {
+            $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
+        }else{
+            $user->setPassword($user->getPassword());
         }
-        $user->setRole($data['role']);
 
-        if ($data['role'] != 'CLIENT' && !$isAdmin) {
-            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        // CHECK IF THERE IS A ROLE IN THE REQUEST IF NOT KEEP THE SAME
+        if (isset($data['role'])) {
+            // ROLE MUST BE (ADMIN,EMPLOYEE,CLIENT)
+            if (!in_array($data['role'], ['ADMIN', 'EMPLOYEE', 'CLIENT'])) {
+                return $this->json(['error' => 'Invalid role. Must be ADMIN, EMPLOYEE or CLIENT.'], Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($data['role'] != 'CLIENT' && !$isAdmin) {
+                return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            }
+            
+            $user->setRole($data['role']);
+        }else{
+            $user->setRole($user->getRole());
         }
 
         $entityManager->flush();

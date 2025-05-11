@@ -1,24 +1,29 @@
 <div class="login-container d-flex justify-content-center align-items-center vh-100">
     <div class="card shadow-lg" style="width: 100%; max-width: 420px;">
         <div class="card-body p-5">
-            <h3 class="card-title text-center mb-4">Login</h3>
+            <div class="text-center mb-3">
+                <a routerLink="/" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i> Volver al inicio
+                </a>
+            </div>
+            <h3 class="card-title text-center mb-4">Iniciar Sesión</h3>
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
+                    <label for="email" class="form-label">Correo electrónico</label>
                     <input type="email" id="email" formControlName="email" class="form-control form-control-lg"
                         [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
                     <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-                        <div *ngIf="f['email'].errors?.['required']">Email is required</div>
-                        <div *ngIf="f['email'].errors?.['email']">Email must be a valid email address</div>
+                        <div *ngIf="f['email'].errors?.['required']">El correo electrónico es obligatorio</div>
+                        <div *ngIf="f['email'].errors?.['email']">Introduce un correo electrónico válido</div>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Contraseña</label>
                     <input type="password" id="password" formControlName="password" class="form-control form-control-lg"
                         [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
                     <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-                        <div *ngIf="f['password'].errors?.['required']">Password is required</div>
+                        <div *ngIf="f['password'].errors?.['required']">La contraseña es obligatoria</div>
                     </div>
                 </div>
 
@@ -26,9 +31,9 @@
                 <!-- <div class="d-flex justify-content-between align-items-center mb-3">
           <div class="form-check">
             <input type="checkbox" class="form-check-input" id="rememberMe">
-            <label class="form-check-label" for="rememberMe">Remember me</label>
+            <label class="form-check-label" for="rememberMe">Recordarme</label>
           </div>
-          <a href="#" class="text-decoration-none">Forgot password?</a>
+          <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
         </div> -->
 
                 <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
@@ -37,13 +42,12 @@
                     <button class="btn btn-primary btn-lg" type="submit" [disabled]="loading">
                         <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"
                             aria-hidden="true"></span>
-                        <span *ngIf="!loading">Login</span>
+                        <span *ngIf="!loading">Iniciar sesión</span>
                     </button>
                 </div>
             </form>
             <div class="text-center mt-4">
-                <p class="text-muted">Don't have an account? <a routerLink="/register" class="text-decoration-none">Sign
-                        up</a></p>
+                <p class="text-muted">¿No tienes una cuenta? <a routerLink="/register" class="text-decoration-none">Regístrate</a></p>
             </div>
         </div>
     </div>
