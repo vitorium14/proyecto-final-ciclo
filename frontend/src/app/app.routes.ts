@@ -10,6 +10,7 @@ import { RoomsComponent } from './pages/rooms/rooms.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { CreateBookingComponent } from './pages/create-booking/create-booking.component';
+import { BookingDetailComponent } from './pages/booking-detail/booking-detail.component';
 
 export const routes: Routes = [
     {
@@ -21,6 +22,7 @@ export const routes: Routes = [
             { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
             { path: 'my-bookings', component: MyBookingsComponent, canActivate: [authGuard] },
             { path: 'create-booking/:id', component: CreateBookingComponent, canActivate: [authGuard] },
+            { path: 'booking/:id', component: BookingDetailComponent, canActivate: [authGuard] },
         ]
     },
     { path: 'login', component: LoginComponent },

@@ -37,4 +37,11 @@ export class RoomService {
             .set('endDate', endDate);
         return this.http.get<Room[]>(`${this.apiUrl}/available`, { params });
     }
+
+    checkRoomTypeAvailability(roomTypeId: number, startDate: string, endDate: string): Observable<any> {
+        let params = new HttpParams()
+            .set('startDate', startDate)
+            .set('endDate', endDate);
+        return this.http.get<any>(`${this.apiUrl}/availability-by-type/${roomTypeId}`, { params });
+    }
 } 

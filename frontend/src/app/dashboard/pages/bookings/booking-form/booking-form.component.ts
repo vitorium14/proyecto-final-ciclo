@@ -235,6 +235,7 @@ export class BookingFormComponent implements OnInit {
                 checkedIn: formValues.checkedIn,
                 checkedOut: formValues.checkedOut,
                 room: +formValues.room,
+                roomType: +this.availableRooms.find(r => r.id === +formValues.room)?.type.id!,
                 duration: duration
             };
             

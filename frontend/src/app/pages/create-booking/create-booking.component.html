@@ -95,28 +95,19 @@
                                 </div>
                             </div>
                             
-                            <!-- Habitaciones disponibles -->
+                            <!-- Mensaje de disponibilidad -->
                             <div class="col-12 mb-4">
-                                <label for="room" class="form-label">Habitación</label>
                                 <div *ngIf="roomsLoading" class="text-center py-2">
                                     <div class="spinner-border spinner-border-sm text-primary" role="status">
                                         <span class="visually-hidden">Cargando...</span>
                                     </div>
-                                    <span class="ms-2">Buscando habitaciones disponibles...</span>
+                                    <span class="ms-2">Verificando disponibilidad...</span>
                                 </div>
-                                <select id="room" formControlName="room" 
-                                        class="form-select" 
-                                        [ngClass]="{ 'is-invalid': submitted && bookingForm.get('room')?.errors }">
-                                    <option value="">Selecciona una habitación</option>
-                                    <option *ngFor="let room of availableRooms" [value]="room.id">
-                                        {{ room.name }} 
-                                    </option>
-                                </select>
-                                <div *ngIf="submitted && bookingForm.get('room')?.errors" class="invalid-feedback">
-                                    <div *ngIf="bookingForm.get('room')?.errors?.['required']">Debes seleccionar una habitación</div>
+                                <div *ngIf="!roomsLoading && !hasAvailability && bookingForm.get('checkIn')?.value && bookingForm.get('checkOut')?.value" class="alert alert-danger">
+                                    <i class="bi bi-exclamation-circle me-1"></i> No hay disponibilidad para este tipo de habitación en las fechas seleccionadas.
                                 </div>
-                                <div *ngIf="!roomsLoading && availableRooms.length === 0 && bookingForm.get('checkIn')?.value && bookingForm.get('checkOut')?.value" class="text-danger mt-2">
-                                    <i class="bi bi-exclamation-circle me-1"></i> No hay habitaciones disponibles para las fechas seleccionadas.
+                                <div *ngIf="!roomsLoading && hasAvailability && bookingForm.get('checkIn')?.value && bookingForm.get('checkOut')?.value" class="alert alert-success">
+                                    <i class="bi bi-check-circle me-1"></i> ¡Hay disponibilidad para las fechas seleccionadas!
                                 </div>
                             </div>
                             
@@ -167,7 +158,7 @@
                             <!-- Botones de acción -->
                             <div class="col-12 text-end mt-3">
                                 <a routerLink="/rooms" class="btn btn-outline-secondary me-2">Cancelar</a>
-                                <button type="submit" class="btn btn-primary" [disabled]="loading || availableRooms.length === 0">
+                                <button type="submit" class="btn btn-primary" [disabled]="loading || !hasAvailability">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                                     Completar Reserva
                                 </button>

@@ -92,6 +92,70 @@ final class RoomController extends AbstractController
         return $this->json($availableRooms, Response::HTTP_OK, [], ['groups' => ['room']]);
     }
 
+    // CHECK AVAILABILITY BY ROOM TYPE
+    #[Route('/rooms/availability-by-type/{roomTypeId}', name: 'check_room_type_availability', methods: ['GET'])]
+    public function checkRoomTypeAvailability(EntityManagerInterface $entityManager, Request $request, int $roomTypeId): JsonResponse
+    {
+        $startDateStr = $request->query->get('startDate');
+        $endDateStr = $request->query->get('endDate');
+
+        if (!$startDateStr || !$endDateStr) {
+            return $this->json([
+                'status_code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'Los parámetros query startDate y endDate son requeridos.'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $startDateObj = new \DateTime($startDateStr);
+        $endDateObj = new \DateTime($endDateStr);
+
+        if ($startDateObj > $endDateObj) {
+            return $this->json([
+                'status_code' => Response::HTTP_BAD_REQUEST,
+                'message' => 'startDate no puede ser posterior a endDate.'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Buscar el tipo de habitación
+        $roomType = $entityManager->getRepository(RoomType::class)->find($roomTypeId);
+        if (!$roomType) {
+            return $this->json([
+                'status_code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Tipo de habitación no encontrado.'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        // Buscar todas las habitaciones de ese tipo
+        $rooms = $entityManager->getRepository(Room::class)->findBy(['type' => $roomType]);
+        $availableRooms = [];
+
+        foreach ($rooms as $room) {
+            $isAvailable = true;
+            foreach ($room->getBookings() as $booking) {
+                $bookingCheckIn = $booking->getCheckIn();
+                $bookingCheckOut = $booking->getCheckOut();
+
+                // The room is unavailable if a booking overlaps with the requested range.
+                if ($bookingCheckIn < $endDateObj && $bookingCheckOut > $startDateObj) {
+                    $isAvailable = false;
+                    break;
+                }
+            }
+            if ($isAvailable) {
+                $availableRooms[] = $room;
+            }
+        }
+
+        // Comprobar si hay disponibilidad
+        $hasAvailability = count($availableRooms) > 0;
+
+        return $this->json([
+            'hasAvailability' => $hasAvailability,
+            'availableCount' => count($availableRooms),
+            'roomType' => $roomType
+        ], Response::HTTP_OK, [], ['groups' => ['room']]);
+    }
+
     // GET ROOM BY ID
     #[Route('/rooms/{id}', name: 'get_room_by_id', methods: ['GET'])]
     public function getRoomById(EntityManagerInterface $entityManager, $id): JsonResponse

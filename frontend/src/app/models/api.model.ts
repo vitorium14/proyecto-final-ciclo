@@ -145,7 +145,8 @@ export interface BookingCreationPayload {
     checkOut: string; // Format: "YYYY-MM-DD HH:MM:SS"
     checkedIn?: boolean; // Defaults to false
     checkedOut?: boolean; // Defaults to false
-    room: number; // Room ID
+    room: number; // Room ID (will be ignored when using roomType)
+    roomType: number; // Room Type ID (new field for automatic room assignment)
     duration: number; // Duration of stay in nights
 }
 
@@ -156,7 +157,8 @@ export interface BookingUpdatePayload {
     checkOut: string; // Format: "YYYY-MM-DD HH:MM:SS"
     checkedIn?: boolean;
     checkedOut?: boolean;
-    room: number; // Room ID
+    room: number; // Room ID (will be ignored when using roomType)
+    roomType?: number; // Room Type ID for automatic room assignment
     duration: number; // Duration of stay in nights
 }
 

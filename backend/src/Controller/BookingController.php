@@ -49,7 +49,7 @@ final class BookingController extends AbstractController
             return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $this->json($booking, Response::HTTP_OK, [], ['groups' => ['booking']]);
+        return $this->json($booking, Response::HTTP_OK, [], ['groups' => ['booking', 'image']]);
     }
 
     // GET BOOKINGS BY USER ID
@@ -84,16 +84,59 @@ final class BookingController extends AbstractController
             $serviceEntity = $entityManager->getRepository(Service::class)->find($service);
             if ($serviceEntity) {
                 $booking->addService($serviceEntity);
-            }else{
+            } else {
                 return $this->json(['error' => 'Service not found'], Response::HTTP_BAD_REQUEST);
             }
         }
 
-        $booking->setCheckIn(new \DateTime($data['checkIn']));
-        $booking->setCheckOut(new \DateTime($data['checkOut']));
-        $booking->setCheckedIn($data['checkedIn']);
-        $booking->setCheckedOut($data['checkedOut']);
-        $booking->setRoom($entityManager->getRepository(Room::class)->find($data['room']));
+        $checkIn = new \DateTime($data['checkIn']);
+        $checkOut = new \DateTime($data['checkOut']);
+        
+        $booking->setCheckIn($checkIn);
+        $booking->setCheckOut($checkOut);
+        $booking->setCheckedIn($data['checkedIn'] ?? false);
+        $booking->setCheckedOut($data['checkedOut'] ?? false);
+
+        // Automaticamente asignar habitación basada en el tipo de habitación
+        if (isset($data['roomType'])) {
+            // Buscar todas las habitaciones del tipo seleccionado
+            $roomsOfType = $entityManager->getRepository(Room::class)
+                ->findBy(['type' => $data['roomType'], 'status' => 'available']);
+            
+            // Verificar disponibilidad durante el período seleccionado
+            $availableRoom = null;
+            
+            foreach ($roomsOfType as $room) {
+                // Verificar si la habitación tiene reservaciones que se superponen con las fechas seleccionadas
+                $existingBookings = $entityManager->getRepository(Booking::class)->createQueryBuilder('b')
+                    ->where('b.room = :room')
+                    ->andWhere('b.checkOut > :checkIn')
+                    ->andWhere('b.checkIn < :checkOut')
+                    ->setParameter('room', $room)
+                    ->setParameter('checkIn', $checkIn)
+                    ->setParameter('checkOut', $checkOut)
+                    ->getQuery()
+                    ->getResult();
+                
+                if (empty($existingBookings)) {
+                    $availableRoom = $room;
+                    break;
+                }
+            }
+            
+            if (!$availableRoom) {
+                return $this->json(['error' => 'No hay habitaciones disponibles para este tipo en las fechas seleccionadas'], Response::HTTP_BAD_REQUEST);
+            }
+            
+            $booking->setRoom($availableRoom);
+        } else {
+            // Si no se proporcionó un tipo de habitación, usar el método antiguo con el ID de habitación específico
+            $room = $entityManager->getRepository(Room::class)->find($data['room']);
+            if (!$room) {
+                return $this->json(['error' => 'Room not found'], Response::HTTP_BAD_REQUEST);
+            }
+            $booking->setRoom($room);
+        }
 
         // Calculate price based on services & stay duration * room type price
         $price = 0;
@@ -101,7 +144,7 @@ final class BookingController extends AbstractController
             $price += $service->getPrice();
         }
 
-        $room = $entityManager->getRepository(Room::class)->find($data['room']);
+        $room = $booking->getRoom();
         $price += $room->getType()->getPrice() * $data['duration'];
 
         $booking->setPrice($price);
@@ -127,16 +170,55 @@ final class BookingController extends AbstractController
             $serviceEntity = $entityManager->getRepository(Service::class)->find($service);
             if ($serviceEntity) {
                 $booking->addService($serviceEntity);
-            }else{
+            } else {
                 return $this->json(['error' => 'Service not found'], Response::HTTP_BAD_REQUEST);
             }
         }
 
-        $booking->setCheckIn(new \DateTime($data['checkIn']));
-        $booking->setCheckOut(new \DateTime($data['checkOut']));
-        $booking->setCheckedIn($data['checkedIn']);
-        $booking->setCheckedOut($data['checkedOut']);
-        $booking->setRoom($entityManager->getRepository(Room::class)->find($data['room']));
+        $checkIn = new \DateTime($data['checkIn']);
+        $checkOut = new \DateTime($data['checkOut']);
+        
+        $booking->setCheckIn($checkIn);
+        $booking->setCheckOut($checkOut);
+        $booking->setCheckedIn($data['checkedIn'] ?? false);
+        $booking->setCheckedOut($data['checkedOut'] ?? false);
+
+        // Automaticamente asignar habitación basada en el tipo de habitación
+        if (isset($data['roomType'])) {
+            // Verificar si es la misma habitación que ya tenía asignada
+            $currentRoom = $booking->getRoom();
+            if ($currentRoom && $currentRoom->getType()->getId() == $data['roomType']) {
+                // Mantener la misma habitación si es del mismo tipo y sigue disponible
+                $existingBookings = $entityManager->getRepository(Booking::class)->createQueryBuilder('b')
+                    ->where('b.room = :room')
+                    ->andWhere('b.id != :bookingId')
+                    ->andWhere('b.checkOut > :checkIn')
+                    ->andWhere('b.checkIn < :checkOut')
+                    ->setParameter('room', $currentRoom)
+                    ->setParameter('bookingId', $booking->getId())
+                    ->setParameter('checkIn', $checkIn)
+                    ->setParameter('checkOut', $checkOut)
+                    ->getQuery()
+                    ->getResult();
+                
+                if (empty($existingBookings)) {
+                    // La habitación actual sigue disponible, no se cambia
+                } else {
+                    // Buscar una nueva habitación del mismo tipo
+                    $this->assignNewRoom($entityManager, $booking, $data['roomType'], $checkIn, $checkOut);
+                }
+            } else {
+                // Asignar una nueva habitación del tipo solicitado
+                $this->assignNewRoom($entityManager, $booking, $data['roomType'], $checkIn, $checkOut);
+            }
+        } else if (isset($data['room'])) {
+            // Si se proporcionó un ID de habitación específico, usarlo (compatibilidad con el sistema anterior)
+            $room = $entityManager->getRepository(Room::class)->find($data['room']);
+            if (!$room) {
+                return $this->json(['error' => 'Room not found'], Response::HTTP_BAD_REQUEST);
+            }
+            $booking->setRoom($room);
+        }
 
         // Calculate price based on services & stay duration * room type price
         $price = 0;
@@ -144,14 +226,52 @@ final class BookingController extends AbstractController
             $price += $service->getPrice();
         }
 
-        $room = $entityManager->getRepository(Room::class)->find($data['room']);
+        $room = $booking->getRoom();
         $price += $room->getType()->getPrice() * $data['duration'];
 
         $booking->setPrice($price);
         
         $entityManager->flush();
 
-        return $this->json($booking, Response::HTTP_OK, [], ['groups' => ['booking']]);
+        return $this->json($booking, Response::HTTP_OK, [], ['groups' => ['booking', 'image']]);
+    }
+
+    // Método auxiliar para asignar una nueva habitación
+    private function assignNewRoom(EntityManagerInterface $entityManager, Booking $booking, int $roomTypeId, \DateTime $checkIn, \DateTime $checkOut): bool
+    {
+        // Buscar todas las habitaciones del tipo seleccionado
+        $roomsOfType = $entityManager->getRepository(Room::class)
+            ->findBy(['type' => $roomTypeId, 'status' => 'available']);
+        
+        // Verificar disponibilidad durante el período seleccionado
+        $availableRoom = null;
+        
+        foreach ($roomsOfType as $room) {
+            // Verificar si la habitación tiene reservaciones que se superponen con las fechas seleccionadas
+            $existingBookings = $entityManager->getRepository(Booking::class)->createQueryBuilder('b')
+                ->where('b.room = :room')
+                ->andWhere('b.id != :bookingId')
+                ->andWhere('b.checkOut > :checkIn')
+                ->andWhere('b.checkIn < :checkOut')
+                ->setParameter('room', $room)
+                ->setParameter('bookingId', $booking->getId())
+                ->setParameter('checkIn', $checkIn)
+                ->setParameter('checkOut', $checkOut)
+                ->getQuery()
+                ->getResult();
+            
+            if (empty($existingBookings)) {
+                $availableRoom = $room;
+                break;
+            }
+        }
+        
+        if (!$availableRoom) {
+            return false;
+        }
+        
+        $booking->setRoom($availableRoom);
+        return true;
     }
 
     // DELETE BOOKING

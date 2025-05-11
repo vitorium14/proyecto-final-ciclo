@@ -21,6 +21,7 @@ export class CreateBookingComponent implements OnInit {
   roomTypeId!: number;
   roomType: RoomType | null = null;
   availableRooms: Room[] = [];
+  hasAvailability: boolean = false;
   services: Service[] = [];
   currentUser: User | null = null;
   loading = false;
@@ -62,16 +63,15 @@ export class CreateBookingComponent implements OnInit {
     this.bookingForm = this.formBuilder.group({
       checkIn: ['', [Validators.required]],
       checkOut: ['', [Validators.required]],
-      room: ['', [Validators.required]],
       services: [[]], // Array de IDs de servicios opcionales
       // Campos ocultos/calculados
       price: [0],
       duration: [0]
     });
 
-    // Escuchar cambios en las fechas para actualizar habitaciones disponibles
-    this.bookingForm.get('checkIn')?.valueChanges.subscribe(() => this.updateAvailableRooms());
-    this.bookingForm.get('checkOut')?.valueChanges.subscribe(() => this.updateAvailableRooms());
+    // Escuchar cambios en las fechas para verificar disponibilidad
+    this.bookingForm.get('checkIn')?.valueChanges.subscribe(() => this.checkAvailability());
+    this.bookingForm.get('checkOut')?.valueChanges.subscribe(() => this.checkAvailability());
   }
 
   // Cargar el tipo de habitación seleccionado
@@ -102,8 +102,8 @@ export class CreateBookingComponent implements OnInit {
     });
   }
 
-  // Actualizar habitaciones disponibles según fechas seleccionadas
-  updateAvailableRooms(): void {
+  // Verificar disponibilidad según fechas seleccionadas
+  checkAvailability(): void {
     const checkIn = this.bookingForm.get('checkIn')?.value;
     const checkOut = this.bookingForm.get('checkOut')?.value;
 
@@ -112,17 +112,18 @@ export class CreateBookingComponent implements OnInit {
     }
 
     this.roomsLoading = true;
-    this.roomService.getAvailableRooms(checkIn, checkOut).subscribe({
-      next: (rooms) => {
-        // Filtrar sólo las habitaciones del tipo seleccionado
-        this.availableRooms = rooms.filter(room => room.type.id === this.roomTypeId);
+    this.hasAvailability = false;
+    
+    this.roomService.checkRoomTypeAvailability(this.roomTypeId, checkIn, checkOut).subscribe({
+      next: (response) => {
+        this.hasAvailability = response.hasAvailability;
         this.roomsLoading = false;
         
         // Actualizar precio y duración
         this.updatePriceAndDuration();
       },
       error: (err) => {
-        this.error = 'Error al cargar habitaciones disponibles: ' + err.message;
+        this.error = 'Error al verificar disponibilidad: ' + err.message;
         this.roomsLoading = false;
       }
     });
@@ -194,7 +195,8 @@ export class CreateBookingComponent implements OnInit {
     // Crear payload para la API
     const bookingData: BookingCreationPayload = {
       user: this.currentUser!.id,
-      room: Number(this.bookingForm.get('room')?.value),
+      room: 0, // Este valor será ignorado en el backend
+      roomType: this.roomTypeId, // Nuevo campo para indicar el tipo de habitación
       services: this.bookingForm.get('services')?.value || [],
       checkIn: this.formatDate(this.bookingForm.get('checkIn')?.value),
       checkOut: this.formatDate(this.bookingForm.get('checkOut')?.value),
