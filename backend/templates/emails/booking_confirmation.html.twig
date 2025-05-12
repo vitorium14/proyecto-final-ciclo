@@ -16,8 +16,7 @@
     <p>Tipo de habitación: {{ roomType.name }}</p>
     <p>Fecha de llegada: {{ booking.checkIn|date('d/m/Y') }}</p>
     <p>Fecha de salida: {{ booking.checkOut|date('d/m/Y') }}</p>
-    <p>Huéspedes: {{ booking.guests }}</p>
-    <p>Precio total: {{ booking.totalPrice }}€</p>
+    <p>Precio total: {{ booking.price }}€</p>
 </div>
 
 {% if booking.services|length > 0 %}
