@@ -8,7 +8,8 @@ import {
     LoginPayload,
     LoginResponse,
     LogoutPayload,
-    LogoutResponse
+    LogoutResponse,
+    PasswordChangePayload
 } from '../models/api.model';
 
 @Injectable({
@@ -53,5 +54,9 @@ export class UserService {
 
     deleteUser(id: number): Observable<void> {
         return this.http.delete<void>(`${this.usersApiUrl}/${id}`);
+    }
+
+    changePassword(id: number, passwordData: PasswordChangePayload): Observable<void> {
+        return this.http.put<void>(`${this.usersApiUrl}/${id}/password`, passwordData);
     }
 } 

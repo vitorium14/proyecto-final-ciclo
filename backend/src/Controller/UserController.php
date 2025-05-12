@@ -65,11 +65,11 @@ final class UserController extends AbstractController
         $user->setSurnames($data['surnames']);
         $user->setEmail($data['email']);
         //$user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
-        
+
         // CHECK IF THERE IS A PASSWORD IN THE REQUEST IF NOT KEEP THE SAME
         if (isset($data['password'])) {
             $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
-        }else{
+        } else {
             $user->setPassword($user->getPassword());
         }
 
@@ -83,15 +83,15 @@ final class UserController extends AbstractController
             if ($data['role'] != 'CLIENT' && !$isAdmin) {
                 return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
             }
-            
+
             $user->setRole($data['role']);
-        }else{
+        } else {
             $user->setRole($user->getRole());
         }
 
         $entityManager->flush();
 
-        return $this->json($user, Response::HTTP_OK, [], ['groups' => ['user']]);  
+        return $this->json($user, Response::HTTP_OK, [], ['groups' => ['user']]);
     }
 
     // DELETE USER
@@ -111,4 +111,34 @@ final class UserController extends AbstractController
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
+    // CHANGE PASSWORD
+    #[Route('/users/{id}/password', name: 'change_password', methods: ['PUT'])]
+    public function changePassword(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $user = $entityManager->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            return $this->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // CHECK IF USER IS ADMIN OR USER
+        $isAdmin = $this->jwtService->checkAdmin($request->headers->get('Authorization'), $entityManager);
+        if (!$isAdmin && $id !== $this->jwtService->getUserId($request->headers->get('Authorization'), $entityManager)) {
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // CHECK IF CURRENT PASSWORD IS CORRECT
+        if (!password_verify($data['currentPassword'], $user->getPassword())) {
+            return $this->json(['message' => 'Current password is incorrect'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $entityManager->getRepository(User::class)->find($id);
+        $user->setPassword(password_hash($data['newPassword'], PASSWORD_BCRYPT));
+
+        $entityManager->flush();
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
+    }
 }

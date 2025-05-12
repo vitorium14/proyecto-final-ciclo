@@ -149,15 +149,6 @@ export class ProfileComponent implements OnInit {
       newPassword: this.pwf['newPassword'].value
     };
 
-    // Simulamos la operación por ahora
-    setTimeout(() => {
-      this.submitting = false;
-      this.passwordSuccess = true;
-      this.passwordForm.reset();
-    }, 1000);
-
-    // Implementación real sería algo como:
-    /*
     this.userService.changePassword(this.currentUser.id, passwordData).subscribe({
       next: (response) => {
         this.submitting = false;
@@ -170,6 +161,6 @@ export class ProfileComponent implements OnInit {
         console.error('Error al cambiar la contraseña:', err);
       }
     });
-    */
+
   }
 } 

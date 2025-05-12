@@ -58,13 +58,13 @@ export class AuthService {
                         this.isAuthenticatedSubject.next(true);
                     } else {
                         this.isAuthenticatedSubject.next(false);
-                        throw new Error('Login failed: No token received');
+                        throw new Error('Login fallido: No se recibió un token');
                     }
                 }),
                 catchError(error => {
                     this.isAuthenticatedSubject.next(false);
                     console.error('Login error:', error);
-                    return throwError(() => new Error('Login failed'));
+                    return throwError(() => new Error('Credenciales incorrectas'));
                 })
             );
     }
@@ -77,7 +77,7 @@ export class AuthService {
     logout(): void {
         this.clearLocalStorage();
         this.isAuthenticatedSubject.next(false);
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
     }
 
     private clearLocalStorage(): void {

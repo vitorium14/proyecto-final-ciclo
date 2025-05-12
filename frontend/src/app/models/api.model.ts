@@ -181,3 +181,8 @@ export interface LogoutPayload {
 export interface LogoutResponse {
     message: string;
 }
+
+export interface PasswordChangePayload {
+    currentPassword: string;
+    newPassword: string;
+}
