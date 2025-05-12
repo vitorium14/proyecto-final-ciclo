@@ -11,6 +11,7 @@ import {
     LogoutResponse,
     PasswordChangePayload
 } from '../models/api.model';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
     providedIn: 'root'
@@ -19,8 +20,8 @@ export class UserService {
     // Assuming a global proxy is configured to point to the backend base URL
     // If /api is a global prefix, these paths are correct.
     // If not, /login, /register, /logout should be at the root.
-    private authApiUrl = 'http://localhost:8000/api'; // For /login, /register, /logout
-    private usersApiUrl = 'http://localhost:8000/api/users'; // For user management CRUD
+    private authApiUrl = environment.apiUrl + '/auth'; // For /login, /register, /logout
+    private usersApiUrl = environment.apiUrl + '/users'; // For user management CRUD
 
     constructor(private http: HttpClient) { }
 

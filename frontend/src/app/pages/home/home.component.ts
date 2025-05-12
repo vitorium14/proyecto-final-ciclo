@@ -9,5 +9,10 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-
+  scrollToFeatures() {
+    const roomsSection = document.getElementById('rooms');
+    if (roomsSection) {
+      roomsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }

@@ -17,7 +17,8 @@ export class RoomsComponent implements OnInit {
   roomTypes: RoomType[] = [];
   loading: boolean = true;
   error: string | null = null;
-
+  isAuthenticated: boolean = false;
+  
   constructor(
     private roomTypeService: RoomTypeService,
     private authService: AuthService,
@@ -28,6 +29,9 @@ export class RoomsComponent implements OnInit {
     this.loadRoomTypes();
     // Inicializar filtros de habitaciones después de cargar la página
     this.initializeFilters();
+    this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+    });
   }
 
   // Cargar los tipos de habitaciones desde el API

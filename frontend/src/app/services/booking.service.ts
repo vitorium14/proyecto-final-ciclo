@@ -6,12 +6,12 @@ import {
     BookingCreationPayload,
     BookingUpdatePayload
 } from '../models/api.model';
-
+import { environment } from '../../environments/environment.prod';
 @Injectable({
     providedIn: 'root'
 })
 export class BookingService {
-    private apiUrl = 'http://localhost:8000/api/bookings'; // Assuming a global proxy is configured
+    private apiUrl = environment.apiUrl + '/bookings'; // Assuming a global proxy is configured
 
     constructor(private http: HttpClient) { }
 

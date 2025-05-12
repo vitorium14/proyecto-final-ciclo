@@ -121,7 +121,7 @@
                                         </a>
                                         
                                         <!-- Solo mostrar botón de cancelar para reservas futuras -->
-                                        <button *ngIf="isUpcoming(booking)" 
+                                        <button *ngIf="isUpcoming(booking) && !booking.checkedIn" 
                                                 class="btn btn-outline-danger btn-sm"
                                                 (click)="cancelBooking(booking.id)">
                                             <i class="bi bi-x-circle me-1"></i> Cancelar

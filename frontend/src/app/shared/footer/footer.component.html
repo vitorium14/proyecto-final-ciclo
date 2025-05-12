@@ -12,9 +12,9 @@
                 </p>
                 <div class="newsletter-form">
                     <h6 class="newsletter-title">Recibe nuestras ofertas</h6>
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Tu email" aria-label="Tu email">
-                        <button class="btn btn-primary" type="button">
+                    <div class="input-group" [formGroup]="newsletterForm">
+                        <input type="email" class="form-control" placeholder="Tu email" aria-label="Tu email" formControlName="email">
+                        <button class="btn btn-primary" type="button" (click)="subscribeNewsletter(newsletterForm.get('email')?.value)">
                             <i class="bi bi-arrow-right"></i>
                         </button>
                     </div>

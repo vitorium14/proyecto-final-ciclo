@@ -83,7 +83,7 @@ export class BookingDetailComponent implements OnInit {
     if (!this.booking) return false;
     const now = new Date();
     const checkOut = new Date(this.booking.checkOut);
-    return checkOut >= now;
+    return checkOut >= now && !this.booking.checkedIn;
   }
 
   // Calcular duración de la estancia en días

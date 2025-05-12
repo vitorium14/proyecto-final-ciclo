@@ -7,12 +7,12 @@ import {
     ServiceUpdatePayload,     // Added
     Image
 } from '../models/api.model';
-
+import { environment } from '../../environments/environment.prod';
 @Injectable({
     providedIn: 'root'
 })
 export class ServiceService {
-    private apiUrl = 'http://localhost:8000/api/services'; // Assuming a global proxy is configured
+    private apiUrl = environment.apiUrl + '/services'; // Assuming a global proxy is configured
 
     constructor(private http: HttpClient) { }
 

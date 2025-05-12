@@ -26,6 +26,14 @@
     </div>
 </div>
 
+<div class="container mt-5 mb-5" *ngIf="!isAuthenticated">
+    <h2>Por su seguridad y comodiad, es necesario que acceda a su cuenta para poder reservar una habitación</h2>
+    <div class="d-flex justify-content-center">
+        <a routerLink="/login" class="btn btn-primary mx-2">Acceder a mi cuenta</a>
+        <a routerLink="/register" class="btn btn-secondary mx-2">Crear una cuenta</a>
+    </div>
+</div>
+
 <!-- Rooms Filter Section (Optional) -->
 <section *ngIf="!loading && !error" class="rooms-filter py-4">
     <div class="container">
@@ -33,7 +41,7 @@
             <div class="col-lg-8">
                 <div class="filter-container animate__animated animate__fadeIn">
                     <div class="filter-buttons">
-                        <button class="filter-button active" data-filter="all">Todos</button>
+                        <button class="filter-button active" data-filter="all" >Todos</button>
                         <button class="filter-button" data-filter="1">Individual</button>
                         <button class="filter-button" data-filter="2">Doble</button>
                         <button class="filter-button" data-filter="3">Familiar</button>
@@ -72,14 +80,14 @@
                         </div>
                         <p>{{ roomType.description }}</p>
                         <div class="room-amenities">
-                            <span><i class="bi bi-wifi"></i></span>
-                            <span><i class="bi bi-tv"></i></span>
-                            <span><i class="bi bi-snow"></i></span>
-                            <span><i class="bi bi-cup-hot"></i></span>
-                            <span><i class="bi bi-safe"></i></span>
+                            <span title="Wi-Fi"><i class="bi bi-wifi"></i></span>
+                            <span title="Televisión"><i class="bi bi-tv"></i></span>
+                            <span title="Calefacción"><i class="bi bi-snow"></i></span>
+                            <span title="Desayuno"><i class="bi bi-cup-hot"></i></span>
+                            <span title="Caja Fuerte"><i class="bi bi-safe"></i></span>
                         </div>
-                        <a [routerLink]="['/room', roomType.id]" class="btn btn-primary">Ver Detalles</a>
-                        <button (click)="openBookingModal(roomType)" class="btn btn-outline-primary ms-2">Reservar Ahora</button>
+
+                        <button *ngIf="isAuthenticated" (click)="openBookingModal(roomType)" class="btn btn-outline-primary ms-2">Reservar Ahora</button>
                     </div>
                 </div>
             </div>

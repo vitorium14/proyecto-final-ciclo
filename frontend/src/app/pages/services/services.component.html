@@ -36,7 +36,7 @@
                 <p class="section-subtitle lead animate__animated animate__fadeIn">Navega por nuestras categorías de servicios para encontrar lo que buscas</p>
             </div>
         </div>
-        <div class="row justify-content-center">
+        <!-- <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="category-pills animate__animated animate__fadeIn">
                     <button class="category-pill active" data-target="all">Todos</button>
@@ -46,7 +46,7 @@
                     <button class="category-pill" data-target="business">Negocios</button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
 
@@ -82,7 +82,6 @@
                             <span *ngIf="service.duration"><i class="bi bi-clock"></i> {{ service.duration }} minutos</span>
                             <span><i class="bi bi-tag"></i> {{ service.price | currency:'EUR' }}</span>
                         </div>
-                        <a routerLink="/rooms" class="btn btn-outline-primary">Reservar</a>
                     </div>
                 </div>
             </div>

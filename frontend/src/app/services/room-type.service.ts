@@ -6,12 +6,12 @@ import {
     RoomTypeCreationPayload,
     RoomTypeUpdatePayload
 } from '../models/api.model';
-
+import { environment } from '../../environments/environment.prod';
 @Injectable({
     providedIn: 'root'
 })
 export class RoomTypeService {
-    private apiUrl = 'http://localhost:8000/api/room-types'; // Assuming a global proxy is configured
+    private apiUrl = environment.apiUrl + '/room-types'; // Assuming a global proxy is configured
 
     constructor(private http: HttpClient) { }
 

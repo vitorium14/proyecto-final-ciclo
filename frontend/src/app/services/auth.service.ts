@@ -4,13 +4,14 @@ import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, of, throwError } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { LoginPayload, LoginResponse, User, UserCreationPayload } from '../models/api.model';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
     // TODO: Replace with your actual API endpoint
-    private apiUrl = 'http://localhost:8000/api';
+    private apiUrl = environment.apiUrl; // TODO: Change to environment variable
     private httpClient = inject(HttpClient);
     private router = inject(Router);
 
