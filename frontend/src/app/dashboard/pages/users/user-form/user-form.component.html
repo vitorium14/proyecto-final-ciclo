@@ -67,9 +67,9 @@
                     <label for="role" class="form-label">Role</label>
                     <select id="role" formControlName="role" class="form-select"
                         [ngClass]="{ 'is-invalid': role?.invalid && (role?.dirty || role?.touched) }">
-                        <option value="USER">User</option>
-                        <option value="ADMIN">Admin</option>
-                        <option value="EMPLOYEE">Employee</option>
+                        <option value="CLIENT">Cliente</option>
+                        <option value="ADMIN">Administrador</option>
+                        <option value="EMPLOYEE">Empleado</option>
                     </select>
                     <div *ngIf="role?.invalid && (role?.dirty || role?.touched)" class="invalid-feedback">
                         <div *ngIf="role?.errors?.['required']">Role is required.</div>

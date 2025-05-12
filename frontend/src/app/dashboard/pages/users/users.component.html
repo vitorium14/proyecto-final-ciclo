@@ -52,8 +52,8 @@
                                 <span class="badge" 
                                     [ngClass]="{
                                     'badge-danger': user.role === 'ADMIN',
-                                    'badge-info': user.role === 'EMPLOYEE',
-                                    'badge-secondary': user.role === 'USER'
+                                    'badge-warning': user.role === 'EMPLOYEE',
+                                    'badge-success': user.role === 'CLIENT'
                                 }">{{ user.role }}</span>
                             </td>
                             <td class="text-center">
