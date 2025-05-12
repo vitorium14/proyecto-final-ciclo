@@ -13,7 +13,7 @@
     <p><strong>Detalles de la reserva cancelada:</strong></p>
     <p>Número de reserva: <span class="highlight">{{ booking.id }}</span></p>
     <p>Habitación: {{ booking.room.name }}</p>
-    <p>Tipo de habitación: {{ booking.room.roomType.name }}</p>
+    <p>Tipo de habitación: {{ roomType.name }}</p>
     <p>Fecha de llegada: {{ booking.checkIn|date('d/m/Y') }}</p>
     <p>Fecha de salida: {{ booking.checkOut|date('d/m/Y') }}</p>
 </div>

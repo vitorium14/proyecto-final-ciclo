@@ -25,7 +25,8 @@ class MailerService
             ->subject('Gracias por registrarte en Hotel Paraiso')
             ->htmlTemplate('emails/registration.html.twig')
             ->context([
-                'user' => $user
+                'user' => $user,
+                'loginURL' => 'https://hotel.victorgimenez.com/login'
             ]);
 
         $this->mailer->send($email);
@@ -55,7 +56,8 @@ class MailerService
             ->subject('Cancelación de reserva')
             ->htmlTemplate('emails/booking_cancellation.html.twig')
             ->context([
-                'booking' => $booking
+                'booking' => $booking,
+                'roomType' => $booking->getRoom()->getType(),
             ]);
 
         $this->mailer->send($email);
