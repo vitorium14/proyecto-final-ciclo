@@ -1,0 +1,50 @@
+{% extends "emails/base.html" %}
+
+{% block title %}Confirmación de Reserva - Hotel Paraiso{% endblock %}
+
+{% block header %}¡Reserva Confirmada!{% endblock %}
+
+{% block content %}
+<p>Estimado/a {{ booking.user.name }},</p>
+
+<p>¡Gracias por elegir Hotel Paraiso! Tu reserva ha sido confirmada.</p>
+
+<div class="details">
+    <p><strong>Detalles de tu reserva:</strong></p>
+    <p>Número de reserva: <span class="highlight">{{ booking.id }}</span></p>
+    <p>Habitación: {{ booking.room.name }}</p>
+    <p>Tipo de habitación: {{ roomType.name }}</p>
+    <p>Fecha de llegada: {{ booking.checkIn|date('d/m/Y') }}</p>
+    <p>Fecha de salida: {{ booking.checkOut|date('d/m/Y') }}</p>
+    <p>Huéspedes: {{ booking.guests }}</p>
+    <p>Precio total: {{ booking.totalPrice }}€</p>
+</div>
+
+{% if booking.services|length > 0 %}
+<div class="details">
+    <p><strong>Servicios adicionales:</strong></p>
+    {% for service in booking.services %}
+    <p>- {{ service.name }}: {{ service.price }}€</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<p>Para ver los detalles completos de tu reserva, haz clic en el siguiente botón:</p>
+
+<div style="text-align: center;">
+    <a href="{{ bookingDetailsURL }}" class="button">Ver detalles de la reserva</a>
+</div>
+
+<p><strong>Información importante:</strong></p>
+<ul>
+    <li>Check-in: a partir de las 14:00 horas</li>
+    <li>Check-out: hasta las 12:00 horas</li>
+    <li>Política de cancelación: {{ cancellation_policy }}</li>
+</ul>
+
+<p>Si necesitas realizar algún cambio en tu reserva o tienes alguna pregunta, no dudes en contactarnos.</p>
+
+<p>¡Esperamos tu llegada!</p>
+
+<p>Saludos cordiales,<br>El equipo de Hotel Paraiso</p>
+{% endblock %}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #FF8C00;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #dddddd;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #666666;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #FF8C00;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .button:hover {
+            background-color: #CC7000;
+        }
+
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .details p {
+            margin: 5px 0;
+        }
+
+        .highlight {
+            color: #FF8C00;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{% block header %}{% endblock %}</h1>
+        </div>
+
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <div class="footer">
+            <p>© {{ "now"|date("Y") }} Hotel Name. Todos los derechos reservados.</p>
+            <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+            <p>
+                <a href="{{ contact_url }}">Contacto</a> |
+                <a href="{{ privacy_url }}">Política de Privacidad</a> |
+                <a href="{{ terms_url }}">Términos y Condiciones</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

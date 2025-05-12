@@ -76,9 +76,11 @@ export class AuthService {
     }
 
     logout(): void {
-        this.clearLocalStorage();
-        this.isAuthenticatedSubject.next(false);
-        this.router.navigate(['/login']);
+        this.httpClient.post(`${this.apiUrl}/logout`, {}).subscribe(() => {
+            this.clearLocalStorage();
+            this.isAuthenticatedSubject.next(false);
+            this.router.navigate(['/login']);
+        });
     }
 
     private clearLocalStorage(): void {

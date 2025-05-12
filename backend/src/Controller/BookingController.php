@@ -13,15 +13,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Service\JwtService;
+use App\Service\MailerService;
 
 #[Route('/api')]
 final class BookingController extends AbstractController
 {
     private JwtService $jwtService;
-
-    public function __construct(JwtService $jwtService)
+    private MailerService $mailerService;
+    public function __construct(JwtService $jwtService, MailerService $mailerService)
     {
         $this->jwtService = $jwtService;
+        $this->mailerService = $mailerService;
     }
     // GET ALL BOOKINGS
     #[Route('/bookings', name: 'get_bookings', methods: ['GET'])]
@@ -152,7 +154,9 @@ final class BookingController extends AbstractController
         $entityManager->persist($booking);
         $entityManager->flush();
 
-        return $this->json($booking, Response::HTTP_CREATED, [], ['groups' => ['booking']]);
+        $this->mailerService->bookingConfirmationEmail($booking->getUser(), $booking, $booking->getRoom()->getType());
+
+        return $this->json($booking, Response::HTTP_CREATED, [], ['groups' => ['booking', 'image']]);
     }
 
     // UPDATE BOOKING
@@ -281,6 +285,8 @@ final class BookingController extends AbstractController
         $booking = $entityManager->getRepository(Booking::class)->find($id);
         $entityManager->remove($booking);
         $entityManager->flush();
+
+        $this->mailerService->bookingCancellationEmail($booking->getUser(), $booking);
 
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }

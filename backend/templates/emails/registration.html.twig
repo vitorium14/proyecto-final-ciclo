@@ -1,0 +1,25 @@
+{% extends "emails/base.html" %}
+
+{% block title %}Bienvenido a Hotel Paraiso{% endblock %}
+
+{% block header %}¡Bienvenido a Hotel Paraiso!{% endblock %}
+
+{% block content %}
+<p>Estimado/a {{ user.name }},</p>
+
+<p>¡Gracias por registrarte en Hotel Paraiso! Estamos encantados de tenerte como parte de nuestra comunidad.</p>
+
+<p>Tu cuenta ha sido creada exitosamente. Ahora puedes acceder a todos nuestros servicios y realizar reservas.</p>
+
+<div class="details">
+    <p><strong>Tu información de cuenta:</strong></p>
+    <p>Email: {{ user.email }}</p>
+    <p>Nombre: {{ user.name }}</p>
+</div>
+
+<p>Si no has creado esta cuenta, por favor ignora este correo electrónico.</p>
+
+<p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.</p>
+
+<p>Saludos cordiales,<br>El equipo de Hotel Paraiso</p>
+{% endblock %}

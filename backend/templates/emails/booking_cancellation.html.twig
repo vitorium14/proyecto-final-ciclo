@@ -1,0 +1,31 @@
+{% extends "emails/base.html" %}
+
+{% block title %}Cancelación de Reserva - Hotel Paraiso{% endblock %}
+
+{% block header %}Reserva Cancelada{% endblock %}
+
+{% block content %}
+<p>Estimado/a {{ booking.user.name }},</p>
+
+<p>Hemos recibido tu solicitud de cancelación para la siguiente reserva:</p>
+
+<div class="details">
+    <p><strong>Detalles de la reserva cancelada:</strong></p>
+    <p>Número de reserva: <span class="highlight">{{ booking.id }}</span></p>
+    <p>Habitación: {{ booking.room.name }}</p>
+    <p>Tipo de habitación: {{ booking.room.roomType.name }}</p>
+    <p>Fecha de llegada: {{ booking.checkIn|date('d/m/Y') }}</p>
+    <p>Fecha de salida: {{ booking.checkOut|date('d/m/Y') }}</p>
+</div>
+
+<div class="details">
+    <p><strong>Información de la cancelación:</strong></p>
+    <p>Fecha de cancelación: {{ "now"|date('d/m/Y') }}</p>
+</div>
+
+<p>Si no has solicitado esta cancelación o tienes alguna pregunta, por favor contacta con nosotros inmediatamente.</p>
+
+<p>Esperamos poder servirte en el futuro.</p>
+
+<p>Saludos cordiales,<br>El equipo de Hotel Paraiso</p>
+{% endblock %}

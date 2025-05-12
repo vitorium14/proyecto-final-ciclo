@@ -11,7 +11,7 @@ use App\Service\JwtService;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Entity\Token;
-
+use App\Service\MailerService;
 /**
  * Controller for handling user authentication: login, logout, and registration.
  */
@@ -19,14 +19,15 @@ use App\Entity\Token;
 final class AuthController extends AbstractController
 {
     private JwtService $jwtService;
-
+    private MailerService $mailerService;   
     /**
      * AuthController constructor.
      * @param JwtService $jwtService Service for JWT operations.
      */
-    public function __construct(JwtService $jwtService)
+    public function __construct(JwtService $jwtService, MailerService $mailerService)
     {
         $this->jwtService = $jwtService;
+        $this->mailerService = $mailerService;
     }
 
     #[Route('/', name: 'ping', methods: ['GET'])]
@@ -90,13 +91,17 @@ final class AuthController extends AbstractController
     #[Route('/logout', name: 'logout', methods: ['POST'])]
     public function logout(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $token = $data['token'];
-
-        $token = $entityManager->getRepository(Token::class)->findOneBy(['token' => $token]);
-        $token->setRevokedAt(new \DateTimeImmutable());
-        $token->setRevoked(true);
-        $entityManager->flush();
+        // GET AUTH HEADER
+        $authHeader = $request->headers->get('Authorization');
+        $token = str_replace('Bearer ', '', $authHeader);
+        $user = $this->jwtService->getUserFromToken($token, $entityManager);
+        // REVOKE EVERY TOKEN FOR THE USER
+        $tokens = $entityManager->getRepository(Token::class)->findBy(['user' => $user, 'revoked' => false]);
+        foreach ($tokens as $token) {
+            $token->setRevokedAt(new \DateTimeImmutable());
+            $token->setRevoked(true);
+            $entityManager->flush();
+        }
 
         return $this->json(['message' => 'Logged out successfully']);
     }
@@ -153,6 +158,8 @@ final class AuthController extends AbstractController
         // SAVE USER
         $entityManager->persist($user);
         $entityManager->flush();
+
+        $this->mailerService->registrationEmail($user);
 
         return $this->json($user, Response::HTTP_CREATED, [], ['groups' => ['user']]);
     }
