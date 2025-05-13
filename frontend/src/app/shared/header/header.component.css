@@ -28,6 +28,7 @@
     padding: 0.5rem 1rem;
     transition: all var(--transition-fast);
     position: relative;
+    text-align: center;
 }
 
 .nav-link:hover,
