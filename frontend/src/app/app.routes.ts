@@ -11,6 +11,8 @@ import { ServicesComponent } from './pages/services/services.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { CreateBookingComponent } from './pages/create-booking/create-booking.component';
 import { BookingDetailComponent } from './pages/booking-detail/booking-detail.component';
+import { TermsComponent } from './pages/terms/terms.component';
+import { PrivacyComponent } from './pages/privacy/privacy.component';
 
 export const routes: Routes = [
     {
@@ -19,6 +21,8 @@ export const routes: Routes = [
             { path: 'rooms', component: RoomsComponent },
             { path: 'services', component: ServicesComponent },
             { path: 'contact', component: ContactComponent },
+            { path: 'terms', component: TermsComponent },
+            { path: 'privacy', component: PrivacyComponent },
             { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
             { path: 'my-bookings', component: MyBookingsComponent, canActivate: [authGuard] },
             { path: 'create-booking/:id', component: CreateBookingComponent, canActivate: [authGuard] },
