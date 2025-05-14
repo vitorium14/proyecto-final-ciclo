@@ -62,7 +62,7 @@
             </div>
 
             <!-- Dynamic Room Cards -->
-            <div *ngFor="let roomType of roomTypes" class="col-lg-6 mb-4 room-item" [attr.data-capacity]="roomType.capacity">
+            <div *ngFor="let roomType of filteredRoomTypes" class="col-lg-6 mb-4 room-item" [attr.data-capacity]="roomType.capacity">
                 <div class="room-card animate__animated animate__fadeInUp">
                     <div class="room-image">
                         <img [src]="roomType.images && roomType.images.length > 0 ? roomType.images[0].image : 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'" [alt]="roomType.name" class="img-fluid">

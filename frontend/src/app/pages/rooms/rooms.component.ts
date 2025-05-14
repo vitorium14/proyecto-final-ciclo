@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class RoomsComponent implements OnInit {
   roomTypes: RoomType[] = [];
+  filteredRoomTypes: RoomType[] = [];
   loading: boolean = true;
   error: string | null = null;
   isAuthenticated: boolean = false;
@@ -38,6 +39,7 @@ export class RoomsComponent implements OnInit {
     this.roomTypeService.getAllRoomTypes().subscribe({
       next: (roomTypes) => {
         this.roomTypes = roomTypes;
+        this.filteredRoomTypes = roomTypes;
         this.loading = false;
       },
       error: (err) => {
@@ -51,12 +53,12 @@ export class RoomsComponent implements OnInit {
   // Filtro de habitaciones
   filterRooms(capacity: number, event: HTMLElement): void {
     if (capacity === 0) {
-      this.roomTypes = this.roomTypes;
+      this.filteredRoomTypes = this.roomTypes;
     } else {
       if (capacity >= 3) {
-        this.roomTypes = this.roomTypes.filter(room => room.capacity >= 3);
+        this.filteredRoomTypes = this.roomTypes.filter(room => room.capacity >= 3);
       } else {
-        this.roomTypes = this.roomTypes.filter(room => room.capacity === 3);
+        this.filteredRoomTypes = this.roomTypes.filter(room => room.capacity === capacity);
       }
     }
 

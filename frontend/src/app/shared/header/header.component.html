@@ -11,18 +11,18 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/rooms" routerLinkActive="active">Habitaciones</a>
+                    <a class="nav-link" routerLink="/rooms" routerLinkActive="active" data-bs-toggle="collapse" data-bs-target="#navbarNav">Habitaciones</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/services" routerLinkActive="active">Servicios</a>
+                    <a class="nav-link" routerLink="/services" routerLinkActive="active" data-bs-toggle="collapse" data-bs-target="#navbarNav">Servicios</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contacto</a>
+                    <a class="nav-link" routerLink="/contact" routerLinkActive="active" data-bs-toggle="collapse" data-bs-target="#navbarNav">Contacto</a>
                 </li>
                 
                 <!-- Botón de reserva siempre visible -->
                 <li class="nav-item">
-                    <a class="btn btn-primary ms-lg-2" routerLink="/rooms">
+                    <a class="btn btn-primary ms-lg-2" routerLink="/rooms" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                         <i class="bi bi-calendar-plus me-1"></i> Reservar
                     </a>
                 </li>
@@ -30,12 +30,12 @@
                 <!-- Usuario no autenticado: Mostrar Login/Registro -->
                 <ng-container *ngIf="!isAuthenticated">
                     <li class="nav-item">
-                        <a class="btn btn-outline-light ms-lg-2" routerLink="/login">
+                        <a class="btn btn-outline-light ms-lg-2" routerLink="/login" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                             <i class="bi bi-person me-1"></i> Iniciar sesión
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-light ms-lg-2" routerLink="/register">
+                        <a class="btn btn-outline-light ms-lg-2" routerLink="/register" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                             <i class="bi bi-person-plus me-1"></i> Registrarse
                         </a>
                     </li>
