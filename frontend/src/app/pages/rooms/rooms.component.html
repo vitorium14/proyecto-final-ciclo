@@ -41,10 +41,10 @@
             <div class="col-lg-8">
                 <div class="filter-container animate__animated animate__fadeIn">
                     <div class="filter-buttons">
-                        <button class="filter-button active" data-filter="all" >Todos</button>
-                        <button class="filter-button" data-filter="1">Individual</button>
-                        <button class="filter-button" data-filter="2">Doble</button>
-                        <button class="filter-button" data-filter="3">Familiar</button>
+                        <button #filter1 class="filter-button active" (click)="filterRooms(0, filter1)" >Todos</button>
+                        <button #filter2 class="filter-button" (click)="filterRooms(1, filter2)" >Individual</button>
+                        <button #filter3 class="filter-button" (click)="filterRooms(2, filter3)" >Doble</button>
+                        <button #filter4 class="filter-button" (click)="filterRooms(3, filter4)" >Familiar</button>
                     </div>
                 </div>
             </div>

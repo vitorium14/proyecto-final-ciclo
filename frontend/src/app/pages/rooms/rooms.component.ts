@@ -27,8 +27,6 @@ export class RoomsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadRoomTypes();
-    // Inicializar filtros de habitaciones después de cargar la página
-    this.initializeFilters();
     this.authService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAuthenticated = isAuthenticated;
     });
@@ -50,39 +48,26 @@ export class RoomsComponent implements OnInit {
     });
   }
 
-  // Inicializa los filtros y agrega eventos a los botones
-  private initializeFilters(): void {
-    setTimeout(() => {
-      const filterButtons = document.querySelectorAll('.filter-button');
-      const roomItems = document.querySelectorAll('.room-item');
+  // Filtro de habitaciones
+  filterRooms(capacity: number, event: HTMLElement): void {
+    if (capacity === 0) {
+      this.roomTypes = this.roomTypes;
+    } else {
+      if (capacity >= 3) {
+        this.roomTypes = this.roomTypes.filter(room => room.capacity >= 3);
+      } else {
+        this.roomTypes = this.roomTypes.filter(room => room.capacity === 3);
+      }
+    }
 
-      // Agregar evento click a cada botón de filtro
-      filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          // Remover clase active de todos los botones
-          filterButtons.forEach(btn => btn.classList.remove('active'));
-          
-          // Agregar clase active al botón clickeado
-          button.classList.add('active');
-          
-          // Obtener el valor del filtro (capacidad)
-          const filterValue = button.getAttribute('data-filter');
-          
-          // Filtrar las habitaciones
-          roomItems.forEach(item => {
-            if (filterValue === 'all' || item.getAttribute('data-capacity') === filterValue || (filterValue === '3' && parseInt(item.getAttribute('data-capacity') || '0') >= 3)) {
-              item.classList.remove('d-none');
-              setTimeout(() => {
-                item.classList.add('animate__fadeIn');
-              }, 100);
-            } else {
-              item.classList.add('d-none');
-              item.classList.remove('animate__fadeIn');
-            }
-          });
-        });
-      });
-    }, 500);
+    const buttons = document.querySelectorAll('.filter-button');
+    buttons.forEach(button => {
+      if (button !== event) {
+        button.classList.remove('active');
+      }
+    });
+
+    event.classList.add('active');
   }
 
   // Abrir modal de reserva o redirigir a login si no está autenticado
