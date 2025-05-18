@@ -122,10 +122,6 @@ backend/
 └── var/
 ```
 
-## ✅ **Estado del proyecto**
-
-🚧 En desarrollo
-
 ## 👨‍💻 **Autor**
 
 - **Víctor Giménez Gil** – [GitHub](https://github.com/vitorium14)
